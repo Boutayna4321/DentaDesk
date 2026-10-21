@@ -23,8 +23,12 @@ body { -webkit-font-smoothing: antialiased; }
     img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
     b { color: #fff; display: block; }
     button { margin-left: auto; background: none; border: 0; color: #9fb0d3; font-size: .72rem; } }
-  @include media-breakpoint-down(lg) { position: static; height: auto; flex-direction: row; flex-wrap: wrap; .sep, .me { display: none; } .brand { padding-bottom: 0; } } }
-.main { padding: 1.4rem 1.6rem 3rem; min-width: 0; }
+  // Phone: one sticky row that scrolls sideways.
+  @include media-breakpoint-down(lg) { position: sticky; z-index: 10; height: auto; flex-direction: row; flex-wrap: nowrap; overflow-x: auto; padding: .6rem;
+    scrollbar-width: none; &::-webkit-scrollbar { display: none; }
+    a.item { white-space: nowrap; flex: none; } .sep, .me { display: none; } .brand { padding: 0 .4rem; flex: none; } } }
+.main { padding: 1.4rem 1.6rem 3rem; min-width: 0;
+  @include media-breakpoint-down(md) { padding: 1rem 1rem 3rem; } }
 .top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.1rem;
   h1 { font-size: 1.45rem; margin: 0; letter-spacing: -.02em; small { display: block; font-size: .8rem; color: $mute; font-weight: 600; letter-spacing: 0; margin-top: .15rem; } } }
 
@@ -67,11 +71,12 @@ body { -webkit-font-smoothing: antialiased; }
 
 // ── odontogram (FDI) ────────────────────────────────────────────────
 .odo { --gap: 3px;
-  .arch { display: grid; grid-template-columns: repeat(16, 1fr); gap: var(--gap); }
+  // Two quadrants of 8, with a gap column for the midline.
+  .arch { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)) 4px repeat(8, minmax(0, 1fr)); gap: var(--gap); }
+  .tooth:nth-child(9) { grid-column: 10; }
   .arch + .arch { margin-top: .3rem; }
-  .tooth { height: 38px; border: 1.5px solid #cbd5e6; border-radius: .4rem .4rem .6rem .6rem; background: #fff; font-family: 'IBM Plex Mono', monospace;
+  .tooth { height: 38px; min-width: 0; padding-left: 0; padding-right: 0; border: 1.5px solid #cbd5e6; border-radius: .4rem .4rem .6rem .6rem; background: #fff; font-family: 'IBM Plex Mono', monospace;
     font-size: .62rem; color: #98a3b8; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 3px; transition: transform .1s;
-    &:nth-child(8) { margin-right: 6px; }
     &[data-state=to_treat] { background: #fde8e8; border-color: #e57373; color: $red; }
     &[data-state=treated] { background: $tint; border-color: $blue; color: $blue; }
     &[data-state=missing] { background: repeating-linear-gradient(45deg, #f0f3f9 0 3px, #fff 3px 6px); border-style: dashed; }

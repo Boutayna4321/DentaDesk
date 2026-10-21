@@ -203,6 +203,8 @@ function assistant(panel) {
 
     document.querySelectorAll('[data-open-assistant]').forEach((b) => b.addEventListener('click', open));
     panel.querySelector('[data-close-assistant]').onclick = () => { panel.hidden = true; fab.hidden = false; };
+    if (location.hash === '#assistant') open(); // deep link, handy for sharing and demos
+
     form.onsubmit = (e) => {
         e.preventDefault();
         const text = input.value;
