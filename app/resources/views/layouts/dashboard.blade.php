@@ -24,9 +24,18 @@
         array_splice($nav, 5, 0, [['dash.stats', 'Statistiques', 'scan', null]]);
     }
 @endphp
+<header class="mtop">
+    <button class="burger" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidenav" aria-controls="sidenav" aria-label="Ouvrir le menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <em data-burger-dot @if (! ($open || ($unreadTop = \App\Models\InternalMessage::where('recipient_id', auth()->id())->whereNull('read_at')->count()))) hidden @endif></em>
+    </button>
+    <b>snan.</b>
+    <span class="where">@yield('title')</span>
+</header>
 <div class="shell">
-    <aside class="side">
-        <div class="brand"><x-icon name="tooth" size="22" stroke="#fff" />snan.</div>
+    <aside class="side offcanvas-lg offcanvas-start" id="sidenav" tabindex="-1" aria-label="Menu">
+        <div class="brand"><span class="d-flex align-items-center gap-2"><x-icon name="tooth" size="22" stroke="#fff" />snan.</span>
+            <button class="side-close" type="button" data-bs-dismiss="offcanvas" data-bs-target="#sidenav" aria-label="Fermer le menu">✕</button></div>
         @foreach ($nav as [$route, $label, $icon, $badge])
             <a class="item {{ request()->routeIs($route.'*') ? 'on' : '' }}" href="{{ route($route) }}"><x-icon :name="$icon" size="17" />{{ $label }}@if ($badge !== null)<em data-badge="{{ $route }}" @if (! $badge) hidden @endif>{{ $badge }}</em>@endif</a>
         @endforeach

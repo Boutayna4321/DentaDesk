@@ -1,6 +1,7 @@
 import 'bootstrap/js/dist/dropdown';
 import 'bootstrap/js/dist/collapse';
 import Modal from 'bootstrap/js/dist/modal';
+import Offcanvas from 'bootstrap/js/dist/offcanvas';
 
 const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
 
@@ -13,6 +14,14 @@ async function send(url, method, body) {
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw Object.assign(new Error(data.message || 'Erreur'), { status: res.status });
     return data;
+}
+
+// ── Phone menu: a tap on a link (or on the messages entry) closes the drawer ──
+const sidenav = document.getElementById('sidenav');
+if (sidenav) {
+    sidenav.addEventListener('click', (e) => {
+        if (e.target.closest('a.item') && window.matchMedia('(max-width: 991.98px)').matches) Offcanvas.getInstance(sidenav)?.hide();
+    });
 }
 
 // ── Toasts: flash messages fade out on their own ──────────────────
@@ -43,6 +52,8 @@ if (toasts?.dataset.pulse) {
             if (last && p.badges['dash.requests'] > last['dash.requests']) toast('Nouvelle demande de l’assistant', 'info', '/dashboard/demandes');
             if (last && (p.badges['dash.messages'] ?? 0) > (last['dash.messages'] ?? 0)) toast('Nouveau message', 'info');
             const total = Object.values(p.badges).reduce((a, b) => a + b, 0);
+            const dot = document.querySelector('[data-burger-dot]');
+            if (dot) dot.hidden = !(p.badges['dash.requests'] || p.badges['dash.messages']);
             document.title = document.title.replace(/^\(\d+\) /, '') ;
             if (total) document.title = `(${total}) ${document.title}`;
             last = p.badges;
