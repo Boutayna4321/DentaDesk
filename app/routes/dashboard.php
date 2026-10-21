@@ -10,6 +10,7 @@ use App\Http\Controllers\Dashboard\MessageController;
 use App\Http\Controllers\Dashboard\PatientController;
 use App\Http\Controllers\Dashboard\PulseController;
 use App\Http\Controllers\Dashboard\RequestController;
+use App\Http\Controllers\Dashboard\SearchController;
 use App\Http\Controllers\Dashboard\SettingsController;
 use App\Http\Controllers\Dashboard\StatsController;
 use App\Http\Controllers\Dashboard\TodayController;
@@ -25,6 +26,7 @@ Route::post('logout', [LoginController::class, 'destroy'])->middleware('auth')->
 Route::middleware(['auth', 'active'])->prefix('dashboard')->name('dash.')->group(function () {
     Route::get('/', TodayController::class)->name('today');
     Route::get('pulse', PulseController::class)->name('pulse');
+    Route::get('recherche', SearchController::class)->name('search');
     Route::get('messages', [MessageController::class, 'index'])->name('messages');
     Route::post('messages', [MessageController::class, 'store'])->name('messages.store')->middleware('throttle:30,1');
 

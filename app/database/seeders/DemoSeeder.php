@@ -108,6 +108,11 @@ class DemoSeeder extends Seeder
                 'birth_date' => $today->subYears(mt_rand(5, 75))->subDays(mt_rand(0, 360)),
             ]);
         }
+        // Patients last seen 7 to 11 months ago, nothing booked since: the "à rappeler" list.
+        foreach ([['Hanane', 'Chraibi'], ['Karim', 'Benjelloun'], ['Latifa', 'Ouazzani'], ['Said', 'Tahiri'], ['Rim', 'Kettani'], ['Nabil', 'Sefrioui']] as $k => [$fn, $ln]) {
+            $old = Patient::create(['first_name' => $fn, 'last_name' => $ln, 'phone' => sprintf('06%08d', 40000000 + $k * 211), 'coverage' => ['cnss', 'cnops'][$k % 2]]);
+            $this->appointment($old, ['controle', 'detartrage'][$k % 2], $today->subDays(210 + $k * 23)->setTime(10 + $k % 6, 0), 'done', 'phone');
+        }
         $availabilityPast = app(Availability::class);
         $routine = Service::whereIn('slug', ['controle', 'detartrage', 'consultation', 'carie', 'carie', 'enfant', 'extraction', 'blanchiment', 'orthodontie', 'urgence'])->get();
         foreach (range(84, 1) as $back) {

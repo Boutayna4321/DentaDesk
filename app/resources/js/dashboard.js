@@ -144,6 +144,59 @@ if (panel) {
     });
 }
 
+// ── Global search: the magnifier (or Ctrl K), a dimmed page, live results ──
+const layer = document.querySelector('[data-search-layer]');
+if (layer) {
+    const input = layer.querySelector('[data-search-input]');
+    const results = layer.querySelector('[data-search-results]');
+    let timer = null;
+    let token = 0;
+    const open = () => { layer.hidden = false; input.value = ''; results.innerHTML = '<p class="hint">Tapez au moins 2 lettres ou chiffres.</p>'; setTimeout(() => input.focus(), 30); };
+    const close = () => { layer.hidden = true; };
+    const initials = (name) => name.split(' ').slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+    const run = async () => {
+        const q = input.value.trim();
+        if (q.length < 2) { results.innerHTML = '<p class="hint">Tapez au moins 2 lettres ou chiffres.</p>'; return; }
+        const mine = ++token;
+        const r = await send(`${layer.dataset.url}?q=${encodeURIComponent(q)}`, 'GET');
+        if (mine !== token) return; // an older request answering late
+        results.replaceChildren();
+        const section = (title) => results.append(Object.assign(document.createElement('h6'), { textContent: title }));
+        const link = (href, left, sub, end) => {
+            const a = Object.assign(document.createElement('a'), { href });
+            a.innerHTML = '<span class="avatar"></span><span><span class="t"></span><small></small></span><span class="end"></span>';
+            a.querySelector('.avatar').textContent = left;
+            a.querySelector('.t').textContent = sub[0];
+            a.querySelector('small').textContent = sub[1];
+            a.querySelector('.end').textContent = end || '';
+            results.append(a);
+        };
+        if (r.patients.length) { section('Patients'); r.patients.forEach((p) => link(p.url, initials(p.name), [p.name, p.phone], p.next ? `Prochain RDV\n${p.next}` : '')); }
+        if (r.documents.length) { section('Factures & devis'); r.documents.forEach((d) => link(d.url, d.number.slice(0, 1), [d.number, d.patient], d.total)); }
+        if (!r.patients.length && !r.documents.length) results.innerHTML = '<p class="hint">Aucun résultat.</p>';
+        results.querySelector('a')?.classList.add('on');
+    };
+    input.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(run, 180); });
+    input.addEventListener('keydown', (e) => {
+        const items = [...results.querySelectorAll('a')];
+        const i = items.findIndex((a) => a.classList.contains('on'));
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            const next = items[(i + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length];
+            items.forEach((a) => a.classList.toggle('on', a === next));
+            next?.scrollIntoView({ block: 'nearest' });
+        }
+        if (e.key === 'Enter' && items[i]) location.href = items[i].href;
+    });
+    document.querySelectorAll('[data-open-search]').forEach((b) => b.addEventListener('click', open));
+    layer.querySelector('[data-close-search]').onclick = close;
+    layer.addEventListener('click', (e) => { if (e.target === layer) close(); });
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); layer.hidden ? open() : close(); }
+        if (e.key === 'Escape' && !layer.hidden) close();
+    });
+}
+
 // ── Destructive actions ask first ───────────────────────────────────
 document.addEventListener('submit', (e) => {
     const msg = e.target.dataset.confirm;

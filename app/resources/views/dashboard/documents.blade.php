@@ -12,11 +12,40 @@
     @can('admin')<a class="btn btn-outline-secondary" href="{{ route('dash.billing') }}">En-tête, pied de page &amp; tarifs</a>@endcan
 </div>
 
-<ul class="nav nav-pills small mb-3 gap-1">
-    @foreach (['collect' => 'À encaisser', 'drafts' => 'Brouillons', 'quotes' => 'Devis', 'all' => 'Tout'] as $k => $v)
-        <li class="nav-item"><a class="nav-link {{ $tab === $k ? 'active' : '' }}" href="?tab={{ $k }}">{{ $v }}@if (isset($counts[$k]) && $counts[$k]) <span class="badge text-bg-light ms-1">{{ $counts[$k] }}</span>@endif</a></li>
-    @endforeach
-</ul>
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <ul class="nav nav-pills small gap-1 mb-0">
+        @foreach (['collect' => 'À encaisser', 'drafts' => 'Brouillons', 'quotes' => 'Devis', 'all' => 'Tout'] as $k => $v)
+            <li class="nav-item"><a class="nav-link {{ $tab === $k ? 'active' : '' }}" href="?tab={{ $k }}">{{ $v }}@if (isset($counts[$k]) && $counts[$k]) <span class="badge text-bg-light ms-1">{{ $counts[$k] }}</span>@endif</a></li>
+        @endforeach
+    </ul>
+    @php $nFilters = count($f['states']) + count($f['methods']) + ($f['from'] ? 1 : 0) + ($f['to'] ? 1 : 0) + ($f['q'] !== '' ? 1 : 0); @endphp
+    <button class="btn btn-outline-secondary btn-sm filter-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#doc-filters">Filtres @if ($nFilters)<span class="badge text-bg-primary">{{ $nFilters }}</span>@endif</button>
+</div>
+
+<form class="filters offcanvas-lg offcanvas-bottom" id="doc-filters" tabindex="-1" method="get">
+    <input type="hidden" name="tab" value="{{ $tab }}">
+    <div class="offcanvas-header d-lg-none"><b>Filtrer les factures</b><button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#doc-filters" aria-label="Fermer"></button></div>
+    <div class="f-grid">
+        <label class="f-group"><span>Patient ou n°</span><input class="form-control form-control-sm" name="q" value="{{ $f['q'] }}" placeholder="Salma, F-2026-0042…"></label>
+        <label class="f-group"><span>Du</span><input class="form-control form-control-sm" type="date" name="du" value="{{ $f['from'] }}"></label>
+        <label class="f-group"><span>Au</span><input class="form-control form-control-sm" type="date" name="au" value="{{ $f['to'] }}"></label>
+        <div class="f-group"><span>État</span><div class="f-chips">
+            @foreach (\App\Http\Controllers\Dashboard\DocumentController::STATES as $k => $v)
+                <input type="checkbox" name="etat[]" value="{{ $k }}" id="st-{{ $k }}" @checked(in_array($k, $f['states']))><label for="st-{{ $k }}">{{ $v }}</label>
+            @endforeach
+        </div></div>
+        <div class="f-group"><span>Payé par</span><div class="f-chips">
+            @foreach (\App\Models\Payment::METHODS as $k => $v)
+                <input type="checkbox" name="paiement[]" value="{{ $k }}" id="pm-{{ $k }}" @checked(in_array($k, $f['methods']))><label for="pm-{{ $k }}">{{ $v }}</label>
+            @endforeach
+        </div></div>
+        <div class="f-actions"><a class="btn btn-link btn-sm" href="?tab={{ $tab }}">Réinitialiser</a><button class="btn btn-primary btn-sm">Appliquer</button></div>
+    </div>
+</form>
+
+@if ($nFilters)
+    <p class="small text-mute mb-2">{{ $sum->n }} document(s) · total {{ Money::format((int) $sum->total) }} · encaissé {{ Money::format((int) $sum->paid) }}</p>
+@endif
 
 <div class="box">
     <div class="table-responsive"><table class="table table-hover align-middle mb-0 small">

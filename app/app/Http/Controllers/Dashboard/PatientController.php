@@ -15,16 +15,52 @@ use Illuminate\View\View;
 
 class PatientController extends Controller
 {
+    public const FILTERS = [
+        'a_venir' => 'Rendez-vous à venir',
+        'a_rappeler' => 'À rappeler (pas venu depuis 6 mois)',
+        'impaye' => 'Facture à encaisser',
+        'allergie' => 'Allergie connue',
+        'nouveaux' => 'Nouveaux (30 jours)',
+    ];
+
+    public const COVERAGES = ['cnss' => 'CNSS', 'cnops' => 'CNOPS', 'mutuelle' => 'Mutuelle', 'aucune' => 'Sans couverture'];
+
+    public const SORTS = ['nom' => 'Nom', 'derniere_visite' => 'Dernière visite', 'recent' => 'Derniers inscrits'];
+
     public function index(Request $request): View
     {
         $q = trim((string) $request->query('q'));
+        $only = array_values(array_intersect((array) $request->query('only', []), array_keys(self::FILTERS)));
+        $coverage = array_values(array_intersect((array) $request->query('couverture', []), array_keys(self::COVERAGES)));
+        $sort = array_key_exists($request->query('tri'), self::SORTS) ? $request->query('tri') : 'nom';
+
+        $query = $this->query($q)
+            ->withCount(['appointments as visits_count' => fn ($a) => $a->where('status', 'done')])
+            ->withMax(['appointments as last_visit' => fn ($a) => $a->where('status', 'done')], 'starts_at')
+            ->with(['appointments' => fn ($a) => $a->where('starts_at', '>', now())->whereIn('status', ['pending', 'confirmed'])->orderBy('starts_at')->limit(1)])
+            ->when($coverage, fn ($w) => $w->where(fn ($c) => $c->whereIn('coverage', $coverage)
+                ->when(in_array('aucune', $coverage, true), fn ($x) => $x->orWhereNull('coverage'))));
+
+        foreach ($only as $f) {
+            match ($f) {
+                'a_venir' => $query->whereHas('appointments', fn ($a) => $a->where('starts_at', '>', now())->whereIn('status', ['pending', 'confirmed'])),
+                'a_rappeler' => $query->whereHas('appointments', fn ($a) => $a->where('status', 'done'))
+                    ->whereDoesntHave('appointments', fn ($a) => $a->where(fn ($x) => $x->where('status', 'done')->where('starts_at', '>', now()->subMonths(6))
+                        ->orWhere(fn ($y) => $y->where('starts_at', '>', now())->whereIn('status', ['pending', 'confirmed'])))),
+                'impaye' => $query->whereHas('documents', fn ($d) => $d->where('type', 'invoice')->where('status', 'validated')->whereColumn('paid_cents', '<', 'total_cents')),
+                'allergie' => $query->whereNotNull('allergies')->where('allergies', '!=', ''),
+                'nouveaux' => $query->where('created_at', '>=', now()->subDays(30)),
+            };
+        }
+        match ($sort) {
+            'derniere_visite' => $query->orderByDesc('last_visit'),
+            'recent' => $query->orderByDesc('created_at'),
+            default => $query->orderBy('first_name')->orderBy('last_name'),
+        };
 
         return view('dashboard.patients', [
-            'q' => $q,
-            'patients' => $this->query($q)
-                ->withCount(['appointments as visits_count' => fn ($a) => $a->where('status', 'done')])
-                ->with(['appointments' => fn ($a) => $a->where('starts_at', '>', now())->whereIn('status', ['pending', 'confirmed'])->orderBy('starts_at')->limit(1)])
-                ->orderBy('first_name')->paginate(20)->withQueryString(),
+            'q' => $q, 'only' => $only, 'coverage' => $coverage, 'sort' => $sort,
+            'patients' => $query->paginate(20)->withQueryString(),
         ]);
     }
 

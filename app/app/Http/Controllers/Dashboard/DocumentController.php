@@ -27,9 +27,18 @@ class DocumentController extends Controller
 {
     public function __construct(private Billing $billing) {}
 
+    public const STATES = ['to_collect' => 'À encaisser', 'partial' => 'Payée en partie', 'paid' => 'Payée', 'cancelled' => 'Annulée'];
+
     public function index(Request $request): View
     {
         $tab = $request->query('tab', 'collect');
+        $f = [
+            'q' => trim((string) $request->query('q')),
+            'from' => $request->date('du')?->toDateString(),
+            'to' => $request->date('au')?->toDateString(),
+            'states' => array_values(array_intersect((array) $request->query('etat', []), array_keys(self::STATES))),
+            'methods' => array_values(array_intersect((array) $request->query('paiement', []), array_keys(Payment::METHODS))),
+        ];
         $query = Document::with('patient')->orderByRaw('issued_on IS NULL DESC')->orderByDesc('issued_on')->orderByDesc('id');
         $query = match ($tab) {
             'collect' => $query->where('type', 'invoice')->where('status', 'validated')->whereColumn('paid_cents', '<', 'total_cents'),
@@ -37,9 +46,22 @@ class DocumentController extends Controller
             'quotes' => $query->where('type', 'quote')->where('status', '!=', 'draft'),
             default => $query->where('status', '!=', 'draft'),
         };
+        $query
+            ->when($f['q'] !== '', fn ($w) => $w->where(fn ($x) => $x->where('number', 'like', '%'.strtoupper($f['q']).'%')
+                ->orWhereHas('patient', fn ($p) => $p->whereRaw("CONCAT(first_name, ' ', COALESCE(last_name, '')) LIKE ?", ['%'.$f['q'].'%']))))
+            ->when($f['from'], fn ($w) => $w->where('issued_on', '>=', $f['from']))
+            ->when($f['to'], fn ($w) => $w->where('issued_on', '<=', $f['to']))
+            ->when($f['methods'], fn ($w) => $w->whereHas('payments', fn ($p) => $p->whereIn('method', $f['methods'])))
+            ->when($f['states'], fn ($w) => $w->where(fn ($any) => collect($f['states'])->each(fn ($st) => $any->orWhere(fn ($x) => match ($st) {
+                'to_collect' => $x->where('status', 'validated')->where('type', 'invoice')->where('paid_cents', 0),
+                'partial' => $x->where('status', 'validated')->where('paid_cents', '>', 0)->whereColumn('paid_cents', '<', 'total_cents'),
+                'paid' => $x->where('status', 'validated')->where('type', 'invoice')->whereColumn('paid_cents', '>=', 'total_cents'),
+                'cancelled' => $x->where('status', 'cancelled'),
+            }))));
+        $sum = (clone $query)->reorder()->selectRaw('COUNT(*) as n, SUM(total_cents) as total, SUM(paid_cents) as paid')->first();
 
         return view('dashboard.documents', [
-            'tab' => $tab,
+            'tab' => $tab, 'f' => $f, 'sum' => $sum,
             'documents' => $query->paginate(25)->withQueryString(),
             'counts' => [
                 'collect' => Document::where('type', 'invoice')->where('status', 'validated')->whereColumn('paid_cents', '<', 'total_cents')->count(),

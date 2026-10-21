@@ -31,11 +31,18 @@
     </button>
     <b>snan.</b>
     <span class="where">@yield('title')</span>
+    <button class="burger search-btn" type="button" data-open-search aria-label="Rechercher">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    </button>
 </header>
 <div class="shell">
     <aside class="side offcanvas-lg offcanvas-start" id="sidenav" tabindex="-1" aria-label="Menu">
         <div class="brand"><span class="d-flex align-items-center gap-2"><x-icon name="tooth" size="22" stroke="#fff" />snan.</span>
             <button class="side-close" type="button" data-bs-dismiss="offcanvas" data-bs-target="#sidenav" aria-label="Fermer le menu">✕</button></div>
+        <button class="side-search" type="button" data-open-search>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            Rechercher <kbd>Ctrl K</kbd>
+        </button>
         @foreach ($nav as [$route, $label, $icon, $badge])
             <a class="item {{ request()->routeIs($route.'*') ? 'on' : '' }}" href="{{ route($route) }}"><x-icon :name="$icon" size="17" />{{ $label }}@if ($badge !== null)<em data-badge="{{ $route }}" @if (! $badge) hidden @endif>{{ $badge }}</em>@endif</a>
         @endforeach
@@ -62,6 +69,16 @@
         </div>
         @yield('content')
     </main>
+</div>
+<div class="search-layer" data-search-layer data-url="{{ route('dash.search') }}" hidden>
+    <div class="search-box" role="dialog" aria-label="Recherche">
+        <div class="search-input">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input type="search" placeholder="Patient, téléphone, n° de facture…" autocomplete="off" data-search-input aria-label="Rechercher">
+            <button type="button" data-close-search aria-label="Fermer">Annuler</button>
+        </div>
+        <div class="search-results" data-search-results><p class="hint">Tapez au moins 2 lettres ou chiffres.</p></div>
+    </div>
 </div>
 <aside class="msg-panel" data-messages="{{ route('dash.messages') }}" data-send="{{ route('dash.messages.store') }}" hidden aria-label="Messages internes">
     <div class="mp-hd">
