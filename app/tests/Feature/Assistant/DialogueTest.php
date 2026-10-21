@@ -197,4 +197,14 @@ class DialogueTest extends TestCase
         $r = $this->say('Tomorrow · 09:00', $r['token'], $r['chips'][0]['value']);
         $this->assertSame('Great, tomorrow at 09:00. What name should I book it under?', $r['text']);
     }
+
+    public function test_chatting_with_the_assistant_does_not_use_up_the_booking_limit(): void
+    {
+        for ($i = 0; $i < 8; $i++) {
+            $this->say('salam');
+        }
+
+        $this->postJson('/api/appointments', ['service' => 'consultation', 'starts_at' => '2026-10-22 11:00', 'first_name' => 'Omar', 'phone' => '0687654321'])
+            ->assertCreated();
+    }
 }

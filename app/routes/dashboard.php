@@ -28,7 +28,7 @@ Route::middleware(['auth', 'active'])->prefix('dashboard')->name('dash.')->group
     Route::get('pulse', PulseController::class)->name('pulse');
     Route::get('recherche', SearchController::class)->name('search');
     Route::get('messages', [MessageController::class, 'index'])->name('messages');
-    Route::post('messages', [MessageController::class, 'store'])->name('messages.store')->middleware('throttle:30,1');
+    Route::post('messages', [MessageController::class, 'store'])->name('messages.store')->middleware('throttle:messages');
 
     Route::get('agenda', [AgendaController::class, 'index'])->name('agenda');
     Route::get('agenda/events', [AgendaController::class, 'events'])->name('agenda.events');
