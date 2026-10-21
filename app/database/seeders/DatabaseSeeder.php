@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CabinetSeeder::class, parameters: ['dentist' => $dentist]);
         $this->call(DemoSeeder::class);
         $this->call(BillingSeeder::class);
+        $this->call(MessageSeeder::class);
     }
 }

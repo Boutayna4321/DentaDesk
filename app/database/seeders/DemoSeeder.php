@@ -69,11 +69,23 @@ class DemoSeeder extends Seeder
             $this->appointment($patients[$who], $slug, $start, $this->statusFor($start, $now, $who), $source, $reason);
         }
 
+        // Salma's history and odontogram, so the patient file has something to show.
+        $this->appointment($patients['Salma'], 'carie', $today->subDays(13)->setTime(10, 30), 'done', 'assistant', 'Carie 36 · 1re séance',
+            'Carie profonde sur 36, curetage et pansement provisoire. Composite à la séance suivante.');
+        $this->appointment($patients['Salma'], 'detartrage', $today->subMonths(7)->setTime(16, 0), 'done', 'web', null, 'Détartrage complet. RAS.');
+        foreach ([[36, 'to_treat', 'Carie profonde, composite prévu'], [15, 'treated', 'Composite 2024'], [26, 'treated', 'Couronne céramique'],
+            [46, 'treated', 'Dévitalisée 2023'], [17, 'missing', null], [38, 'missing', 'Extraite 2019']] as [$tooth, $state, $note]) {
+            $patients['Salma']->teeth()->create(['tooth' => $tooth, 'state' => $state, 'note' => $note]);
+        }
+
         // Most of today's patients have been here before; Omar and Rania have not.
         foreach (['Karim', 'Hiba', 'Mehdi', 'Nour', 'Yassine', 'Leila'] as $who) {
             for ($k = 0, $n = mt_rand(1, 3); $k < $n; $k++) {
-                $this->appointment($patients[$who], ['controle', 'detartrage', 'carie'][mt_rand(0, 2)],
-                    $today->subDays(mt_rand(20, 400))->setTime(mt_rand(9, 17), [0, 30][mt_rand(0, 1)]), 'done', ['phone', 'web'][mt_rand(0, 1)]);
+                $slug = ['controle', 'detartrage', 'carie'][mt_rand(0, 2)];
+                $at = $today->subDays(mt_rand(20, 400))->setTime(mt_rand(9, 17), [0, 30][mt_rand(0, 1)]);
+                if (app(Availability::class)->isFree($this->dr, Service::where('slug', $slug)->first(), $at, withinHours: false)) {
+                    $this->appointment($patients[$who], $slug, $at, 'done', ['phone', 'web'][mt_rand(0, 1)]);
+                }
             }
         }
         // Twelve weeks of history, so the agenda and the statistics look like a running practice.
@@ -106,15 +118,6 @@ class DemoSeeder extends Seeder
                 $this->appointment($who, $service->slug, $slots->random(), mt_rand(0, 24) === 0 ? 'no_show' : 'done', ['phone', 'web', 'assistant', 'assistant'][mt_rand(0, 3)])
                     ->forceFill(['created_at' => $d->subDays(mt_rand(1, 9))->setTime(mt_rand(8, 22), mt_rand(0, 59))])->saveQuietly();
             }
-        }
-
-        // Salma's history and odontogram, so the patient file has something to show.
-        $this->appointment($patients['Salma'], 'carie', $today->subDays(13)->setTime(10, 30), 'done', 'assistant', 'Carie 36 · 1re séance',
-            'Carie profonde sur 36, curetage et pansement provisoire. Composite à la séance suivante.');
-        $this->appointment($patients['Salma'], 'detartrage', $today->subMonths(7)->setTime(16, 0), 'done', 'web', null, 'Détartrage complet. RAS.');
-        foreach ([[36, 'to_treat', 'Carie profonde, composite prévu'], [15, 'treated', 'Composite 2024'], [26, 'treated', 'Couronne céramique'],
-            [46, 'treated', 'Dévitalisée 2023'], [17, 'missing', null], [38, 'missing', 'Extraite 2019']] as [$tooth, $state, $note]) {
-            $patients['Salma']->teeth()->create(['tooth' => $tooth, 'state' => $state, 'note' => $note]);
         }
 
         // The next ten opening days, two to five bookings each.

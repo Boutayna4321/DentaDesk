@@ -165,3 +165,29 @@ body { -webkit-font-smoothing: antialiased; }
   &:hover .track b, &:focus .track b { opacity: .8; } }
 .chart-tip { position: fixed; z-index: 3000; pointer-events: none; background: $ink; color: #fff; font-size: .74rem; font-weight: 600;
   padding: .4rem .6rem; border-radius: .4rem; box-shadow: $box-shadow; max-width: 260px; }
+
+// ── internal messages ───────────────────────────────────────────────
+.msg-panel { position: fixed; top: 0; right: 0; bottom: 0; width: min(380px, 100vw); z-index: 1500; background: #fff; border-left: 1px solid $line;
+  box-shadow: -18px 0 40px rgba($ink, .12); display: flex; flex-direction: column;
+  &[hidden] { display: none; }
+  .mp-hd { display: flex; align-items: baseline; gap: .6rem; padding: 1rem; border-bottom: 1px solid $line; b { font-size: 1rem; } }
+  .mp-people { display: flex; gap: .4rem; padding: .6rem 1rem; border-bottom: 1px solid $line; overflow-x: auto;
+    button { display: flex; align-items: center; gap: .4rem; border: 1px solid $line; background: #fff; border-radius: 999px; padding: .2rem .7rem .2rem .2rem;
+      font-size: .76rem; font-weight: 700; white-space: nowrap; color: $ink;
+      .avatar { width: 26px; height: 26px; font-size: .62rem; }
+      em { font-style: normal; background: $blue; color: #fff; border-radius: 999px; font-size: .62rem; padding: 0 .4rem; }
+      &.on { background: $ink; border-color: $ink; color: #fff; } } }
+  .mp-log { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: .4rem; background: #f5f7fb; }
+  .bubble { max-width: 85%; padding: .5rem .7rem; border-radius: .8rem; font-size: .84rem; white-space: pre-line; line-height: 1.4;
+    background: #fff; border: 1px solid $line; align-self: flex-start; border-bottom-left-radius: .2rem;
+    &.mine { background: $blue; border-color: $blue; color: #fff; align-self: flex-end; border-bottom-left-radius: .8rem; border-bottom-right-radius: .2rem; }
+    .meta { display: block; font-size: .64rem; opacity: .7; margin-top: .2rem; text-align: right; }
+    a.pt { display: inline-block; font-size: .7rem; font-weight: 700; background: rgba(#fff, .2); border-radius: .3rem; padding: 0 .35rem; margin-bottom: .25rem; color: inherit; }
+    &:not(.mine) a.pt { background: $tint; color: $blue; } }
+  .mp-empty { margin: auto; color: $mute; font-size: .82rem; text-align: center; }
+  .mp-quick { display: flex; gap: .3rem; padding: .5rem 1rem 0; overflow-x: auto; scrollbar-width: none; &::-webkit-scrollbar { display: none; }
+    button { flex: none; border: 1px solid $line; background: #fff; border-radius: 999px; font-size: .72rem; padding: .2rem .6rem; color: $mute; } }
+  .mp-form { padding: .6rem 1rem 1rem;
+    textarea { flex: 1; border: 1px solid $line; border-radius: .6rem; padding: .5rem .7rem; font-size: .86rem; resize: none; outline: none; max-height: 120px;
+      &:focus { border-color: $blue; } }
+    .mp-about { display: block; font-size: .74rem; color: $mute; margin-bottom: .4rem; } } }

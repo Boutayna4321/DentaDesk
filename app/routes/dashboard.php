@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\AssistantLogController;
 use App\Http\Controllers\Dashboard\BillingSettingsController;
 use App\Http\Controllers\Dashboard\DocumentController;
 use App\Http\Controllers\Dashboard\LoginController;
+use App\Http\Controllers\Dashboard\MessageController;
 use App\Http\Controllers\Dashboard\PatientController;
 use App\Http\Controllers\Dashboard\PulseController;
 use App\Http\Controllers\Dashboard\RequestController;
@@ -24,6 +25,8 @@ Route::post('logout', [LoginController::class, 'destroy'])->middleware('auth')->
 Route::middleware(['auth', 'active'])->prefix('dashboard')->name('dash.')->group(function () {
     Route::get('/', TodayController::class)->name('today');
     Route::get('pulse', PulseController::class)->name('pulse');
+    Route::get('messages', [MessageController::class, 'index'])->name('messages');
+    Route::post('messages', [MessageController::class, 'store'])->name('messages.store')->middleware('throttle:30,1');
 
     Route::get('agenda', [AgendaController::class, 'index'])->name('agenda');
     Route::get('agenda/events', [AgendaController::class, 'events'])->name('agenda.events');

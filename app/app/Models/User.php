@@ -50,6 +50,7 @@ class User extends Authenticatable
     public function hasHistory(): bool
     {
         return ActivityLog::where('user_id', $this->id)->exists()
+            || InternalMessage::where('sender_id', $this->id)->exists()
             || AssistantRequest::where('handled_by', $this->id)->exists()
             || $this->last_login_at !== null;
     }

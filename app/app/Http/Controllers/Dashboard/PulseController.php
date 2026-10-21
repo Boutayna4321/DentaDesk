@@ -14,6 +14,7 @@ class PulseController extends Controller
     {
         return response()->json(['badges' => [
             'dash.requests' => AssistantRequest::where('status', 'open')->count(),
+            'dash.messages' => \App\Models\InternalMessage::where('recipient_id', $request->user()->id)->whereNull('read_at')->count(),
             'dash.documents' => \App\Models\Document::where('type', 'invoice')->where('status', 'validated')->whereColumn('paid_cents', '<', 'total_cents')->count(),
         ]]);
     }

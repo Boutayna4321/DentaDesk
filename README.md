@@ -55,6 +55,29 @@ veut ; Laravel décide quoi faire. Les heures proposées et les réponses vienne
 de la base, jamais du modèle. Il répond dans le registre du patient (darija latine,
 arabe, français, anglais).
 
+**Factures & devis** — la dentiste écrit le contenu (actes de son catalogue de tarifs, dent,
+cotation, observations ou plan de traitement), enregistre un brouillon, puis valide : le
+document reçoit le numéro suivant de l'année sans trou (F-2026-0042, D-2026-0007), se
+verrouille, et garde l'en-tête du jour de sa validation. La secrétaire imprime (A4 ou A5,
+« Enregistrer en PDF » depuis le navigateur) et encaisse (espèces, carte, chèque,
+virement, paiements partiels). Un document validé ne se supprime pas, il s'annule avec un
+motif. Un devis accepté devient une facture en un clic. Montant en toutes lettres :
+« Arrêtée la présente facture à la somme de : mille deux cents dirhams ». En-tête et pied
+de page configurables (logo, INPE, ICE, IF, patente, RIB, mentions, couleur). Les feuilles
+de soins CNSS / CNOPS restent sur papier, remplies à la main.
+
+**Statistiques** (dentiste) — encaissé et facturé, reste à encaisser, panier moyen, taux
+de remplissage (temps réservé / temps d'ouverture) et par jour, taux d'absence, nouveaux
+patients, délai moyen avant rendez-vous, conversion de l'assistant, provenance des
+rendez-vous, soins les plus demandés, encaissé par semaine.
+
+**Équipe** (dentiste) — créer, modifier, désactiver, réactiver ; supprimer seulement un
+compte sans historique (sinon on désactive). Un compte désactivé est déconnecté tout de
+suite. Journal des actions sensibles.
+
+**Messages** — messagerie interne dentiste ↔ secrétariat, avec le patient concerné en
+lien, messages rapides, lu / non lu, badge mis à jour tout seul.
+
 **Dashboard** — Aujourd'hui (programme, statuts, demandes, patient au fauteuil + schéma
 dentaire), explication de chaque message patient en français ou en anglais (voir plus bas), Agenda (glisser-déposer, création, fermetures), Demandes (confirmer, refuser,
 accepter un déplacement, transformer une question en FAQ), Patients, Assistant AI
@@ -119,7 +142,7 @@ exportées.
 ## Tests
 
 ```bash
-docker compose exec app php artisan test                 # 31 tests : créneaux, dialogue, dashboard, explication
+docker compose exec app php artisan test                 # 65 tests : créneaux, dialogue, factures, équipe, stats, messages
 docker compose exec nlu python -W ignore -m pytest -q    # 56 tests : entités (4 langues), API, FAQ, glossaire
 ```
 

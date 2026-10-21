@@ -30,6 +30,8 @@
         @foreach ($nav as [$route, $label, $icon, $badge])
             <a class="item {{ request()->routeIs($route.'*') ? 'on' : '' }}" href="{{ route($route) }}"><x-icon :name="$icon" size="17" />{{ $label }}@if ($badge !== null)<em data-badge="{{ $route }}" @if (! $badge) hidden @endif>{{ $badge }}</em>@endif</a>
         @endforeach
+        @php $unread = \App\Models\InternalMessage::where('recipient_id', auth()->id())->whereNull('read_at')->count(); @endphp
+        <a class="item" href="#" data-open-messages><x-icon name="chat" size="17" />Messages<em data-badge="dash.messages" @if (! $unread) hidden @endif>{{ $unread }}</em></a>
         <div class="sep">CABINET</div>
         <a class="item {{ request()->routeIs('dash.settings') ? 'on' : '' }}" href="{{ route('dash.settings') }}"><x-icon name="doc" size="17" />Horaires &amp; soins</a>
         @can('admin')
@@ -52,6 +54,23 @@
         @yield('content')
     </main>
 </div>
+<aside class="msg-panel" data-messages="{{ route('dash.messages') }}" data-send="{{ route('dash.messages.store') }}" hidden aria-label="Messages internes">
+    <div class="mp-hd">
+        <b>Messages</b><span class="text-mute small">entre vous, jamais avec les patients</span>
+        <button class="btn-close ms-auto" data-close-messages aria-label="Fermer"></button>
+    </div>
+    <div class="mp-people" data-people></div>
+    <div class="mp-log" data-log></div>
+    <div class="mp-quick" data-quick>
+        @foreach (['Le patient est arrivé.', 'Patient suivant ?', 'Peux-tu le rappeler ?', 'Un retard de 10 min.', 'C’est noté, merci.'] as $q)
+            <button type="button">{{ $q }}</button>
+        @endforeach
+    </div>
+    <form class="mp-form" data-msg-form>
+        <label class="mp-about" data-about hidden><input type="checkbox" name="about" checked> À propos de <b data-about-name></b></label>
+        <div class="d-flex gap-2"><textarea name="body" rows="1" placeholder="Écrire un message…" maxlength="2000" required></textarea><button class="btn btn-primary" aria-label="Envoyer"><x-icon name="send" size="16" /></button></div>
+    </form>
+</aside>
 @stack('scripts')
 </body>
 </html>

@@ -64,6 +64,74 @@ if (tip) {
     });
 }
 
+// ── Internal messages ──────────────────────────────────────────────
+const panel = document.querySelector('[data-messages]');
+if (panel) {
+    const log = panel.querySelector('[data-log]');
+    const people = panel.querySelector('[data-people]');
+    const form = panel.querySelector('[data-msg-form]');
+    const about = panel.querySelector('[data-about]');
+    let withId = null;
+    let lastId = null;
+    let timer = null;
+    let patientId = null;
+
+    const render = (data) => {
+        withId = data.with;
+        people.replaceChildren(...data.people.map((p) => {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = p.id === withId ? 'on' : '';
+            b.innerHTML = '<span class="avatar"></span><span class="n"></span>';
+            b.querySelector('.avatar').textContent = p.initials;
+            b.querySelector('.n').textContent = p.name;
+            if (p.unread && p.id !== withId) b.append(Object.assign(document.createElement('em'), { textContent: p.unread }));
+            b.onclick = () => load(p.id);
+            return b;
+        }));
+        const newest = data.messages.at(-1)?.id ?? null;
+        if (newest === lastId && log.children.length) return;
+        lastId = newest;
+        if (!data.people.length) { log.innerHTML = '<p class="mp-empty">Personne d’autre dans l’équipe pour l’instant.</p>'; return; }
+        if (!data.messages.length) { log.innerHTML = '<p class="mp-empty">Pas encore de message.<br>Un « patient arrivé » vaut mieux qu’un cri dans le couloir.</p>'; return; }
+        log.replaceChildren(...data.messages.map((m) => {
+            const d = document.createElement('div');
+            d.className = `bubble ${m.mine ? 'mine' : ''}`;
+            if (m.patient) d.append(Object.assign(document.createElement('a'), { className: 'pt', href: m.patient.url, textContent: `Patient · ${m.patient.name}` }), document.createElement('br'));
+            d.append(document.createTextNode(m.body));
+            d.append(Object.assign(document.createElement('span'), { className: 'meta', textContent: `${m.at}${m.mine ? (m.read ? ' · lu' : ' · envoyé') : ''}` }));
+            return d;
+        }));
+        log.scrollTop = log.scrollHeight;
+    };
+    const load = async (id = withId) => render(await send(`${panel.dataset.messages}${id ? `?with=${id}` : ''}`, 'GET'));
+
+    const open = (e) => {
+        e?.preventDefault();
+        const trigger = e?.currentTarget;
+        patientId = trigger?.dataset.patientId ?? null;
+        about.hidden = !patientId;
+        if (patientId) about.querySelector('[data-about-name]').textContent = trigger.dataset.patientName;
+        panel.hidden = false;
+        load();
+        clearInterval(timer);
+        timer = setInterval(() => load(), 5000);
+        form.body.focus();
+    };
+    document.querySelectorAll('[data-open-messages]').forEach((b) => b.addEventListener('click', open));
+    panel.querySelector('[data-close-messages]').onclick = () => { panel.hidden = true; clearInterval(timer); };
+    panel.querySelectorAll('[data-quick] button').forEach((b) => b.addEventListener('click', () => { form.body.value = b.textContent; form.requestSubmit(); }));
+    form.body.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); } });
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const body = form.body.value.trim();
+        if (!body || !withId) return;
+        form.body.value = '';
+        await send(panel.dataset.send, 'POST', { to: withId, body, patient_id: patientId && form.about.checked ? patientId : null });
+        load();
+    });
+}
+
 // ── Destructive actions ask first ───────────────────────────────────
 document.addEventListener('submit', (e) => {
     const msg = e.target.dataset.confirm;

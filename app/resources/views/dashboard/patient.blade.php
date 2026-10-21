@@ -5,6 +5,7 @@
 <div class="top">
     <h1>{{ $patient->full_name }}<small>{{ $patient->age ? $patient->age.' ans · ' : '' }}<span class="mono">{{ $patient->phone }}</span> · patient depuis {{ $patient->created_at->translatedFormat('F Y') }}</small></h1>
     <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary" data-open-messages data-patient-id="{{ $patient->id }}" data-patient-name="{{ $patient->full_name }}">Message à l’équipe</button>
         <a class="btn btn-outline-secondary" href="https://wa.me/212{{ substr($patient->phone, 1) }}" target="_blank" rel="noopener">WhatsApp</a>
         <a class="btn btn-primary" href="{{ route('dash.agenda') }}">+ Rendez-vous</a>
     </div>
