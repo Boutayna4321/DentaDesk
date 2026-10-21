@@ -73,9 +73,16 @@ class DemoSeeder extends Seeder
         $this->appointment($patients['Salma'], 'carie', $today->subDays(13)->setTime(10, 30), 'done', 'assistant', 'Carie 36 · 1re séance',
             'Carie profonde sur 36, curetage et pansement provisoire. Composite à la séance suivante.');
         $this->appointment($patients['Salma'], 'detartrage', $today->subMonths(7)->setTime(16, 0), 'done', 'web', null, 'Détartrage complet. RAS.');
-        foreach ([[36, 'to_treat', 'Carie profonde, composite prévu'], [15, 'treated', 'Composite 2024'], [26, 'treated', 'Couronne céramique'],
-            [46, 'treated', 'Dévitalisée 2023'], [17, 'missing', null], [38, 'missing', 'Extraite 2019']] as [$tooth, $state, $note]) {
-            $patients['Salma']->teeth()->create(['tooth' => $tooth, 'state' => $state, 'note' => $note]);
+        foreach ([
+            [36, 'present', ['O' => 'caries', 'D' => 'caries'], 'Carie profonde, composite prévu'],
+            [15, 'present', ['O' => 'filling', 'M' => 'filling'], 'Composite 2024'],
+            [26, 'crown', [], 'Couronne céramique 2022'],
+            [46, 'root_canal', ['O' => 'filling'], 'Dévitalisée 2023'],
+            [17, 'missing', [], 'Implant prévu (devis)'],
+            [38, 'to_extract', [], 'Dent de sagesse incluse'],
+            [24, 'present', ['V' => 'caries'], 'Collet sensible'],
+        ] as [$tooth, $state, $surfaces, $note]) {
+            $patients['Salma']->teeth()->create(['tooth' => $tooth, 'state' => $state, 'surfaces' => $surfaces ?: null, 'note' => $note]);
         }
 
         // Most of today's patients have been here before; Omar and Rania have not.

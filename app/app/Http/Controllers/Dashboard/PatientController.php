@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Patient;
+use App\Models\ToothEvent;
 use App\Models\ToothRecord;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -75,22 +76,42 @@ class PatientController extends Controller
         return back()->with('ok', 'Dossier mis à jour.');
     }
 
-    /** One click on a tooth cycles: healthy → to treat → treated → missing → healthy. */
+    /** Saves one tooth: whole-tooth state, findings per surface, note. A healthy tooth is simply removed. */
     public function tooth(Request $request, Patient $patient): JsonResponse
     {
         $data = $request->validate([
             'tooth' => ['required', 'integer', Rule::in(array_merge(range(11, 18), range(21, 28), range(31, 38), range(41, 48)))],
-            'state' => ['nullable', Rule::in(array_keys(ToothRecord::STATES))],
+            'state' => ['required', Rule::in(array_keys(ToothRecord::STATES))],
+            'surfaces' => ['nullable', 'array'],
+            'surfaces.*' => ['nullable', Rule::in(array_keys(ToothRecord::FINDINGS))],
             'note' => ['nullable', 'string', 'max:200'],
         ]);
+        $surfaces = collect($data['surfaces'] ?? [])->only(ToothRecord::SURFACES)->filter()->all();
+        // A missing tooth or an implant has no surfaces left to chart.
+        if (in_array($data['state'], ['missing', 'implant'], true)) {
+            $surfaces = [];
+        }
+        $before = $patient->teeth()->where('tooth', $data['tooth'])->first();
+        $old = $before ? ToothRecord::describe($before->state, $before->surfaces ?? []) : 'Saine';
+        $new = ToothRecord::describe($data['state'], $surfaces);
 
-        if (empty($data['state'])) {
-            $patient->teeth()->where('tooth', $data['tooth'])->delete();
+        if ($data['state'] === 'present' && ! $surfaces && blank($data['note'] ?? null)) {
+            $before?->delete();
         } else {
-            $patient->teeth()->updateOrCreate(['tooth' => $data['tooth']], ['state' => $data['state'], 'note' => $data['note'] ?? null]);
+            $patient->teeth()->updateOrCreate(['tooth' => $data['tooth']], ['state' => $data['state'], 'surfaces' => $surfaces ?: null, 'note' => $data['note'] ?? null]);
+        }
+        if ($old !== $new) {
+            ToothEvent::create(['patient_id' => $patient->id, 'tooth' => $data['tooth'], 'user_id' => $request->user()->id, 'summary' => "$old → $new"]);
         }
 
-        return response()->json(['tooth' => $data['tooth'], 'state' => $data['state'] ?? null]);
+        return response()->json(['tooth' => $data['tooth'], 'state' => $data['state'], 'surfaces' => (object) $surfaces, 'note' => $data['note'] ?? null,
+            'label' => $new, 'history' => $this->history($patient, $data['tooth'])]);
+    }
+
+    private function history(Patient $patient, int $tooth): array
+    {
+        return $patient->toothEvents()->with('user')->where('tooth', $tooth)->take(10)->get()
+            ->map(fn ($e) => ['at' => $e->created_at->translatedFormat('j M Y'), 'who' => $e->user?->name, 'what' => $e->summary])->all();
     }
 
     private function query(string $q)

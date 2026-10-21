@@ -2,6 +2,7 @@ import 'bootstrap/js/dist/dropdown';
 import 'bootstrap/js/dist/collapse';
 import Modal from 'bootstrap/js/dist/modal';
 import Offcanvas from 'bootstrap/js/dist/offcanvas';
+import { mountOdontogram } from './odontogram';
 
 const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
 
@@ -149,46 +150,8 @@ document.addEventListener('submit', (e) => {
     if (msg && !window.confirm(msg)) e.preventDefault();
 });
 
-// ── Odontogram: click a tooth, pick its state, add a note ──────────
-const STATES = [['', 'Saine'], ['to_treat', 'À traiter'], ['treated', 'Soignée'], ['missing', 'Absente']];
-document.querySelectorAll('[data-odontogram]').forEach((odo) => {
-    const pop = Object.assign(document.createElement('div'), { className: 'tooth-pop' });
-    pop.hidden = true;
-    odo.append(pop);
-    let tooth = null;
-
-    odo.addEventListener('click', (e) => {
-        const t = e.target.closest('.tooth');
-        if (!t || t.disabled) return;
-        tooth = t;
-        pop.innerHTML = `<b>Dent ${t.dataset.tooth}</b><div class="states"></div><input class="form-control form-control-sm" placeholder="Note (ex : composite 2024)" maxlength="200"><button class="btn btn-primary btn-sm">Enregistrer</button>`;
-        const states = pop.querySelector('.states');
-        let chosen = t.dataset.state || '';
-        STATES.forEach(([value, label]) => {
-            const b = Object.assign(document.createElement('button'), { type: 'button', className: `st ${value === chosen ? 'on' : ''}`, textContent: label });
-            b.dataset.value = value;
-            b.onclick = () => { chosen = value; states.querySelectorAll('.st').forEach((x) => x.classList.toggle('on', x === b)); };
-            states.append(b);
-        });
-        pop.querySelector('input').value = t.dataset.note || '';
-        pop.querySelector('.btn').onclick = async () => {
-            const note = pop.querySelector('input').value.trim();
-            try {
-                await send(odo.dataset.odontogram, 'POST', { tooth: Number(tooth.dataset.tooth), state: chosen || null, note: note || null });
-                tooth.dataset.state = chosen;
-                tooth.dataset.note = note;
-                tooth.title = `${tooth.dataset.tooth}${note ? ' — ' + note : ''}`;
-                pop.hidden = true;
-            } catch (err) { toast(err.message, 'err'); }
-        };
-        const box = odo.getBoundingClientRect(), r = t.getBoundingClientRect();
-        pop.hidden = false;
-        pop.style.left = `${Math.min(Math.max(r.left - box.left - 80, 0), box.width - pop.offsetWidth)}px`;
-        pop.style.top = `${r.bottom - box.top + 6}px`;
-        pop.querySelector('input').focus();
-    });
-    document.addEventListener('click', (e) => { if (!odo.contains(e.target)) pop.hidden = true; });
-});
+// ── Odontogram ─────────────────────────────────────────────────────
+document.querySelectorAll('[data-odontogram]').forEach(mountOdontogram);
 
 // ── Invoice editor: lines, totals, price list ──────────────────────
 const editor = document.querySelector('[data-doc-editor]');

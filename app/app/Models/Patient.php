@@ -22,6 +22,11 @@ class Patient extends Model
         return $this->hasMany(Document::class)->latest();
     }
 
+    public function toothEvents(): HasMany
+    {
+        return $this->hasMany(ToothEvent::class)->latest('created_at')->latest('id');
+    }
+
     public function teeth(): HasMany
     {
         return $this->hasMany(ToothRecord::class);

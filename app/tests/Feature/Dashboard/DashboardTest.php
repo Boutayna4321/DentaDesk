@@ -61,9 +61,10 @@ class DashboardTest extends TestCase
         $patient = $this->appointment('2026-10-21 10:00')->patient;
 
         $this->actingAs($this->secretary)->get("/dashboard/patients/{$patient->id}")->assertOk()->assertDontSee('Schéma dentaire');
-        $this->actingAs($this->secretary)->postJson("/dashboard/patients/{$patient->id}/teeth", ['tooth' => 36, 'state' => 'to_treat'])->assertForbidden();
-        $this->actingAs($this->dentist)->postJson("/dashboard/patients/{$patient->id}/teeth", ['tooth' => 36, 'state' => 'to_treat'])->assertOk();
-        $this->assertSame('to_treat', $patient->teeth()->where('tooth', 36)->value('state'));
+        $tooth = ['tooth' => 36, 'state' => 'present', 'surfaces' => ['O' => 'caries', 'D' => 'caries']];
+        $this->actingAs($this->secretary)->postJson("/dashboard/patients/{$patient->id}/teeth", $tooth)->assertForbidden();
+        $this->actingAs($this->dentist)->postJson("/dashboard/patients/{$patient->id}/teeth", $tooth)->assertOk()->assertJsonPath('label', 'Carie O, D');
+        $this->assertEquals(['O' => 'caries', 'D' => 'caries'], $patient->teeth()->where('tooth', 36)->first()->surfaces);
     }
 
     public function test_confirming_a_booking_request(): void
@@ -116,5 +117,20 @@ class DashboardTest extends TestCase
 
         $this->getJson('/api/slots?service=consultation&date=2026-10-22')->assertJsonPath('slots.0', '10:00');
         $this->getJson('/api/slots?service=consultation&date=2026-10-23')->assertJsonCount(0, 'slots');
+    }
+
+    public function test_tooth_changes_are_kept_in_history_and_a_healthy_tooth_is_not_stored(): void
+    {
+        $patient = $this->appointment('2026-10-21 10:00')->patient;
+        $url = "/dashboard/patients/{$patient->id}/teeth";
+
+        $this->actingAs($this->dentist)->postJson($url, ['tooth' => 26, 'state' => 'crown']);
+        $this->actingAs($this->dentist)->postJson($url, ['tooth' => 17, 'state' => 'missing', 'surfaces' => ['O' => 'caries']]);
+        $r = $this->actingAs($this->dentist)->postJson($url, ['tooth' => 26, 'state' => 'present'])->assertOk();
+
+        $this->assertSame('Couronne → Saine', $r->json('history.0.what'));
+        $this->assertSame([], $patient->teeth()->where('tooth', 17)->first()->surfaces ?? [], 'a missing tooth has no surfaces');
+        $this->assertNull($patient->teeth()->where('tooth', 26)->first());
+        $this->assertSame(3, \App\Models\ToothEvent::count());
     }
 }

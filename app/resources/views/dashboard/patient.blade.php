@@ -11,6 +11,13 @@
     </div>
 </div>
 
+@can('medical')
+    <div class="box mb-3">
+        <div class="hd">Schéma dentaire <span>numérotation FDI · vu face au patient</span></div>
+        <div class="p-3">@include('dashboard.partials.odontogram', ['patient' => $patient, 'teeth' => $teeth, 'editable' => true])</div>
+    </div>
+@endcan
+
 <div class="row g-3">
     <div class="col-xl-4">
         <form class="box p-3" method="post" action="{{ route('dash.patients.update', $patient) }}">
@@ -31,12 +38,6 @@
     </div>
 
     <div class="col-xl-8">
-        @can('medical')
-            <div class="box mb-3">
-                <div class="hd">Schéma dentaire <span>numérotation FDI</span></div>
-                <div class="p-3">@include('dashboard.partials.odontogram', ['patient' => $patient, 'teeth' => $teeth, 'editable' => true])</div>
-            </div>
-        @endcan
         <div class="box mb-3">
             <div class="hd">Factures &amp; devis
                 @can('admin')

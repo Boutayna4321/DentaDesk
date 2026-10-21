@@ -24,6 +24,8 @@ body { -webkit-font-smoothing: antialiased; }
     b { color: #fff; display: block; }
     button { margin-left: auto; background: none; border: 0; color: #9fb0d3; font-size: .72rem; } }
   .side-close { display: none; }
+  // Bootstrap makes .offcanvas-lg transparent on large screens; the sidebar keeps its colour.
+  &.offcanvas-lg { background-color: $ink !important; }
   // Phone and tablet: the sidebar becomes a drawer (Bootstrap offcanvas-lg), opened by ☰, closed by ✕.
   @include media-breakpoint-down(lg) {
     // Our desktop .side is sticky; the drawer must be fixed, or it keeps its height in the page.
@@ -90,25 +92,86 @@ body { -webkit-font-smoothing: antialiased; }
     &.on { background: $ink; color: #fff; } } }
 
 // ── odontogram (FDI) ────────────────────────────────────────────────
-.odo { --gap: 3px; position: relative;
-  .tooth-pop { position: absolute; z-index: 5; width: 230px; background: #fff; border: 1px solid $line; border-radius: .6rem; box-shadow: $box-shadow-lg;
-    padding: .7rem; display: flex; flex-direction: column; gap: .5rem; font-size: .8rem;
-    .states { display: grid; grid-template-columns: 1fr 1fr; gap: .3rem; }
-    .st { border: 1px solid $line; background: #fff; border-radius: .35rem; font-size: .74rem; font-weight: 700; padding: .3rem; color: $ink;
-      &.on { background: $ink; border-color: $ink; color: #fff; } } }
-  // Two quadrants of 8, with a gap column for the midline.
-  .arch { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)) 4px repeat(8, minmax(0, 1fr)); gap: var(--gap); }
-  .tooth:nth-child(9) { grid-column: 10; }
-  .arch + .arch { margin-top: .3rem; }
-  .tooth { height: 38px; min-width: 0; padding-left: 0; padding-right: 0; border: 1.5px solid #cbd5e6; border-radius: .4rem .4rem .6rem .6rem; background: #fff; font-family: 'IBM Plex Mono', monospace;
-    font-size: .62rem; color: #98a3b8; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 3px; transition: transform .1s;
-    &[data-state=to_treat] { background: #fde8e8; border-color: #e57373; color: $red; }
-    &[data-state=treated] { background: $tint; border-color: $blue; color: $blue; }
-    &[data-state=missing] { background: repeating-linear-gradient(45deg, #f0f3f9 0 3px, #fff 3px 6px); border-style: dashed; }
-    &:not(:disabled):hover { transform: translateY(-2px); border-color: $blue; } }
-  .arch.low .tooth { border-radius: .6rem .6rem .4rem .4rem; align-items: flex-start; padding-top: 3px; }
-  .legend { display: flex; gap: 1rem; flex-wrap: wrap; font-size: .72rem; color: $mute; margin-top: .7rem;
-    i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: .3rem; vertical-align: -1px; } } }
+$caries: #d64545;
+.odo2 { position: relative; container-type: inline-size;
+  .odo-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: .8rem; }
+  .odo-summary { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; font-size: .8rem; color: $mute;
+    > b { color: $ink; margin-right: .3rem; } }
+  .odo-chip { border: 1px solid $line; background: #fff; border-radius: 999px; padding: .15rem .6rem .15rem .2rem; font-size: .74rem; display: inline-flex; gap: .4rem; align-items: center; color: $ink;
+    .n { font-family: 'IBM Plex Mono', monospace; font-size: .7rem; background: #eef1f6; border-radius: 999px; padding: .05rem .4rem; }
+    &.urgent { border-color: rgba($caries, .45); .n { background: #fde8e8; color: $caries; } }
+    &:hover { border-color: $blue; } }
+  .odo-arch-switch { display: none; flex: none; border: 1px solid $line; border-radius: .5rem; overflow: hidden;
+    button { border: 0; background: #fff; padding: .35rem .9rem; font-size: .78rem; font-weight: 800; color: $mute; &.on { background: $ink; color: #fff; } } }
+  .odo-chart { background: #fbfcfe; border: 1px solid $line; border-radius: .6rem; padding: .6rem .5rem .4rem; overflow-x: auto; }
+  .odo-hint { font-size: .74rem; color: $mute; margin: 0 .4rem .3rem; }
+  .odo-side-labels { display: flex; justify-content: space-between; font-size: .64rem; letter-spacing: .08em; text-transform: uppercase; color: #98a3b8; padding: 0 .4rem .2rem; }
+  .odo-arch { display: grid; grid-template-columns: 1fr 10px 1fr; align-items: center; min-width: 724px;
+    &.upper { border-bottom: 1px dashed #d5dcea; padding-bottom: .2rem; }
+    &.lower { padding-top: .2rem; }
+    .q { display: grid; grid-template-columns: repeat(8, 1fr); }
+    .mid { align-self: stretch; border-left: 1px dashed #d5dcea; margin: 0 auto; } }
+  .odo-tooth { border: 0; background: none; padding: 2px 0; border-radius: .4rem; display: grid; place-items: center; cursor: pointer;
+    &:hover, &:focus-visible { background: $tint; outline: none; }
+    &.on { background: $tint; box-shadow: inset 0 0 0 2px $blue; }
+    &.missing svg { opacity: .35; } }
+  .tooth-svg { display: block; overflow: visible; width: 100%; max-width: 60px; height: auto;
+    .root { fill: #f3efe6; stroke: #c9bfa8; stroke-width: 1; }
+    .canal { stroke: $ink; stroke-width: 2; stroke-linecap: round; }
+    .screw { fill: #dfe5ef; stroke: #7d8aa3; stroke-width: 1; } .thread { stroke: #7d8aa3; stroke-width: 1; }
+    .sf { fill: #fff; stroke: #9aa7bd; stroke-width: 1; &.caries { fill: $caries; } &.filling { fill: $blue; } }
+    .crown-ring { fill: none; stroke: #b8860b; stroke-width: 2.5; }
+    .extract { stroke: $caries; stroke-width: 2.5; stroke-linecap: round; }
+    .num { font: 600 10px 'IBM Plex Mono', monospace; fill: $mute; text-anchor: middle; }
+    &.missing .sf { stroke-dasharray: 2 2; } }
+  .odo-tooth.on .num { fill: $blue; font-weight: 800; }
+  .odo-legend { display: flex; flex-wrap: wrap; gap: .4rem 1rem; font-size: .72rem; color: $mute; margin-top: .6rem;
+    .lg { display: inline-block; width: 11px; height: 11px; border-radius: 2px; margin-right: .3rem; vertical-align: -1px; border: 1px solid #9aa7bd; background: #fff; }
+    .lg.caries { background: $caries; border-color: $caries; } .lg.filling { background: $blue; border-color: $blue; }
+    .lg.ring { border: 2px solid #b8860b; } .lg.canal { background: linear-gradient(90deg, transparent 4px, $ink 4px, $ink 6px, transparent 6px); }
+    .lg.screw { background: repeating-linear-gradient(0deg, #dfe5ef 0 2px, #7d8aa3 2px 3px); } .lg.missing { border-style: dashed; opacity: .5; }
+    .lg.extract { border: 0; background: linear-gradient(45deg, transparent 45%, $caries 45%, $caries 55%, transparent 55%), linear-gradient(-45deg, transparent 45%, $caries 45%, $caries 55%, transparent 55%); } }
+
+  // Editor: a panel beside the chart on desktop, a bottom sheet on a phone.
+  .odo-editor { position: fixed; top: 0; right: 0; bottom: 0; width: 360px; overflow-y: auto; background: #fff; border-left: 1px solid $line;
+    box-shadow: -18px 0 40px rgba($ink, .14); padding: 1.2rem; z-index: 1600; font-size: .82rem; }
+  .odo-sheet-backdrop { position: fixed; inset: 0; z-index: 1590; background: rgba($ink, .12); }
+  .ed-hd { display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem;
+    b { font: 800 1.4rem 'IBM Plex Mono', monospace; color: $blue; margin-right: .5rem; } span { color: $ink; font-weight: 700; }
+    .ed-x { border: 0; background: #f3f5f9; border-radius: .4rem; width: 30px; height: 30px; flex: none; } }
+  .ed-label { display: block; font-size: .66rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: $mute; margin: .9rem 0 .35rem;
+    span { text-transform: none; letter-spacing: 0; font-weight: 500; } }
+  .ed-states { display: grid; grid-template-columns: repeat(3, 1fr); gap: .3rem;
+    button { border: 1px solid $line; background: #fff; border-radius: .4rem; padding: .4rem .2rem; font-size: .74rem; font-weight: 700; color: $ink;
+      &.on { background: $ink; border-color: $ink; color: #fff; } &:disabled { opacity: .6; } } }
+  .ed-surfaces { display: grid; place-items: center;
+    svg { cursor: pointer; max-width: 100%; }
+    .sf { fill: #fff; stroke: #9aa7bd; stroke-width: 1.2; transition: fill .12s; &:hover { fill: $tint; } &.caries { fill: $caries; } &.filling { fill: $blue; } }
+    .sf-label { font: 800 13px Manrope, sans-serif; fill: $ink; text-anchor: middle; pointer-events: none; }
+    .crown-ring { fill: none; stroke: #b8860b; stroke-width: 4; }
+    &.off { opacity: .35; pointer-events: none; } }
+  .ed-surface-list { display: grid; grid-template-columns: 1fr 1fr; gap: .15rem .6rem; font-size: .72rem; color: $mute; margin-top: .4rem;
+    small { color: #98a3b8; } b { color: $ink; font-weight: 700; } }
+  .ed-actions { display: flex; justify-content: space-between; gap: .4rem; margin-top: .8rem; }
+  .ed-history { list-style: none; padding: 0; margin: 0; font-size: .74rem;
+    li { padding: .3rem 0; border-bottom: 1px dashed $line; span { display: block; color: $mute; font-size: .68rem; } }
+    .empty { color: $mute; } }
+
+  // Phone: one arch at a time, eight teeth per row, editing in a bottom sheet.
+  @include media-breakpoint-down(md) {
+    .odo-top { flex-direction: column-reverse; }
+    .odo-arch-switch { display: inline-flex; align-self: stretch; button { flex: 1; } }
+    .odo-arch { min-width: 0; grid-template-columns: 1fr; gap: .3rem; .mid { display: none; } }
+    &[data-arch=upper] .odo-arch.lower, &[data-arch=lower] .odo-arch.upper { display: none; }
+    .odo-arch.upper { border-bottom: 0; }
+    .odo-arch .q:last-child { border-top: 1px dashed #d5dcea; padding-top: .2rem; }
+    .tooth-svg { width: 100%; max-width: 44px; height: auto; }
+    .odo-hint { font-size: .74rem; color: $mute; margin: 0 .4rem .3rem; }
+  .odo-side-labels { display: none; }
+    .odo-editor { position: fixed; left: 0; right: 0; bottom: 0; top: auto; width: 100%; max-height: 86dvh; border-radius: 1rem 1rem 0 0; z-index: 1600;
+      padding-bottom: calc(1rem + env(safe-area-inset-bottom)); box-shadow: 0 -12px 40px rgba($ink, .25); }
+    .odo-sheet-backdrop { z-index: 1590; background: rgba($ink, .35); } } }
+
 
 // ── agenda ──────────────────────────────────────────────────────────
 .fc { --fc-border-color: #{$line}; --fc-today-bg-color: #{rgba($blue, .04)}; --fc-now-indicator-color: #{$red}; font-size: .8rem;
