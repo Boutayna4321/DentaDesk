@@ -1,0 +1,105 @@
+{"text": "salam bghit nji 3ndkom chi nhar had simana", "intent": "prendre_rdv"}
+{"text": "momkin tchoufi liya chi w9t ghedda 9bel tnach", "intent": "prendre_rdv"}
+{"text": "3afak wach bqat chi blassa l jem3a", "intent": "prendre_rdv"}
+{"text": "je voudrais voir la dentiste pour un contrôle", "intent": "prendre_rdv"}
+{"text": "vous auriez quelque chose jeudi en fin d'après-midi ?", "intent": "prendre_rdv"}
+{"text": "kanqelleb 3la rendez-vous l mmi", "intent": "prendre_rdv"}
+{"text": "wach nqder nji m3a bnti b jouj", "intent": "prendre_rdv"}
+{"text": "بغيت نجي عندكم الأسبوع الجاي", "intent": "prendre_rdv"}
+{"text": "هل يمكنني الحجز ليوم الخميس صباحا", "intent": "prendre_rdv"}
+{"text": "rdv blanchiment possible samedi matin", "intent": "prendre_rdv"}
+{"text": "3ndkom chi mow3id f sebt sba7", "intent": "prendre_rdv"}
+{"text": "je veux prendre un rdv pour un détartrage la semaine pro", "intent": "prendre_rdv"}
+{"text": "3afak dersi kayderni mn yamat ma n3ast", "intent": "urgence"}
+{"text": "jat lia wa7d sakhfa f wjhi w kaytfekh", "intent": "urgence"}
+{"text": "bnti tay7at w therrsat liha snna", "intent": "urgence"}
+{"text": "j'ai une rage de dents depuis cette nuit", "intent": "urgence"}
+{"text": "ma dent de sagesse me fait souffrir, c'est urgent", "intent": "urgence"}
+{"text": "le plombage est tombé et ça fait très mal", "intent": "urgence"}
+{"text": "ضرسي كيضرني بزاف وما نعستش", "intent": "urgence"}
+{"text": "ولدي طاح وتهرسات ليه سنة", "intent": "urgence"}
+{"text": "aidez moi j'ai trop mal", "intent": "urgence"}
+{"text": "kaysil dem mn snani mli tqela3t", "intent": "urgence"}
+{"text": "wjee3 ma kaykhllinich nakol", "intent": "urgence"}
+{"text": "urgent svp j'ai la mâchoire gonflée", "intent": "urgence"}
+{"text": "sme7 lia ma ghadich nqder nji ghedda", "intent": "annuler"}
+{"text": "3afak 7iydo rendez-vous dyali", "intent": "annuler"}
+{"text": "finalement je ne vais pas venir demain", "intent": "annuler"}
+{"text": "je souhaite annuler, j'ai un empêchement", "intent": "annuler"}
+{"text": "ma bqitch ghadi nji, lghiwh", "intent": "annuler"}
+{"text": "نلغي الموعد ديال بنتي عافاك", "intent": "annuler"}
+{"text": "je dois malheureusement annuler", "intent": "annuler"}
+{"text": "rdv dyal sebt ma ghadich nji lih", "intent": "annuler"}
+{"text": "trat lia safar, annuler rdv", "intent": "annuler"}
+{"text": "pouvez-vous supprimer le rendez-vous de mon fils", "intent": "annuler"}
+{"text": "momkin tbeddli lia rdv l simana jaya", "intent": "deplacer"}
+{"text": "j'aimerais décaler mon rendez-vous à la semaine prochaine", "intent": "deplacer"}
+{"text": "ma nqderch f sba7, khlliha l3chiya", "intent": "deplacer"}
+{"text": "wach nqder n2ekher rendez-vous b nhar", "intent": "deplacer"}
+{"text": "بغيت نبدل الموعد لنهار الاثنين", "intent": "deplacer"}
+{"text": "possible de reporter à vendredi ?", "intent": "deplacer"}
+{"text": "rdv dyali f larb3 bghit nredo lkhmis", "intent": "deplacer"}
+{"text": "est-ce qu'on peut avancer à demain ?", "intent": "deplacer"}
+{"text": "bdl lia lw9t l chi w9t f l3chiya", "intent": "deplacer"}
+{"text": "je voudrais changer l'heure de mon rdv", "intent": "deplacer"}
+{"text": "wach nta m7lol nhar sebt l3chiya", "intent": "horaires"}
+{"text": "7ta l ch7al katb9aw m7lolin", "intent": "horaires"}
+{"text": "vous êtes ouverts entre midi et deux ?", "intent": "horaires"}
+{"text": "à quelle heure ouvre le cabinet le matin ?", "intent": "horaires"}
+{"text": "واش خدامين نهار الأحد", "intent": "horaires"}
+{"text": "imta katsdo f jem3a", "intent": "horaires"}
+{"text": "horaires du samedi svp", "intent": "horaires"}
+{"text": "wach kat7elo f l3id", "intent": "horaires"}
+{"text": "vous travaillez pendant les vacances ?", "intent": "horaires"}
+{"text": "شحال من ساعة كتحلو", "intent": "horaires"}
+{"text": "fin bdbt kayna l3iyada", "intent": "adresse"}
+{"text": "kifach nji mn casa port", "intent": "adresse"}
+{"text": "c'est où exactement à Maârif ?", "intent": "adresse"}
+{"text": "vous êtes à côté de quoi ?", "intent": "adresse"}
+{"text": "wach kayn fin nwe9of tomobil", "intent": "adresse"}
+{"text": "عطيوني لوكاليزاسيون", "intent": "adresse"}
+{"text": "quelle station de tram la plus proche ?", "intent": "adresse"}
+{"text": "3tini lmaps 3afak", "intent": "adresse"}
+{"text": "c'est dans quel immeuble ?", "intent": "adresse"}
+{"text": "fin jat l3iyada dyalkom", "intent": "adresse"}
+{"text": "wach kat3mro lia papier dyal cnss", "intent": "question_faq"}
+{"text": "combien de temps dure un blanchiment ?", "intent": "question_faq"}
+{"text": "wach implant kayderr bzaf", "intent": "question_faq"}
+{"text": "est-ce que vous faites les gouttières transparentes ?", "intent": "question_faq"}
+{"text": "ch7al kayswa détartrage 3ndkom", "intent": "question_faq"}
+{"text": "واش كتقبلو لاسورانس", "intent": "question_faq"}
+{"text": "on peut payer en plusieurs fois pour l'appareil ?", "intent": "question_faq"}
+{"text": "wach kat3tiw devis 9bel", "intent": "question_faq"}
+{"text": "vous acceptez les enfants de 3 ans ?", "intent": "question_faq"}
+{"text": "wach tbiba kat3ref tsaf3 drari sghar", "intent": "question_faq"}
+{"text": "salam 3likoum", "intent": "salutation"}
+{"text": "bonjour, j'ai une question", "intent": "salutation"}
+{"text": "salam ça va", "intent": "salutation"}
+{"text": "assalamou alaykoum", "intent": "salutation"}
+{"text": "سلام عليكم", "intent": "salutation"}
+{"text": "Bonsoir", "intent": "salutation"}
+{"text": "chokran 3la lmosa3ada", "intent": "merci"}
+{"text": "lah ykhlik a khti", "intent": "merci"}
+{"text": "merci infiniment", "intent": "merci"}
+{"text": "choukran bezzaf", "intent": "merci"}
+{"text": "شكرا جزيلا", "intent": "merci"}
+{"text": "top, merci beaucoup", "intent": "merci"}
+{"text": "iyeh wakha", "intent": "affirmer"}
+{"text": "oui c'est parfait", "intent": "affirmer"}
+{"text": "wakha m3a l3achra", "intent": "affirmer"}
+{"text": "oui je confirme", "intent": "affirmer"}
+{"text": "واخا", "intent": "affirmer"}
+{"text": "ewa safi hadak", "intent": "affirmer"}
+{"text": "la machi had nhar", "intent": "nier"}
+{"text": "non je préfère pas", "intent": "nier"}
+{"text": "la ma ymknch", "intent": "nier"}
+{"text": "pas ce jour-là", "intent": "nier"}
+{"text": "لا ماشي هادي", "intent": "nier"}
+{"text": "la, chi w9t akhor", "intent": "nier"}
+{"text": "chno kayn f tv lyouma", "intent": "hors_sujet"}
+{"text": "vous connaissez un bon garagiste ?", "intent": "hors_sujet"}
+{"text": "bghit nesowlek 3la lfoot", "intent": "hors_sujet"}
+{"text": "c'est quoi la capitale du Japon", "intent": "hors_sujet"}
+{"text": "3tini recette dyal tajine", "intent": "hors_sujet"}
+{"text": "واش كتعرف شي طبيب ديال القلب", "intent": "hors_sujet"}
+{"text": "je veux acheter une voiture", "intent": "hors_sujet"}
