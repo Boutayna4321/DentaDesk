@@ -13,7 +13,7 @@
     "stats": { "title": "Des chiffres\nqui *se lisent*", "sub": "À retenir en 4 phrases, remplissage heure par heure, ce qui rapporte vraiment." },
     "team": { "title": "L’équipe se parle\n*dans le logiciel*", "sub": "Messagerie dentiste ↔ secrétariat, recherche globale, comptes et droits." },
     "ai": { "title": "Un modèle qui\n*sait quand il doute*", "sub": "84 % juste sur des phrases écrites à la main. S’il hésite, il demande ; s’il ne sait pas, il passe la main." },
-    "stack": { "title": "Ce qu’il y a\n*dessous*", "sub": "", "items": ["Laravel 13 · PHP 8.4 · MySQL 8", "Python · scikit-learn · FastAPI", "Bootstrap 5 · JavaScript · SVG", "Docker · 127 tests automatisés"] },
+    "stack": { "title": "Ce qu’il y a\n*dessous*", "sub": "", "items": ["Laravel 13 · PHP 8.4 · MySQL 8", "Python · scikit-learn · FastAPI", "Bootstrap 5 · JavaScript · SVG", "Docker · 128 tests automatisés"] },
     "end": { "title": "Boutayna Metarfi", "sub": "Master Génie logiciel & Intelligence artificielle", "cta": "Vos retours en commentaire : qu’est-ce que vous ajouteriez ?" }
   },
   "en": {
@@ -30,7 +30,7 @@
     "stats": { "title": "Numbers you can\n*actually read*", "sub": "4 plain takeaways, occupancy hour by hour, what really brings money in." },
     "team": { "title": "The team talks\n*inside the software*", "sub": "Dentist ↔ front desk messages, global search, accounts and permissions." },
     "ai": { "title": "A model that\n*knows when it’s unsure*", "sub": "84% right on hand-written test sentences. When it hesitates it asks; when it doesn’t know, it hands over." },
-    "stack": { "title": "What’s\n*underneath*", "sub": "", "items": ["Laravel 13 · PHP 8.4 · MySQL 8", "Python · scikit-learn · FastAPI", "Bootstrap 5 · JavaScript · SVG", "Docker · 127 automated tests"] },
+    "stack": { "title": "What’s\n*underneath*", "sub": "", "items": ["Laravel 13 · PHP 8.4 · MySQL 8", "Python · scikit-learn · FastAPI", "Bootstrap 5 · JavaScript · SVG", "Docker · 128 automated tests"] },
     "end": { "title": "Boutayna Metarfi", "sub": "Master’s in Software Engineering & Artificial Intelligence", "cta": "What would you add? Tell me in the comments." }
   }
 }

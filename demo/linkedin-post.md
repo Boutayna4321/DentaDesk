@@ -24,7 +24,7 @@ Pas d'API externe. J'ai construit le jeu de données, entraîné le modèle et m
 Quand il hésite, il pose la question. Quand il ne sait pas, il transmet au cabinet au lieu d'inventer.
 Et quand la dentiste ne lit pas la darija, chaque message est expliqué en français ou en anglais.
 
-Stack : Laravel 13, MySQL, Python (scikit-learn, FastAPI), Bootstrap, Docker. 127 tests automatisés.
+Stack : Laravel 13, MySQL, Python (scikit-learn, FastAPI), Bootstrap, Docker. 128 tests automatisés.
 
 Master en Génie logiciel & Intelligence artificielle : ce projet, c'est ce que j'ai appris, mis au service d'un vrai problème.
 
@@ -52,7 +52,7 @@ No external API. I built the dataset, trained the model and measured its mistake
 When it hesitates, it asks. When it doesn't know, it hands the message to the practice instead of making something up.
 And when the dentist doesn't read Darija, every message is explained in French or English.
 
-Stack: Laravel 13, MySQL, Python (scikit-learn, FastAPI), Bootstrap, Docker. 127 automated tests.
+Stack: Laravel 13, MySQL, Python (scikit-learn, FastAPI), Bootstrap, Docker. 128 automated tests.
 
 Master's in Software Engineering & AI: this project is what I learned, put to work on a real problem.
 
