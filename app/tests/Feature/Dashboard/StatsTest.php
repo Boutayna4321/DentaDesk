@@ -32,7 +32,7 @@ class StatsTest extends TestCase
 
         $s = new PracticeStats('30j');
 
-        $this->assertSame(0.5, $s->patients()['noShowRate']);
+        $this->assertSame(0.5, $s->headline()['noShowRate']);
         // 30 days back from Wednesday 21 Oct holds five Wednesdays of 510 open minutes each.
         $this->assertEqualsWithDelta(60 / (5 * 510), $s->occupancy()['byWeekday'][3], 0.0001);
     }
@@ -44,6 +44,22 @@ class StatsTest extends TestCase
         $dentist = User::create(['name' => 'D', 'email' => 'd@test', 'password' => 'x', 'role' => 'dentist']);
 
         $this->actingAs($secretary)->get('/dashboard/statistiques')->assertForbidden();
-        $this->actingAs($dentist)->get('/dashboard/statistiques?p=12m')->assertOk()->assertSee('Encaissé par semaine');
+        $this->actingAs($dentist)->get('/dashboard/statistiques?p=12m')->assertOk()->assertSee('Encaissé et facturé par semaine')->assertSee('À retenir');
+    }
+
+    public function test_the_heatmap_counts_booked_minutes_per_hour(): void
+    {
+        $this->travelTo('2026-10-21 20:00');
+        $this->seed(CabinetSeeder::class);
+        $p = Patient::create(['first_name' => 'A', 'phone' => '0600000001']);
+        // 10:30–11:15 on Wednesday 21: 30 min in the 10 h slot, 15 min in the 11 h slot.
+        Appointment::create(['patient_id' => $p->id, 'practitioner_id' => Practitioner::value('id'), 'service_id' => Service::value('id'),
+            'starts_at' => '2026-10-21 10:30', 'ends_at' => '2026-10-21 11:15', 'status' => 'done']);
+
+        $heat = (new PracticeStats('30j', \Carbon\CarbonImmutable::parse('2026-10-21'), \Carbon\CarbonImmutable::parse('2026-10-21 20:00')))->occupancy()['heat'];
+
+        $this->assertEqualsWithDelta(0.5, $heat[3][10], 0.001);
+        $this->assertEqualsWithDelta(0.25, $heat[3][11], 0.001);
+        $this->assertSame(0.0, (float) $heat[3][9]);
     }
 }

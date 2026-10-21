@@ -3,6 +3,7 @@ import 'bootstrap/js/dist/collapse';
 import Modal from 'bootstrap/js/dist/modal';
 import Offcanvas from 'bootstrap/js/dist/offcanvas';
 import { mountOdontogram } from './odontogram';
+import { trend, sparkline, heatmap, share, ranked } from './charts';
 
 const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
 
@@ -201,6 +202,13 @@ if (layer) {
 document.querySelector('[data-print-frame]')?.addEventListener('click', () => {
     document.querySelector('[data-doc-frame]')?.contentWindow?.print();
 });
+
+// ── Statistics charts ──────────────────────────────────────────────
+document.querySelectorAll('[data-trend]').forEach((n) => trend(n, JSON.parse(n.dataset.trend)));
+document.querySelectorAll('[data-spark]').forEach((n) => sparkline(n, JSON.parse(n.dataset.spark)));
+document.querySelectorAll('[data-heat]').forEach((n) => heatmap(n, JSON.parse(n.dataset.heat)));
+document.querySelectorAll('[data-share]').forEach((n) => share(n, JSON.parse(n.dataset.share), n.dataset.format));
+document.querySelectorAll('[data-ranked]').forEach((n) => ranked(n, JSON.parse(n.dataset.ranked), 'money', (it) => `${it.count} acte(s)`));
 
 // ── Destructive actions ask first ───────────────────────────────────
 document.addEventListener('submit', (e) => {
