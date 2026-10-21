@@ -17,6 +17,7 @@
         ['dash.agenda', 'Agenda', 'calendar', null],
         ['dash.requests', 'Demandes', 'chat', $open],
         ['dash.patients', 'Patients', 'child', null],
+        ['dash.documents', 'Factures', 'card', \App\Models\Document::where('type', 'invoice')->where('status', 'validated')->whereColumn('paid_cents', '<', 'total_cents')->count()],
         ['dash.assistant', 'Assistant AI', 'sparkle', null],
     ];
 @endphp
@@ -29,6 +30,7 @@
         <div class="sep">CABINET</div>
         <a class="item {{ request()->routeIs('dash.settings') ? 'on' : '' }}" href="{{ route('dash.settings') }}"><x-icon name="doc" size="17" />Horaires &amp; soins</a>
         @can('admin')
+            <a class="item {{ request()->routeIs('dash.billing*') ? 'on' : '' }}" href="{{ route('dash.billing') }}"><x-icon name="card" size="17" />Facturation</a>
             <a class="item {{ request()->routeIs('dash.users*') ? 'on' : '' }}" href="{{ route('dash.users') }}"><x-icon name="child" size="17" />Équipe</a>
         @endcan
         <a class="item" href="{{ route('home') }}" target="_blank"><x-icon name="pin" size="17" />Voir le site</a>

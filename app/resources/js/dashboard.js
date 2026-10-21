@@ -99,6 +99,47 @@ document.querySelectorAll('[data-odontogram]').forEach((odo) => {
     document.addEventListener('click', (e) => { if (!odo.contains(e.target)) pop.hidden = true; });
 });
 
+// ── Invoice editor: lines, totals, price list ──────────────────────
+const editor = document.querySelector('[data-doc-editor]');
+if (editor) {
+    const body = editor.querySelector('[data-lines]');
+    const tpl = document.querySelector('[data-line-template]');
+    const parse = (v) => Number(String(v).replace(/[\s\u202f]/g, '').replace(',', '.')) || 0;
+    const fmt = (n) => `${n.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} DH`;
+    let next = body.children.length;
+    const recalc = () => {
+        let total = 0;
+        body.querySelectorAll('[data-line]').forEach((tr) => {
+            const amount = parse(tr.querySelector('[data-qty]').value) * parse(tr.querySelector('[data-price]').value);
+            tr.querySelector('[data-amount]').textContent = fmt(amount);
+            total += amount;
+        });
+        editor.querySelector('[data-total]').textContent = fmt(total);
+    };
+    const add = (values = {}) => {
+        body.insertAdjacentHTML('beforeend', tpl.innerHTML.replaceAll('__i__', next++));
+        const tr = body.lastElementChild;
+        for (const [k, v] of Object.entries(values)) tr.querySelector(`[name$="[${k}]"]`).value = v;
+        recalc();
+        tr.querySelector(values.label ? '[name$="[tooth]"]' : 'input').focus();
+    };
+    editor.addEventListener('input', recalc);
+    editor.addEventListener('click', (e) => {
+        if (e.target.closest('[data-remove-line]')) { e.target.closest('tr').remove(); recalc(); }
+    });
+    document.querySelector('[data-add-line]').onclick = () => add();
+    document.querySelector('[data-act-picker]').onchange = (e) => {
+        const o = e.target.selectedOptions[0];
+        if (o.value) add({ label: o.dataset.label, code: o.dataset.code, unit_price: o.dataset.price, quantity: 1 });
+        e.target.value = '';
+    };
+    editor.querySelector('[data-validate]').addEventListener('click', (e) => {
+        if (!window.confirm('Valider ? Le document sera numéroté et ne pourra plus être modifié (seulement annulé).')) e.preventDefault();
+    });
+    if (!body.children.length) add();
+    recalc();
+}
+
 // ── Agenda ──────────────────────────────────────────────────────────
 const calendarEl = document.querySelector('[data-calendar]');
 if (calendarEl) (async () => {

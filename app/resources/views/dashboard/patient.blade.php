@@ -36,6 +36,26 @@
                 <div class="p-3">@include('dashboard.partials.odontogram', ['patient' => $patient, 'teeth' => $teeth, 'editable' => true])</div>
             </div>
         @endcan
+        <div class="box mb-3">
+            <div class="hd">Factures &amp; devis
+                @can('admin')
+                    <span class="d-flex gap-1">
+                        @foreach (['invoice' => '+ Facture', 'quote' => '+ Devis'] as $type => $label)
+                            <form method="post" action="{{ route('dash.documents.create') }}">@csrf<input type="hidden" name="patient_id" value="{{ $patient->id }}"><input type="hidden" name="type" value="{{ $type }}"><button class="btn btn-outline-primary btn-sm">{{ $label }}</button></form>
+                        @endforeach
+                    </span>
+                @endcan
+            </div>
+            @forelse ($patient->documents as $d)
+                <a class="info-l px-3 text-reset" href="{{ $d->isDraft() ? route('dash.documents.edit', $d) : route('dash.documents.show', $d) }}">
+                    <span>{{ $d->title }} · {{ ($d->issued_on ?? $d->updated_at)->format('d/m/Y') }}</span>
+                    <b>{{ \App\Billing\Money::format($d->total_cents) }}@if ($d->isInvoice() && $d->status === 'validated' && $d->balance_cents) <span class="text-danger">· reste {{ \App\Billing\Money::format($d->balance_cents) }}</span>@endif</b>
+                </a>
+            @empty
+                <p class="text-mute small p-3 mb-0">Aucun document.</p>
+            @endforelse
+        </div>
+
         <div class="box">
             <div class="hd">Rendez-vous <span>{{ $patient->appointments->count() }}</span></div>
             @foreach ($patient->appointments as $a)
@@ -49,7 +69,13 @@
                             @endif
                         @endcan
                     </div>
-                    <span class="src {{ $a->source }}">{{ $a->source_label }}</span>
+                    <span class="src {{ $a->source }}">{{ $a->source_label }}
+                        @can('admin')
+                            @if ($a->status === 'done' && ! $patient->documents->contains('appointment_id', $a->id))
+                                <form method="post" action="{{ route('dash.documents.create') }}">@csrf<input type="hidden" name="patient_id" value="{{ $patient->id }}"><input type="hidden" name="type" value="invoice"><input type="hidden" name="appointment_id" value="{{ $a->id }}"><button class="btn btn-link btn-sm p-0">Facturer</button></form>
+                            @endif
+                        @endcan
+                    </span>
                     @include('dashboard.partials.status', ['appointment' => $a])
                 </div>
             @endforeach

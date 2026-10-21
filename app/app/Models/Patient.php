@@ -17,6 +17,11 @@ class Patient extends Model
         return $this->hasMany(Appointment::class);
     }
 
+    public function documents(): HasMany
+    {
+        return $this->hasMany(Document::class)->latest();
+    }
+
     public function teeth(): HasMany
     {
         return $this->hasMany(ToothRecord::class);

@@ -3,6 +3,8 @@
 use App\Http\Controllers\Dashboard\AgendaController;
 use App\Http\Controllers\Dashboard\AppointmentController;
 use App\Http\Controllers\Dashboard\AssistantLogController;
+use App\Http\Controllers\Dashboard\BillingSettingsController;
+use App\Http\Controllers\Dashboard\DocumentController;
 use App\Http\Controllers\Dashboard\LoginController;
 use App\Http\Controllers\Dashboard\PatientController;
 use App\Http\Controllers\Dashboard\PulseController;
@@ -45,7 +47,23 @@ Route::middleware(['auth', 'active'])->prefix('dashboard')->name('dash.')->group
     Route::get('assistant', [AssistantLogController::class, 'index'])->name('assistant');
     Route::post('assistant/messages/{message}/intent', [AssistantLogController::class, 'correct'])->name('assistant.correct');
 
+    Route::get('factures', [DocumentController::class, 'index'])->name('documents');
+    Route::post('factures', [DocumentController::class, 'create'])->name('documents.create');
+    Route::get('factures/{document}', [DocumentController::class, 'show'])->name('documents.show');
+    Route::get('factures/{document}/modifier', [DocumentController::class, 'edit'])->name('documents.edit');
+    Route::put('factures/{document}', [DocumentController::class, 'update'])->name('documents.update');
+    Route::delete('factures/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
+    Route::get('factures/{document}/imprimer', [DocumentController::class, 'print'])->name('documents.print');
+    Route::post('factures/{document}/paiements', [DocumentController::class, 'pay'])->name('documents.pay');
+    Route::post('factures/{document}/annuler', [DocumentController::class, 'cancel'])->name('documents.cancel');
+    Route::post('factures/{document}/facturer', [DocumentController::class, 'convert'])->name('documents.convert');
+
     Route::middleware('can:admin')->group(function () {
+        Route::get('facturation', [BillingSettingsController::class, 'edit'])->name('billing');
+        Route::put('facturation/en-tete', [BillingSettingsController::class, 'letterhead'])->name('billing.letterhead');
+        Route::put('facturation/tarifs', [BillingSettingsController::class, 'acts'])->name('billing.acts');
+        Route::get('facturation/apercu', [BillingSettingsController::class, 'preview'])->name('billing.preview');
+
         Route::get('equipe', [UserController::class, 'index'])->name('users');
         Route::post('equipe', [UserController::class, 'store'])->name('users.store');
         Route::put('equipe/{user}', [UserController::class, 'update'])->name('users.update');

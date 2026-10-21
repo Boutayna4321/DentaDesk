@@ -52,7 +52,7 @@ class PatientController extends Controller
 
     public function show(Patient $patient): View
     {
-        $patient->load(['appointments' => fn ($q) => $q->with('service')->orderByDesc('starts_at'), 'teeth']);
+        $patient->load(['appointments' => fn ($q) => $q->with('service')->orderByDesc('starts_at'), 'teeth', 'documents']);
 
         return view('dashboard.patient', [
             'patient' => $patient,
