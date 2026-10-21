@@ -12,7 +12,8 @@
     <h1>{{ $doc->title }} <span class="pill {{ $stateClass }} align-middle">{{ $stateLabel }}</span>
         <small><a class="text-reset" href="{{ route('dash.patients.show', $doc->patient) }}">{{ $doc->patient->full_name }}</a> · {{ $doc->issued_on?->translatedFormat('j F Y') }} · rédigé par {{ $doc->author?->name ?? '—' }}</small></h1>
     <div class="d-flex gap-2 flex-wrap">
-        <a class="btn btn-primary" href="{{ route('dash.documents.print', $doc) }}" target="_blank">Imprimer</a>
+        <a class="btn btn-outline-secondary" href="{{ route('dash.documents.print', $doc) }}" target="_blank">Ouvrir en grand</a>
+        <button class="btn btn-primary" type="button" data-print-frame title="Pour un fichier, choisissez « Enregistrer au format PDF » dans la fenêtre d’impression">Imprimer ou PDF</button>
         @can('admin')
             @if ($doc->type === 'quote' && $doc->status === 'validated')
                 <form method="post" action="{{ route('dash.documents.convert', $doc) }}">@csrf<button class="btn btn-outline-primary">Facturer ce devis</button></form>
@@ -23,7 +24,7 @@
 
 <div class="row g-3">
     <div class="col-xl-8">
-        <div class="box p-0 overflow-hidden"><iframe src="{{ route('dash.documents.print', [$doc, 'embed' => 1]) }}" title="Aperçu" style="width:100%;height:860px;border:0;background:#e9edf4"></iframe></div>
+        <div class="box p-0 overflow-hidden"> <iframe data-doc-frame src="{{ route('dash.documents.print', [$doc, 'embed' => 1]) }}" title="Aperçu" style="width:100%;height:860px;border:0;background:#e9edf4"></iframe></div>
     </div>
     <div class="col-xl-4">
         @if ($doc->isInvoice() && $doc->status === 'validated')

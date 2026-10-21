@@ -197,6 +197,11 @@ if (layer) {
     });
 }
 
+// ── Print the invoice shown in the page, without opening another tab ──
+document.querySelector('[data-print-frame]')?.addEventListener('click', () => {
+    document.querySelector('[data-doc-frame]')?.contentWindow?.print();
+});
+
 // ── Destructive actions ask first ───────────────────────────────────
 document.addEventListener('submit', (e) => {
     const msg = e.target.dataset.confirm;

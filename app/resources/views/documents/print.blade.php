@@ -55,16 +55,20 @@
     .sign .box { width: {{ $paper === 'A5' ? '48mm' : '62mm' }}; height: 26mm; border: 1px dashed #b8c3d9; border-radius: 2mm; padding: 2mm 3mm; color: #98a3b8; font-size: .8em; }
     footer { margin-top: 7mm; padding-top: 3mm; border-top: 1px solid #e3e9f4; text-align: center; color: #5b6b86; font-size: .76em; line-height: 1.6; }
     .watermark { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; font-size: 26mm; font-weight: 800; color: rgba(192,57,43,.08); transform: rotate(-24deg); }
-    .toolbar { position: fixed; top: 14px; right: 14px; display: flex; gap: 8px; }
-    .toolbar button, .toolbar a { font: 700 13px Manrope, sans-serif; border: 0; border-radius: 6px; padding: 9px 14px; background: #1f56d6; color: #fff; cursor: pointer; text-decoration: none; }
-    .toolbar a { background: #fff; color: #0c2350; }
+    /* Its own bar above the sheet: it can never sit on top of the invoice. */
+    .toolbar { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: #0c2350; color: #c9d5ee; font: 600 13px Manrope, sans-serif; }
+    .toolbar[hidden] { display: none !important; }
+    .toolbar .what { margin-right: auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .toolbar button, .toolbar a { font: 700 13px Manrope, sans-serif; border: 0; border-radius: 6px; padding: 9px 14px; background: #1f56d6; color: #fff; cursor: pointer; text-decoration: none; white-space: nowrap; }
+    .toolbar a { background: rgba(255,255,255,.1); color: #fff; }
     @media print { html { background: #fff; } .sheet { margin: 0; box-shadow: none; } .toolbar { display: none; } }
 </style>
 </head>
 <body class="{{ request()->boolean('embed') ? 'embed' : '' }}">
 <div class="toolbar" @if (request()->boolean('embed')) hidden @endif>
     <a href="{{ url()->previous() }}">← Retour</a>
-    <button onclick="window.print()">Imprimer · PDF</button>
+    <span class="what">{{ $doc->number ?? 'Brouillon' }} · {{ $doc->patient->full_name }} · {{ $paper }}</span>
+    <button onclick="window.print()" title="Dans la fenêtre d’impression, choisissez « Enregistrer au format PDF » pour un fichier">Imprimer ou PDF</button>
 </div>
 <div class="sheet">
     <div class="bar"></div>
