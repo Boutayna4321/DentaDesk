@@ -76,14 +76,35 @@ class DemoSeeder extends Seeder
                     $today->subDays(mt_rand(20, 400))->setTime(mt_rand(9, 17), [0, 30][mt_rand(0, 1)]), 'done', ['phone', 'web'][mt_rand(0, 1)]);
             }
         }
-        // The last three weeks, so the agenda is not empty behind today.
+        // Twelve weeks of history, so the agenda and the statistics look like a running practice.
+        $first = ['Amine', 'Yasmine', 'Mohamed', 'Khadija', 'Ayoub', 'Fatima', 'Reda', 'Meryem', 'Ilyas', 'Nada', 'Othmane', 'Houda',
+            'Badr', 'Soukaina', 'Zakaria', 'Asmae', 'Hicham', 'Loubna', 'Youssef', 'Ikram', 'Taha', 'Wiam', 'Saad', 'Chaimae', 'Mehdi', 'Hajar'];
+        $last = ['El Amrani', 'Benali', 'Chafik', 'Lamrani', 'Bouzid', 'Tazi', 'Berrada', 'Filali', 'Sqalli', 'Bennani', 'Alaoui', 'Haddad',
+            'Naciri', 'Kadiri', 'Bekkali', 'Fassi', 'Zniber', 'Mernissi', 'Guessous', 'Lahlou'];
+        $pool = $patients->values()->all();
+        for ($k = 0; $k < 60; $k++) {
+            $pool[] = Patient::create([
+                'first_name' => $first[mt_rand(0, count($first) - 1)], 'last_name' => $last[mt_rand(0, count($last) - 1)],
+                'phone' => sprintf('06%08d', 30000000 + $k * 137), 'coverage' => ['cnss', 'cnss', 'cnops', 'mutuelle', null][mt_rand(0, 4)],
+                'birth_date' => $today->subYears(mt_rand(5, 75))->subDays(mt_rand(0, 360)),
+            ]);
+        }
         $availabilityPast = app(Availability::class);
-        foreach (range(1, 18) as $back) {
+        $routine = Service::whereIn('slug', ['controle', 'detartrage', 'consultation', 'carie', 'carie', 'enfant', 'extraction', 'blanchiment', 'orthodontie', 'urgence'])->get();
+        foreach (range(84, 1) as $back) {
             $d = $today->subDays($back);
-            $service = Service::where('slug', ['controle', 'detartrage', 'consultation', 'carie'][$back % 4])->first();
-            $slots = $availabilityPast->slots($this->dr, $service, $d, $d->subDay());
-            foreach ($slots->shuffle()->take(mt_rand(3, 6)) as $i => $at) {
-                $this->appointment($patients->values()[($back + $i) % 9 + 7], $service->slug, $at, $i === 0 && $back % 6 === 0 ? 'no_show' : 'done', ['phone', 'web', 'assistant'][mt_rand(0, 2)]);
+            // Busier in recent weeks: the practice is growing.
+            $wanted = mt_rand(5, 8) + ($back < 42 ? 2 : 0);
+            for ($n = 0; $n < $wanted; $n++) {
+                $service = $routine->random();
+                $slots = $availabilityPast->slots($this->dr, $service, $d, $d->subDay());
+                if ($slots->isEmpty()) {
+                    break;
+                }
+                // Newer patients appear later: each patient's first visit is spread across the 12 weeks.
+                $who = $pool[mt_rand(0, min(count($pool) - 1, 16 + intdiv((84 - $back) * 60, 84)))];
+                $this->appointment($who, $service->slug, $slots->random(), mt_rand(0, 24) === 0 ? 'no_show' : 'done', ['phone', 'web', 'assistant', 'assistant'][mt_rand(0, 3)])
+                    ->forceFill(['created_at' => $d->subDays(mt_rand(1, 9))->setTime(mt_rand(8, 22), mt_rand(0, 59))])->saveQuietly();
             }
         }
 
@@ -99,10 +120,10 @@ class DemoSeeder extends Seeder
         // The next ten opening days, two to five bookings each.
         $availability = app(Availability::class);
         $services = Service::where('is_emergency', false)->get();
-        $everyone = $patients->values();
+        $everyone = collect($pool);
         for ($i = 1; $i <= 14; $i++) {
             $d = $today->addDays($i);
-            foreach ($everyone->shuffle()->take(mt_rand(2, 5)) as $patient) {
+            foreach ($everyone->shuffle()->take(max(1, 9 - $i / 2 + mt_rand(-1, 2))) as $patient) {
                 $service = $services->random();
                 $slots = $availability->slots($this->dr, $service, $d, $now);
                 if ($slots->isEmpty()) {

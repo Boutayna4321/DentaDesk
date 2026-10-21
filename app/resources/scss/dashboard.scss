@@ -145,3 +145,23 @@ body { -webkit-font-smoothing: antialiased; }
   &.err { border-left-color: $red; } &.info { border-left-color: $blue; cursor: pointer; }
   &.out { opacity: 0; transform: translateY(-6px); transition: .3s; } }
 @keyframes toast-in { from { opacity: 0; transform: translateY(-6px); } }
+
+// ── charts (one hue: $blue, validated against the surface) ─────────
+.colchart { display: grid; grid-template-columns: 34px 1fr; height: 240px; gap: .5rem;
+  .axis { display: flex; flex-direction: column; justify-content: space-between; font-size: .68rem; color: $mute; text-align: right; padding-bottom: 20px; margin-top: -6px; }
+  .plot { position: relative; display: grid; grid-template-columns: repeat(12, 1fr); align-items: end; padding-bottom: 20px; }
+  .grid { position: absolute; left: 0; right: 0; height: 1px; background: #eef1f6; margin-bottom: 20px; }
+  .col { position: relative; height: 100%; display: flex; align-items: flex-end; justify-content: center; outline: none;
+    b { display: block; width: min(24px, 60%); background: $blue; border-radius: 4px 4px 0 0; position: relative; z-index: 1; transition: opacity .15s; min-height: 1px; }
+    em { position: absolute; font-style: normal; font-size: .7rem; font-weight: 700; color: $ink; z-index: 2; }
+    small { position: absolute; bottom: -20px; font-size: .64rem; color: $mute; }
+    &:hover b, &:focus b { opacity: .75; } }
+  .plot:hover .col:not(:hover) b { opacity: .55; } }
+.hbar { display: grid; grid-template-columns: 120px 1fr 80px; align-items: center; gap: .6rem; padding: .3rem 0; font-size: .8rem; outline: none;
+  .l { color: $ink; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .track { height: 14px; background: #f3f5f9; border-radius: 0 4px 4px 0; }
+  .track b { display: block; height: 100%; background: $blue; border-radius: 0 4px 4px 0; }
+  .v { color: $mute; font-variant-numeric: tabular-nums; }
+  &:hover .track b, &:focus .track b { opacity: .8; } }
+.chart-tip { position: fixed; z-index: 3000; pointer-events: none; background: $ink; color: #fff; font-size: .74rem; font-weight: 600;
+  padding: .4rem .6rem; border-radius: .4rem; box-shadow: $box-shadow; max-width: 260px; }

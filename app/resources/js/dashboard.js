@@ -52,6 +52,18 @@ if (toasts?.dataset.pulse) {
     setInterval(tick, 15000);
 }
 
+// ── Chart tooltips (mouse and keyboard) ────────────────────────────
+const tip = document.querySelector('[data-chart-tip]');
+if (tip) {
+    const show = (el, x, y) => { tip.textContent = el.dataset.tip; tip.hidden = false; tip.style.left = `${x + 12}px`; tip.style.top = `${y - 34}px`; };
+    document.querySelectorAll('[data-tip]').forEach((el) => {
+        el.addEventListener('mousemove', (e) => show(el, e.clientX, e.clientY));
+        el.addEventListener('mouseleave', () => { tip.hidden = true; });
+        el.addEventListener('focus', () => { const r = el.getBoundingClientRect(); show(el, r.left, r.top); });
+        el.addEventListener('blur', () => { tip.hidden = true; });
+    });
+}
+
 // ── Destructive actions ask first ───────────────────────────────────
 document.addEventListener('submit', (e) => {
     const msg = e.target.dataset.confirm;

@@ -47,7 +47,7 @@ class BillingSeeder extends Seeder
 
         mt_srand(7);
         $done = Appointment::with('service', 'patient')->where('status', 'done')
-            ->where('starts_at', '>=', now()->subDays(75))->orderBy('starts_at')->get();
+            ->where('starts_at', '>=', now()->subDays(90))->where('starts_at', '<', now())->orderBy('starts_at')->get();
         foreach ($done as $i => $a) {
             $act = $byService($a->service->slug);
             $lines = [['label' => $act->label, 'tooth' => in_array($a->service->slug, ['carie', 'extraction']) ? [16, 26, 36, 46, 47][mt_rand(0, 4)] : null,
@@ -64,8 +64,10 @@ class BillingSeeder extends Seeder
 
             // Most pay on the day; a few pay half, a few not yet.
             $roll = mt_rand(0, 9);
-            if ($roll < 8 || $day->lt(now()->subDays(3))) {
-                $amount = $roll === 7 ? intdiv($doc->total_cents, 2) : $doc->total_cents;
+            $old = $day->lt(now()->subDays(3));
+            if ($roll < 8 || $old) {
+                // Old invoices are settled, except a few long treatments paid in instalments.
+                $amount = ($roll === 7 && (! $old || mt_rand(0, 5) === 0)) ? intdiv($doc->total_cents, 2) : $doc->total_cents;
                 $p = $billing->pay($doc, $amount, ['especes', 'especes', 'carte', 'cheque'][mt_rand(0, 3)], null, $dentist);
                 $p->update(['paid_on' => $day]);
             }

@@ -20,6 +20,9 @@
         ['dash.documents', 'Factures', 'card', \App\Models\Document::where('type', 'invoice')->where('status', 'validated')->whereColumn('paid_cents', '<', 'total_cents')->count()],
         ['dash.assistant', 'Assistant AI', 'sparkle', null],
     ];
+    if (auth()->user()->can('admin')) {
+        array_splice($nav, 5, 0, [['dash.stats', 'Statistiques', 'scan', null]]);
+    }
 @endphp
 <div class="shell">
     <aside class="side">

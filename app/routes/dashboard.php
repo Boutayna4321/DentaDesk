@@ -10,6 +10,7 @@ use App\Http\Controllers\Dashboard\PatientController;
 use App\Http\Controllers\Dashboard\PulseController;
 use App\Http\Controllers\Dashboard\RequestController;
 use App\Http\Controllers\Dashboard\SettingsController;
+use App\Http\Controllers\Dashboard\StatsController;
 use App\Http\Controllers\Dashboard\TodayController;
 use App\Http\Controllers\Dashboard\UserController;
 use Illuminate\Support\Facades\Route;
@@ -59,6 +60,7 @@ Route::middleware(['auth', 'active'])->prefix('dashboard')->name('dash.')->group
     Route::post('factures/{document}/facturer', [DocumentController::class, 'convert'])->name('documents.convert');
 
     Route::middleware('can:admin')->group(function () {
+        Route::get('statistiques', StatsController::class)->name('stats');
         Route::get('facturation', [BillingSettingsController::class, 'edit'])->name('billing');
         Route::put('facturation/en-tete', [BillingSettingsController::class, 'letterhead'])->name('billing.letterhead');
         Route::put('facturation/tarifs', [BillingSettingsController::class, 'acts'])->name('billing.acts');
