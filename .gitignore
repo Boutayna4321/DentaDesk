@@ -1,0 +1,4 @@
+.superpowers/
+nlu/models/*.joblib
+nlu/**/__pycache__/
+nlu/.pytest_cache/

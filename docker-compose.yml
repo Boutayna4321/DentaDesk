@@ -1,0 +1,39 @@
+name: snan
+
+services:
+  app:
+    image: snan-php
+    build:
+      context: docker/php
+      args: { UID: "${UID:-1000}", GID: "${GID:-1000}" }
+    volumes: [ "./app:/var/www/app" ]
+    command: php artisan serve --host=0.0.0.0 --port=8000
+    ports: [ "8000:8000" ]
+    environment:
+      NLU_URL: http://nlu:8001
+    depends_on:
+      mysql: { condition: service_healthy }
+      nlu: { condition: service_started }
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: snan
+      MYSQL_USER: snan
+      MYSQL_PASSWORD: snan
+      MYSQL_ROOT_PASSWORD: root
+    ports: [ "3307:3306" ]
+    volumes: [ "mysql:/var/lib/mysql", "./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro" ]
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-usnan", "-psnan" ]
+      interval: 5s
+      retries: 20
+
+  nlu:
+    build: ./nlu
+    image: snan-nlu
+    volumes: [ "./nlu:/srv/nlu" ]
+    ports: [ "8001:8001" ]
+
+volumes:
+  mysql:
