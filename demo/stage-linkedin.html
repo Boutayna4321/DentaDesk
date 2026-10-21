@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1280">
+<title>snan. LinkedIn demo stage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  /* LinkedIn: 16:9, the app fills the frame; captions sit in a small card, a spotlight
+     dims everything but the part being explained. Phone scenes are a split screen. */
+  :root { --bg: #0e0e0e; --ink: #f5f5f2; --dim: rgba(245,245,242,.66); --mark: #c8f560; --blue: #1f56d6; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1280px; height: 720px; overflow: clip; background: var(--bg); color: var(--ink); font-family: Inter, sans-serif; -webkit-font-smoothing: antialiased; }
+  .frame { position: relative; width: 1280px; height: 720px; overflow: hidden; }
+  #desk { position: absolute; inset: 0; width: 1280px; height: 720px; border: 0; background: #fff; }
+
+  /* Spotlight */
+  .spot { position: absolute; z-index: 10; border-radius: 12px; border: 2px solid var(--mark); box-shadow: 0 0 0 9999px rgba(8,10,16,.55); opacity: 0; pointer-events: none; }
+
+  /* Caption card over the app */
+  .cap { position: absolute; z-index: 20; bottom: 28px; width: 470px; padding: 20px 22px; border-radius: 16px; background: rgba(14,14,14,.9); border: 1px solid rgba(255,255,255,.1); box-shadow: 0 20px 50px rgba(0,0,0,.45); opacity: 0; }
+  .cap.left { left: 28px; } .cap.right { right: 28px; }
+  .cap h2 { font: 700 26px/1.08 'Inter Tight', sans-serif; letter-spacing: -.025em; }
+  .cap p { font-size: 14px; line-height: 1.5; color: var(--dim); margin-top: 8px; }
+  .chip { position: absolute; z-index: 20; top: 22px; left: 28px; padding: 8px 14px 8px 12px; border-radius: 999px; background: rgba(14,14,14,.9); border: 1px solid rgba(255,255,255,.12); font: 600 13px Inter, sans-serif; display: flex; gap: 8px; align-items: center; opacity: 0; }
+  .chip i { width: 8px; height: 8px; border-radius: 50%; background: var(--mark); }
+  .handle { position: absolute; z-index: 40; top: 26px; right: 28px; font: 600 13px Inter, sans-serif; color: var(--dim); display: flex; gap: 8px; align-items: center; opacity: 0; }
+  .handle::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--mark); }
+
+  /* Dark scenes: title, split screen, recap, end */
+  .dark { position: absolute; inset: 0; z-index: 30; background: var(--bg); opacity: 0; pointer-events: none; }
+  .dark .glow { position: absolute; width: 900px; height: 900px; left: -200px; top: -120px; border-radius: 50%; background: radial-gradient(circle, var(--blue) 0%, transparent 62%); opacity: .3; filter: blur(40px); }
+  .dark .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(ellipse at 30% 40%, #000 0%, transparent 70%); }
+  .panel { position: absolute; inset: 0; display: none; }
+  .kicker { font: 500 13px 'IBM Plex Mono', monospace; color: var(--mark); letter-spacing: .06em; }
+  .big { font: 700 54px/1.03 'Inter Tight', sans-serif; letter-spacing: -.035em; margin-top: 14px; }
+  .big .hl, h2 .hl { color: var(--mark); }
+  .lead { font-size: 19px; color: var(--dim); margin-top: 18px; line-height: 1.5; }
+  .titlecard { left: 110px; top: 210px; right: 110px; }
+  .split .phone { position: absolute; left: 150px; top: 36px; width: 314px; border-radius: 46px; background: #1b1b1b; padding: 10px; box-shadow: 0 0 0 1.5px #2e2e2e, 0 40px 80px -20px rgba(0,0,0,.85); }
+  .split .screen { position: relative; width: 294px; height: 636px; border-radius: 37px; overflow: hidden; background: #fff; }
+  .split .island { position: absolute; top: 12px; left: 50%; width: 84px; height: 22px; margin-left: -42px; border-radius: 14px; background: #000; z-index: 3; }
+  #mob { width: 390px; height: 844px; border: 0; transform: scale(.7538); transform-origin: 0 0; }
+  .split .side { position: absolute; left: 580px; right: 90px; top: 150px; }
+  .split .big { font-size: 46px; }
+  .points { list-style: none; margin-top: 30px; display: grid; gap: 14px; }
+  .points li { display: flex; gap: 14px; align-items: flex-start; font-size: 19px; line-height: 1.4; }
+  .points li::before { content: ''; flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--mark); margin-top: 9px; }
+  .recap { left: 90px; right: 90px; top: 92px; }
+  .recap .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 34px; }
+  .recap .c { padding: 22px 24px; border-radius: 16px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); }
+  .recap .c b { display: block; font: 700 23px 'Inter Tight', sans-serif; letter-spacing: -.02em; }
+  .recap .c span { display: block; color: var(--dim); font-size: 15px; margin-top: 6px; }
+  .recap .c em { font-style: normal; font: 500 12px 'IBM Plex Mono', monospace; color: var(--mark); }
+  .recap .stack { margin-top: 26px; font: 500 14px 'IBM Plex Mono', monospace; color: var(--dim); }
+  .endcard { left: 110px; right: 110px; top: 230px; }
+  .endcard .cta { margin-top: 40px; font-size: 21px; border-left: 3px solid var(--mark); padding-left: 16px; }
+
+  .cursor { position: absolute; left: 0; top: 0; width: 22px; height: 22px; z-index: 60; pointer-events: none; opacity: 0; filter: drop-shadow(0 2px 3px rgba(0,0,0,.45)); }
+  .ripple { position: absolute; width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%; border: 2.5px solid var(--mark); z-index: 59; pointer-events: none; opacity: 0; }
+  .progress { position: absolute; z-index: 70; left: 0; right: 0; bottom: 0; height: 4px; background: rgba(255,255,255,.08); }
+  .progress b { position: absolute; inset: 0; background: var(--mark); transform-origin: 0 0; transform: scaleX(0); }
+</style>
+</head>
+<body>
+<div class="frame">
+  <iframe id="desk" title="desktop"></iframe>
+  <div class="spot" id="spot"></div>
+  <div class="chip" id="chip"><i></i><span></span></div>
+  <div class="handle">@boutayna_metarfi</div>
+  <div class="cap left" id="cap"><h2></h2><p></p></div>
+
+  <div class="dark" id="dark">
+    <div class="glow"></div><div class="grid"></div>
+    <div class="panel titlecard" id="p-title"><div class="kicker"></div><div class="big"></div><div class="lead"></div></div>
+    <div class="panel split" id="p-split">
+      <div class="phone"><div class="screen"><div class="island"></div><iframe id="mob" title="phone"></iframe></div></div>
+      <div class="side"><div class="kicker"></div><div class="big"></div><ul class="points"></ul></div>
+    </div>
+    <div class="panel recap" id="p-recap"><div class="kicker">RECAP</div><div class="big"></div><div class="cards"></div><div class="stack"></div></div>
+    <div class="panel endcard" id="p-end"><div class="kicker">snan.</div><div class="big"></div><div class="lead"></div><div class="cta"></div></div>
+  </div>
+
+  <svg class="cursor" id="cursor" viewBox="0 0 24 24"><path d="M4 2 L4 19 L8.5 14.8 L11.6 21.5 L14.4 20.2 L11.3 13.6 L17.5 13.6 Z" fill="#fff" stroke="#0e0e0e" stroke-width="1.4" stroke-linejoin="round"/></svg>
+  <div class="ripple" id="ripple"></div>
+  <div class="progress"><b id="bar"></b></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script>
+const q = new URLSearchParams(location.search);
+const LANG = q.get('lang') || 'fr';
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const $ = (id) => document.getElementById(id);
+const frames = { desk: $('desk'), mob: $('mob') };
+const TOTAL = 104; // seconds, for the progress bar
+let C;
+
+const hl = (t) => t.replace(/\*(.+?)\*/g, '<span class="hl">$1</span>').replace(/\n/g, '<br>');
+const win = (f) => frames[f].contentWindow;
+const doc = (f) => frames[f].contentDocument;
+const el = (f, sel) => { const e = typeof sel === 'string' ? doc(f)?.querySelector(sel) : sel; if (!e) console.warn('missing', f, sel); return e; };
+Object.keys(frames).forEach((f) => frames[f].addEventListener('load', () => { try { win(f).confirm = () => true; } catch {} }));
+
+function go(f, path) {
+  return new Promise((resolve) => {
+    let done = false;
+    const finish = async () => { if (done) return; done = true; await sleep(900); resolve(); };
+    frames[f].onload = finish;
+    setTimeout(finish, 8000);
+    const [base, hash] = path.split('#');
+    frames[f].src = `${base}${base.includes('?') ? '&' : '?'}r=${Date.now()}${hash ? '#' + hash : ''}`;
+  });
+}
+const waitFor = async (f, sel, ms = 8000) => { for (let t = 0; t < ms; t += 100) { if (doc(f)?.querySelector(sel)) return true; await sleep(100); } console.warn('timeout', sel); return false; };
+const findByText = (f, sel, text) => [...doc(f).querySelectorAll(sel)].find((e) => e.textContent.includes(text));
+
+// Stage coordinates of an element inside an iframe.
+function rect(f, target) {
+  const e = el(f, target); if (!e) return null;
+  const fr = frames[f].getBoundingClientRect(), k = fr.width / frames[f].offsetWidth, r = e.getBoundingClientRect();
+  return { x: fr.left + r.left * k, y: fr.top + r.top * k, w: r.width * k, h: r.height * k };
+}
+
+// ── Overlays ────────────────────────────────────────────────────────
+async function chip(text) {
+  const c = $('chip');
+  if (!text) return gsap.to(c, { opacity: 0, duration: .3 });
+  await gsap.to(c, { opacity: 0, duration: .2 });
+  c.querySelector('span').textContent = text;
+  gsap.fromTo(c, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: .4 });
+}
+async function caption(key, side = 'left') {
+  const c = $('cap');
+  await gsap.to(c, { opacity: 0, y: 10, duration: .2 });
+  if (!key) return;
+  c.className = `cap ${side}`;
+  c.querySelector('h2').innerHTML = hl(C[key].title);
+  c.querySelector('p').textContent = C[key].sub || '';
+  gsap.fromTo(c, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .5, ease: 'power3.out' });
+}
+async function spot(f, target, pad = 10) {
+  const s = $('spot');
+  if (!target) return gsap.to(s, { opacity: 0, duration: .35 });
+  const r = rect(f, target); if (!r) return;
+  await gsap.to(s, { left: r.x - pad, top: r.y - pad, width: r.w + pad * 2, height: r.h + pad * 2, opacity: 1, duration: .6, ease: 'power2.inOut' });
+}
+async function dark(panel) {
+  document.querySelectorAll('.panel').forEach((p) => { p.style.display = p.id === panel ? 'block' : 'none'; });
+  // The handle shows on the dark screens only, never on top of the app's own buttons.
+  gsap.to('.handle', { opacity: panel ? 1 : 0, duration: .4 });
+  await gsap.to('#dark', { opacity: panel ? 1 : 0, duration: .5 });
+}
+
+// ── Cursor ──────────────────────────────────────────────────────────
+async function moveTo(f, target, dur = .6) {
+  const r = rect(f, target); if (!r) return;
+  gsap.to('#cursor', { opacity: 1, duration: .2 });
+  await gsap.to('#cursor', { x: r.x + r.w / 2 - 4, y: r.y + r.h / 2 - 3, duration: dur, ease: 'power2.inOut' });
+}
+async function click(f, target, { svg = false } = {}) {
+  await moveTo(f, target);
+  const r = rect(f, target); if (!r) return;
+  gsap.fromTo('#ripple', { left: r.x + r.w / 2, top: r.y + r.h / 2, scale: .4, opacity: 1 }, { scale: 1.7, opacity: 0, duration: .45 });
+  const e = el(f, target);
+  if (svg || !e.click) e.dispatchEvent(new MouseEvent('click', { bubbles: true })); else e.click();
+  await sleep(250);
+}
+async function hover(f, target, events = ['mouseenter', 'mousemove']) {
+  await moveTo(f, target);
+  const e = el(f, target), r = e.getBoundingClientRect();
+  for (const ev of events) e.dispatchEvent(new MouseEvent(ev, { bubbles: ev !== 'mouseenter', clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 }));
+}
+async function type(f, target, text, speed = 45) {
+  await moveTo(f, target, .4);
+  const e = el(f, target); e.focus(); e.value = '';
+  for (const ch of text) { e.value += ch; e.dispatchEvent(new Event('input', { bubbles: true })); await sleep(speed + Math.random() * 25); }
+}
+async function scrollFrame(f, target, offset = 80, dur = 900) {
+  const w = win(f), y = typeof target === 'number' ? target : el(f, target).getBoundingClientRect().top + w.scrollY - offset;
+  w.scrollTo({ top: y, behavior: 'smooth' }); await sleep(dur);
+}
+const hideCursor = () => gsap.to('#cursor', { opacity: 0, duration: .25 });
+const submitChat = () => doc('mob').querySelector('[data-chat-form]').requestSubmit();
+
+// ── The story ───────────────────────────────────────────────────────
+async function titleScene() {
+  const p = $('p-title');
+  p.querySelector('.kicker').textContent = C.title.kicker;
+  p.querySelector('.big').innerHTML = hl(C.title.title);
+  p.querySelector('.lead').textContent = C.title.sub;
+  await dark('p-title');
+  gsap.from('#p-title > *', { y: 24, opacity: 0, stagger: .12, duration: .7, ease: 'power3.out' });
+  await sleep(3600);
+}
+
+async function bookingScene() {
+  const p = $('p-split');
+  p.querySelector('.kicker').textContent = C.s1.step;
+  p.querySelector('.big').innerHTML = hl(C.s1.title);
+  p.querySelector('.points').innerHTML = C.s1.points.map((x) => `<li>${x}</li>`).join('');
+  await dark('p-split');
+  chip(C.s1.chip);
+  gsap.from('#p-split .side > *, #p-split .points li', { x: 20, opacity: 0, stagger: .12, duration: .6, ease: 'power3.out' });
+  await sleep(600);
+  await click('mob', '.assistant-fab');
+  await sleep(400);
+  await type('mob', '[data-chat-form] input', '3andi wjee3 f dersi mn lbare7, kayn chi blassa ghedda f sba7?', 30);
+  submitChat(); hideCursor();
+  await waitFor('mob', '.quick .chip'); await sleep(1000);
+  await click('mob', '.quick .chip');
+  await sleep(1200);
+  await type('mob', '[data-chat-form] input', 'smiti Youssef Amrani', 38);
+  submitChat(); await sleep(1300);
+  await type('mob', '[data-chat-form] input', '06 61 22 33 44', 48);
+  submitChat(); hideCursor();
+  await waitFor('mob', '.booked'); await sleep(2200);
+}
+
+async function requestScene() {
+  await go('desk', '/dashboard');
+  await dark(null);
+  await chip(C.s2.chip);
+  await sleep(500);
+  await spot('desk', '.req', 6);
+  await caption('s2', 'left');
+  await sleep(3800);
+  await caption('s2b', 'left');
+  await click('desk', '.req form[action$="/confirm"] button');
+  hideCursor();
+  await sleep(1500);
+  await spot('desk', null);
+}
+
+async function agendaScene() {
+  await go('desk', '/dashboard/agenda');
+  await chip(C.s3.chip);
+  await caption('s3', 'right');
+  await sleep(600);
+  const ev = findByText('desk', '.fc-timegrid-event', 'Youssef Amrani');
+  if (ev) { await spot('desk', ev, 8); await sleep(1200); await click('desk', ev); }
+  hideCursor();
+  await sleep(1400);
+  await spot('desk', '#rdv .modal-content', 4);
+  await sleep(2400);
+  await spot('desk', null);
+  win('desk').document.querySelector('#rdv .btn-close')?.click();
+}
+
+async function fileScene() {
+  await chip(C.s4.chip);
+  await caption('s4', 'right');
+  doc('desk').dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }));
+  await sleep(500);
+  await type('desk', '[data-search-input]', 'youssef am', 80);
+  await sleep(900);
+  await spot('desk', '.search-box', 4);
+  await sleep(1200);
+  await click('desk', '.search-results a');
+  await spot('desk', null);
+  await waitFor('desk', '[data-odontogram] .tooth'); await sleep(800);
+  await spot('desk', '.odo-mouth', 4);
+  await caption('s4b', 'left');
+  await sleep(800);
+  await click('desk', '.tooth[data-tooth="36"]', { svg: true });
+  await spot('desk', null);
+  await sleep(700);
+  await click('desk', '[data-big] [data-surface="O"]', { svg: true });
+  await sleep(500);
+  await click('desk', '[data-big] [data-surface="D"]', { svg: true });
+  await sleep(600);
+  await spot('desk', '[data-editor]', 0);
+  await sleep(1400);
+  await click('desk', '[data-save]');
+  hideCursor();
+  await spot('desk', null);
+  await sleep(1300);
+}
+
+async function phoneFileScene() {
+  const p = $('p-split');
+  p.querySelector('.kicker').textContent = C.s5.step;
+  p.querySelector('.big').innerHTML = hl(C.s5.title);
+  p.querySelector('.points').innerHTML = C.s5.points.map((x) => `<li>${x}</li>`).join('');
+  await caption(null); await chip(null);
+  const url = new URL(doc('desk').location.href).pathname;
+  await go('mob', url);
+  const odo = doc('mob').querySelector('[data-odontogram]');
+  if (odo) win('mob').scrollTo(0, odo.getBoundingClientRect().top + win('mob').scrollY - 60);
+  doc('mob').querySelector('[data-arch=lower]')?.click();
+  await dark('p-split');
+  gsap.from('#p-split .side > *, #p-split .points li', { x: 20, opacity: 0, stagger: .12, duration: .6, ease: 'power3.out' });
+  await sleep(1400);
+  await click('mob', '.tooth[data-tooth="36"]', { svg: true });
+  hideCursor();
+  await sleep(3200);
+}
+
+async function invoiceScene() {
+  await dark(null);
+  await chip(C.s6.chip);
+  await click('desk', 'form[action$="/factures"] button');
+  await waitFor('desk', '[data-act-picker]'); await sleep(700);
+  await caption('s6', 'right');
+  await spot('desk', '.box', 4);
+  const pick = async (label) => {
+    const s = el('desk', '[data-act-picker]');
+    await moveTo('desk', s);
+    s.value = [...s.options].find((o) => o.textContent.startsWith(label)).value;
+    s.dispatchEvent(new Event('change'));
+    await sleep(900);
+  };
+  await pick('Urgence');
+  await pick('Composite 2 faces');
+  const row = [...doc('desk').querySelectorAll('[data-line]')].find((r) => r.querySelector('[name$="[label]"]').value.startsWith('Composite'));
+  if (row) { await type('desk', row.querySelector('[name$="[tooth]"]'), '36', 120); }
+  await sleep(800);
+  await spot('desk', null);
+  await click('desk', '[data-validate]');
+  await waitFor('desk', '[data-doc-frame]'); await sleep(1200);
+  await caption('s6b', 'left');
+  await spot('desk', '[data-doc-frame]', 2);
+  await sleep(2000);
+  await spot('desk', null);
+  await click('desk', 'label[for="m-carte"]');
+  await click('desk', 'form[action$="/paiements"] button');
+  hideCursor();
+  await sleep(1200);
+  await spot('desk', '.col-xl-4 .box', 4);
+  await sleep(1800);
+  await spot('desk', null);
+}
+
+async function statsScene() {
+  await go('desk', '/dashboard/statistiques');
+  await chip(C.s7.chip);
+  await caption('s7', 'right');
+  await spot('desk', '.insight-box', 4);
+  await sleep(3600);
+  await spot('desk', null);
+  await caption('s7b', 'left');
+  await scrollFrame('desk', '[data-heat]', 140, 900);
+  await spot('desk', '[data-heat]', 10);
+  await hover('desk', '.heat .cell:nth-of-type(14)', ['mousemove']);
+  await sleep(2600);
+  await spot('desk', null);
+  hideCursor();
+}
+
+async function aiScene() {
+  await go('desk', '/dashboard/assistant');
+  await chip(C.s8.chip);
+  await caption('s8', 'right');
+  await spot('desk', '.col-xl-4 .box', 4);
+  await sleep(4400);
+  await spot('desk', null);
+}
+
+async function recapScene() {
+  await caption(null); await chip(null);
+  const p = $('p-recap');
+  p.querySelector('.big').innerHTML = hl(C.recap.title);
+  p.querySelector('.cards').innerHTML = C.recap.points.map(([b, s], i) => `<div class="c"><em>0${i + 1}</em><b>${b}</b><span>${s}</span></div>`).join('');
+  p.querySelector('.stack').textContent = C.recap.stack;
+  await dark('p-recap');
+  gsap.from('#p-recap .c', { y: 20, opacity: 0, stagger: .15, duration: .6, ease: 'power3.out' });
+  await sleep(6200);
+}
+
+async function endScene() {
+  const p = $('p-end');
+  p.querySelector('.big').textContent = C.end.title;
+  p.querySelector('.lead').textContent = C.end.sub;
+  p.querySelector('.cta').textContent = C.end.cta;
+  await dark('p-end');
+  gsap.from('#p-end > *', { y: 20, opacity: 0, stagger: .12, duration: .6, ease: 'power3.out' });
+  await sleep(4500);
+}
+
+(async () => {
+  C = (await (await fetch('/_demo/captions-linkedin.json')).json())[LANG];
+  document.documentElement.lang = LANG;
+  // Pre-roll (not recorded): log in, open the patient site on the phone.
+  await go('desk', '/login');
+  doc('desk').querySelector('#email').value = 'dentiste@snan.test';
+  doc('desk').querySelector('#password').value = 'snan2026';
+  await new Promise((r) => { frames.desk.onload = r; doc('desk').querySelector('form').submit(); });
+  try { localStorage.clear(); } catch {}
+  await go('mob', '/');
+  try { win('mob').localStorage.removeItem('snan.token'); } catch {}
+  await go('desk', '/dashboard');
+  document.querySelectorAll('.panel').forEach((p) => { p.style.display = 'none'; });
+  $('dark').style.opacity = 1; // the video opens on the dark title, never on a half-loaded page
+  await sleep(1200);
+  window.__t0 = Date.now();
+  gsap.to('#bar', { scaleX: 1, duration: TOTAL, ease: 'none' });
+  for (const scene of [titleScene, bookingScene, requestScene, agendaScene, fileScene, phoneFileScene, invoiceScene, statsScene, aiScene, recapScene, endScene]) {
+    const t = Date.now();
+    try { await scene(); } catch (e) { console.warn('scene failed', scene.name, e.message); }
+    console.warn('scene', scene.name, ((Date.now() - t) / 1000).toFixed(1) + ' s');
+  }
+  window.__tEnd = Date.now();
+})();
+</script>
+</body>
+</html>
