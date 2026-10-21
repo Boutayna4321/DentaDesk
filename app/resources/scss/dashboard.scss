@@ -61,6 +61,11 @@ body { -webkit-font-smoothing: antialiased; }
   .who { display: flex; justify-content: space-between; font-weight: 700; font-size: .84rem; span { font-weight: 600; color: $mute; font-size: .72rem; } }
   .said { background: #f6f2ff; color: #3b2a66; border-radius: .5rem; padding: .45rem .6rem; margin-top: .4rem; font-size: .8rem; }
   .sum { font-size: .76rem; color: $mute; margin-top: .4rem; b { color: $ink; } }
+  .meaning { margin-top: .4rem; font-size: .8rem; color: $ink; border-left: 2px solid $blue; padding: .15rem 0 .15rem .6rem;
+    .lang { font-size: .6rem; font-weight: 800; letter-spacing: .08em; background: $tint; color: $blue; border-radius: .2rem; padding: .05rem .3rem; margin-right: .4rem; vertical-align: 1px; }
+    .gloss { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .35rem;
+      span { font-size: .7rem; background: #f5f7fb; border: 1px solid $line; border-radius: .3rem; padding: .05rem .4rem; color: $mute; }
+      b { color: $ink; font-weight: 700; margin-right: .2rem; } } }
   .act { display: flex; gap: .35rem; margin-top: .55rem; flex-wrap: wrap; } }
 .type { font-size: .62rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: .15rem .45rem; border-radius: .25rem;
   &.booking { background: $tint; color: $blue; } &.reschedule { background: #fff4e0; color: $amber; }
@@ -68,6 +73,10 @@ body { -webkit-font-smoothing: antialiased; }
 
 .info-l { display: flex; justify-content: space-between; gap: 1rem; padding: .45rem 0; border-bottom: 1px dashed $line; font-size: .82rem; span { color: $mute; } }
 .alert-allergy { background: #fde8e8; color: $red; border-radius: .4rem; padding: .45rem .65rem; font-weight: 700; font-size: .78rem; margin-top: .6rem; }
+
+.translate-toggle { display: inline-flex; border: 1px solid $line; border-radius: .4rem; overflow: hidden; background: #fff;
+  button { border: 0; background: none; font-size: .7rem; font-weight: 800; padding: .25rem .55rem; color: $mute;
+    &.on { background: $ink; color: #fff; } } }
 
 // ── odontogram (FDI) ────────────────────────────────────────────────
 .odo { --gap: 3px;

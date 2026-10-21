@@ -103,3 +103,24 @@
 {"text": "3tini recette dyal tajine", "intent": "hors_sujet"}
 {"text": "واش كتعرف شي طبيب ديال القلب", "intent": "hors_sujet"}
 {"text": "je veux acheter une voiture", "intent": "hors_sujet"}
+{"text": "hi, is there any chance to see the dentist this week?", "intent": "prendre_rdv"}
+{"text": "could you fit me in on Monday morning", "intent": "prendre_rdv"}
+{"text": "I'd like to bring my wife for a check up", "intent": "prendre_rdv"}
+{"text": "my molar is killing me since last night", "intent": "urgence"}
+{"text": "I cracked a tooth eating nuts, it really hurts", "intent": "urgence"}
+{"text": "my gum is swollen and painful", "intent": "urgence"}
+{"text": "something came up, I have to cancel tomorrow", "intent": "annuler"}
+{"text": "please drop my appointment, I'm travelling", "intent": "annuler"}
+{"text": "could we push my visit to next Tuesday?", "intent": "deplacer"}
+{"text": "is it possible to come later in the day instead", "intent": "deplacer"}
+{"text": "till what time are you open today?", "intent": "horaires"}
+{"text": "do you work on Saturdays", "intent": "horaires"}
+{"text": "how can I find your office", "intent": "adresse"}
+{"text": "what street is the clinic on", "intent": "adresse"}
+{"text": "is my insurance accepted?", "intent": "question_faq"}
+{"text": "roughly how long does whitening last", "intent": "question_faq"}
+{"text": "hey there", "intent": "salutation"}
+{"text": "thanks so much", "intent": "merci"}
+{"text": "yep that's fine", "intent": "affirmer"}
+{"text": "nah, another day", "intent": "nier"}
+{"text": "can you recommend a hotel in Marrakech", "intent": "hors_sujet"}

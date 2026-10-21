@@ -15,6 +15,11 @@ class NluClient
         return $this->post('/parse', ['text' => $text, 'today' => $today]);
     }
 
+    public function interpret(string $text, string $today): ?array
+    {
+        return $this->post('/interpret', ['text' => $text, 'today' => $today]);
+    }
+
     /** @param  list<array{id:int,texts:list<string>}>  $faqs */
     public function faq(string $text, array $faqs): ?array
     {

@@ -84,3 +84,20 @@ def test_international_phone():
 ])
 def test_name(text, name):
     assert extract(text, WED).name == name
+
+
+@pytest.mark.parametrize("text,date_,part,time,service", [
+    ("Can I come tomorrow morning?", "2026-10-22", "morning", None, None),
+    ("my tooth hurts, anything today at 3pm?", "2026-10-21", "afternoon", "15:00", "urgence"),
+    ("I'd like a cleaning on Friday at 10:30am", "2026-10-23", "morning", "10:30", "detartrage"),
+    ("braces for my daughter next week", "2026-10-26", None, None, "orthodontie"),
+    ("Does the whitening hurt?", None, None, None, "blanchiment"),  # "hurt" is a question, "hurts" is pain
+])
+def test_english(text, date_, part, time, service):
+    e = extract(text, WED)
+    assert (e.date, e.part_of_day, e.time, e.service) == (date_, part, time, service)
+
+
+@pytest.mark.parametrize("text,name", [("my name is Emma Clarke", "Emma Clarke"), ("I'm looking for a dentist", None)])
+def test_english_name(text, name):
+    assert extract(text, WED).name == name

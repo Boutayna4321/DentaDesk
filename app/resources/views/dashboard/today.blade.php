@@ -39,7 +39,7 @@
     </div>
     <div class="col-xl-5">
         <div class="box">
-            <div class="hd">Demandes à valider <a href="{{ route('dash.requests') }}">{{ $openRequests }} en attente →</a></div>
+            <div class="hd">Demandes à valider <span class="d-flex gap-2 align-items-center">@include('dashboard.partials.translate-toggle')<a href="{{ route('dash.requests') }}">{{ $openRequests }} en attente →</a></span></div>
             @forelse ($requests as $r)
                 @include('dashboard.partials.request', ['r' => $r])
             @empty

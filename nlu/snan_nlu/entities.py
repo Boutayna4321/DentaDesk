@@ -18,27 +18,27 @@ def _alts(words: list[str]) -> str:
 
 
 TODAY = ["lyouma", "lyoum", "lyom", "lioma", "liouma", "lyoma", "lyouma", "aujourdhui", "aujourd hui", "auj", "ce jour",
-         "اليوم", "ليوما", "اليوما", "ليوم", "had nhar", "had nhar"]
-TOMORROW = ["ghedda", "ghda", "ghadda", "gheda", "ghdda", "ghedwa", "ghdwa", "rhda", "demain", "غدا", "غدوه", "غدوة", "غدّا"]
-AFTER_TOMORROW = ["ba3d ghedda", "b3d ghda", "ba3d ghda", "b3d ghedda", "apres demain", "après-demain", "بعد غدا", "بعد غدوه"]
+         "اليوم", "ليوما", "اليوما", "ليوم", "had nhar", "today", "tonight", "this afternoon", "this morning"]
+TOMORROW = ["ghedda", "ghda", "ghadda", "gheda", "ghdda", "ghedwa", "ghdwa", "rhda", "demain", "غدا", "غدوه", "غدوة", "غدّا", "tomorrow", "tmrw"]
+AFTER_TOMORROW = ["ba3d ghedda", "b3d ghda", "ba3d ghda", "b3d ghedda", "apres demain", "après-demain", "بعد غدا", "بعد غدوه", "the day after tomorrow", "day after tomorrow"]
 NEXT_WEEK = ["simana jaya", "semaine jaya", "simana jaia", "la semaine prochaine", "semaine prochaine", "l osbou3 jay",
-             "الاسبوع الجاي", "السيمانة الجاية", "الأسبوع المقبل"]
+             "الاسبوع الجاي", "السيمانة الجاية", "الأسبوع المقبل", "next week"]
 
 WEEKDAYS = {
-    1: ["lundi", "tnin", "letnin", "ltnin", "l tnin", "etnin", "الاثنين", "الاتنين", "التنين", "الإثنين"],
-    2: ["mardi", "tlat", "ttlat", "tlata nhar", "ttlata", "الثلاثاء", "التلات", "الثلاثا"],
-    3: ["mercredi", "larb3", "lareb3", "larba3", "l arb3", "larbe3", "الاربعاء", "الأربعاء", "الاربع", "لاربع"],
-    4: ["jeudi", "lkhmis", "khmis", "l khmis", "lekhmis", "الخميس", "لخميس"],
-    5: ["vendredi", "jem3a", "jm3a", "jom3a", "joum3a", "jema3", "الجمعة", "الجمعه", "جمعه", "جمعة"],
-    6: ["samedi", "sebt", "sbt", "ssebt", "s sebt", "essebt", "السبت", "سبت"],
-    7: ["dimanche", "l7ed", "l7ad", "nhar l7ed", "7ed", "lahad", "الاحد", "الأحد", "الحد"],
+    1: ["lundi", "tnin", "letnin", "ltnin", "l tnin", "etnin", "الاثنين", "الاتنين", "التنين", "الإثنين", "monday"],
+    2: ["mardi", "tlat", "ttlat", "tlata nhar", "ttlata", "الثلاثاء", "التلات", "الثلاثا", "tuesday"],
+    3: ["mercredi", "larb3", "lareb3", "larba3", "l arb3", "larbe3", "الاربعاء", "الأربعاء", "الاربع", "لاربع", "wednesday"],
+    4: ["jeudi", "lkhmis", "khmis", "l khmis", "lekhmis", "الخميس", "لخميس", "thursday"],
+    5: ["vendredi", "jem3a", "jm3a", "jom3a", "joum3a", "jema3", "الجمعة", "الجمعه", "جمعه", "جمعة", "friday"],
+    6: ["samedi", "sebt", "sbt", "ssebt", "s sebt", "essebt", "السبت", "سبت", "saturday"],
+    7: ["dimanche", "l7ed", "l7ad", "nhar l7ed", "7ed", "lahad", "الاحد", "الأحد", "الحد", "sunday"],
 }
 
 MORNING = ["sba7", "sbah", "s sba7", "ssba7", "sbe7", "fsba7", "matin", "matinee", "le matin", "الصباح", "صباح", "فالصباح",
-           "9bel lghda", "9bel ftour", "qbel lghda", "avant midi"]
+           "9bel lghda", "9bel ftour", "qbel lghda", "avant midi", "morning", "before noon", "before lunch"]
 AFTERNOON = ["3chiya", "l3chiya", "l3achiya", "l3echiya", "3achiya", "l3chia", "achiya", "apres midi", "après-midi", "aprem",
-             "العشية", "العشيه", "بعد الظهر", "فالعشية", "mn b3d lghda", "ba3d lghda", "b3d lghda", "apres le dejeuner"]
-EVENING = ["f lil", "flil", "lil", "le soir", "soir", "fin de journee", "l3chiya lkhra", "المسا", "المساء", "فالليل"]
+             "العشية", "العشيه", "بعد الظهر", "فالعشية", "mn b3d lghda", "ba3d lghda", "b3d lghda", "apres le dejeuner", "afternoon", "after lunch"]
+EVENING = ["f lil", "flil", "lil", "le soir", "soir", "fin de journee", "l3chiya lkhra", "المسا", "المساء", "فالليل", "evening", "after work", "late in the day"]
 
 # Darija hour words. A clinic is open 9h–19h, so 1..7 mean the afternoon.
 HOUR_WORDS = {
@@ -51,19 +51,22 @@ SERVICES = {
     "urgence": ["wjee3", "wje3", "wja3", "wjaa3", "ouja3", "kayderni", "kaydrni", "tayderni", "kaydarni", "derni", "dorni",
                 "kaydorni", "douleur", "j ai mal", "jai mal", "tres mal", "mal a une dent", "mal au dent", "mal aux dent", "mal aux dents", "mal a la dent", "abces", "gonfle", "mnfou5",
                 "ntfa5", "tkesrat", "therrsat", "therset", "dent cassee", "urgence", "urgent", "daruri", "وجع", "كيضرني",
-                "تيضرني", "ضرني", "مضروب", "منفوخ", "تهرسات", "مستعجل", "سخفة", "sakhfa"],
+                "تيضرني", "ضرني", "مضروب", "منفوخ", "تهرسات", "مستعجل", "سخفة", "sakhfa",
+                "toothache", "hurts", "hurting", "painful", "pain", "swollen", "abscess", "broke", "broken tooth", "cracked",
+                "chipped", "bleeding", "emergency", "killing me"],
     "detartrage": ["detartrage", "nettoyage", "tnqiya", "tn9iya", "tna9iya", "tnadif", "tnqya", "nqi snani", "n9i snani",
-                   "jir", "tartre", "تنظيف", "تنقية", "الجير"],
+                   "jir", "tartre", "تنظيف", "تنقية", "الجير", "cleaning", "scale and polish"],
     "blanchiment": ["blanchiment", "tbyed", "tbyad", "tabyid", "nbeyed", "nbyed", "byed snani", "dents blanches",
-                    "blanchir", "تبييض", "تبياض", "نبيض"],
-    "implant": ["implant", "implants", "zre3", "zar3", "zra3", "dent manquante", "زرع", "زراعة"],
+                    "blanchir", "تبييض", "تبياض", "نبيض", "whitening", "whiten"],
+    "implant": ["implant", "implants", "zre3", "zar3", "zra3", "dent manquante", "زرع", "زراعة", "missing tooth"],
     "orthodontie": ["orthodontie", "ortho", "appareil", "bagues", "aligneurs", "aligneur", "gouttieres", "tqwim", "ta9wim",
-                    "tq9wim", "snan m3awjin", "m3awjin", "تقويم", "معوجين"],
+                    "tq9wim", "snan m3awjin", "m3awjin", "تقويم", "معوجين", "braces", "aligners", "invisalign"],
     "enfant": ["wlidi", "weldi", "bnti", "bniti", "binti", "lwlad", "drari", "drri", "7fidi", "mon fils", "ma fille",
-               "enfant", "mon enfant", "pediatrique", "ولدي", "بنتي", "الدراري", "ولادي"],
-    "carie": ["carie", "caries", "sossa", "ssousa", "sousa", "plombage", "7chwa", "hchwa", "trou", "سوسة", "سوسه", "حشوة"],
-    "extraction": ["9la3", "qla3", "n9le3", "n9la3", "nqle3", "extraction", "arracher", "enlever une dent", "قلع", "نقلع"],
-    "controle": ["controle", "control", "check", "visite de controle", "nchouf snani", "تشييك", "مراقبة"],
+               "enfant", "mon enfant", "pediatrique", "ولدي", "بنتي", "الدراري", "ولادي",
+                "my son", "my daughter", "my kid", "my child", "my little"],
+    "carie": ["carie", "caries", "sossa", "ssousa", "sousa", "plombage", "7chwa", "hchwa", "trou", "سوسة", "سوسه", "حشوة", "cavity", "filling"],
+    "extraction": ["9la3", "qla3", "n9le3", "n9la3", "nqle3", "extraction", "arracher", "enlever une dent", "قلع", "نقلع", "extraction", "pull a tooth", "pulled"],
+    "controle": ["controle", "control", "check", "visite de controle", "nchouf snani", "تشييك", "مراقبة", "checkup", "check up"],
 }
 # When the message names nothing specific, the booking defaults to a consultation.
 
@@ -81,15 +84,18 @@ _SERVICE_RE = {s: re.compile(rf"(?<!\w)({_alts(ws)})") for s, ws in SERVICES.ite
 # Darija "it hurts me/her/him": derni, dorni, kaderha, katdorni, tayderni, kaydorlha…
 _PAIN_RE = re.compile(r"(?<!\w)(?:ka|ta|kay|tay|kat|tat)?d[oe]?r+(?:ni|ha|lha|li|na|kom)(?!\w)")
 _HOUR_WORD_RE = re.compile(rf"(?:m3a|mea|f|fi|a|on|ma3)\s+({'|'.join(sorted(HOUR_WORDS, key=len, reverse=True))})(?:\s+(w\s*nos|w\s*ness|w\s*rbe3|w\s*rob3|و\s*نص))?(?!\w)")
+_AMPM_RE = re.compile(r"(?<![\d/])(1[0-2]|0?[1-9])(?::([0-5]\d))?\s*(am|pm)(?!\w)")
 _TIME_RE = re.compile(r"(?<![\d/])([01]?\d|2[0-3])\s*(?:h|:|heures?|h00)\s*([0-5]\d)?(?![\d/])")
 _DATE_RE = re.compile(r"(?:le|nhar|يوم|نهار)\s+(\d{1,2})(?:\s*/\s*(\d{1,2}))?(?!\s*h)(?!\d)")
 _PHONE_RE = re.compile(r"(?:\+?212|00212|0)\s*([5-7])(?:[\s.]*\d){8}")
 _NAME_RE = re.compile(
-    r"(?:smiti|smiyti|smiya dyali|smitii|ana smiti|je m appelle|je mappelle|mon nom est|c est|ana|moi c est|اسمي|سميتي|انا)\s+"
+    r"(?:smiti|smiyti|smiya dyali|smitii|ana smiti|je m appelle|je mappelle|mon nom est|c est|ana|moi c est|اسمي|سميتي|انا|my name is|i m|i am|this is)\s+"
     r"([a-zء-ي]{2,20}(?:\s+[a-zء-ي]{2,20})?)"
 )
 _NAME_STOP = {"3andi", "andi", "bghit", "baghi", "baghya", "bghyt", "kan", "f", "m3a", "mn", "ghadi", "je", "veux", "voudrais",
-              "ana", "la", "le", "malade", "mrid", "mrida", "hna", "عندي", "بغيت", "من", "في", "مريض"}
+              "ana", "la", "le", "malade", "mrid", "mrida", "hna", "عندي", "بغيت", "من", "في", "مريض",
+              "looking", "not", "going", "sorry", "travelling", "traveling", "fine", "available", "in", "a", "the", "here", "calling",
+              "having", "trying", "very", "so", "free", "late", "busy", "sure", "ok", "afraid"}
 
 
 @dataclass
@@ -163,7 +169,10 @@ def extract(text: str, today: date) -> Entities:
     else:
         t_time = t
 
-    if m := _TIME_RE.search(t_time):
+    if m := _AMPM_RE.search(t_time):
+        h, mins = int(m.group(1)) % 12, int(m.group(2) or 0)
+        e.time = f"{h + (12 if m.group(3) == 'pm' else 0):02d}:{mins:02d}"
+    elif m := _TIME_RE.search(t_time):
         h, mins = int(m.group(1)), int(m.group(2) or 0)
         if 1 <= h <= 7:
             h += 12

@@ -43,3 +43,15 @@ def test_faq_stays_silent_when_nothing_matches():
 
 def test_empty_text_is_rejected():
     assert client.post("/parse", json={"text": ""}).status_code == 422
+
+
+def test_interpret_glosses_darija_words_in_order():
+    body = client.post("/interpret", json={"text": "Salam, 3andi wjee3 f dersi mn lbare7, kayn chi blassa ghedda?", "today": "2026-10-21"}).json()
+    assert body["intent"] == "urgence"
+    words = [g["word"] for g in body["glossary"]]
+    assert words == ["wjee3", "dersi", "mn lbare7", "blassa", "ghedda"]
+    assert body["glossary"][0]["en"] == "pain"
+
+
+def test_interpret_knows_nothing_it_was_not_taught():
+    assert client.post("/interpret", json={"text": "Vous acceptez la carte ?"}).json()["glossary"] == []

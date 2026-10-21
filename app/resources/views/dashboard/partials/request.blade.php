@@ -9,6 +9,17 @@
         <span>{{ $r->created_at->diffForHumans() }}</span>
     </div>
     <div class="said">« {{ $r->message }} »</div>
+    @php
+        $meaning = app(\App\Assistant\Interpreter::class)->describe($r->message, $r->created_at->toImmutable(), session('translate_to', 'fr'));
+    @endphp
+    @if ($meaning)
+        <div class="meaning">
+            <span class="lang">{{ strtoupper(session('translate_to', 'fr')) }}</span>{{ $meaning['sentence'] }}
+            @if ($meaning['glossary'])
+                <div class="gloss">@foreach ($meaning['glossary'] as $g)<span><b>{{ $g['word'] }}</b> {{ $g[session('translate_to', 'fr')] }}</span>@endforeach</div>
+            @endif
+        </div>
+    @endif
     <div class="sum">{{ $r->type === 'unanswered' ? 'L’assistant n’était pas sûr : il n’a pas répondu.' : 'Compris par l’assistant :' }} <b>{{ $r->type === 'unanswered' ? '' : $r->summary }}</b></div>
     @if ($full && $r->conversation)
         <details class="mt-2 small"><summary class="text-mute">Toute la conversation ({{ $r->conversation->messages->count() }} messages)</summary>

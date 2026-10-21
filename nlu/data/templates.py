@@ -1,4 +1,4 @@
-"""Phrasings per intent. Darija in Latin script, darija in Arabic script, French, Arabic.
+"""Phrasings per intent. Darija in Latin script, darija in Arabic script, French, Arabic, English.
 
 Fillers in {braces} come from FILLERS. Keep each intent between 25 and 45 templates so no
 class drowns the others.
@@ -15,7 +15,56 @@ FILLERS = {
     "service_ar": ["تنظيف السنان", "تبييض السنان", "تقويم", "زرع", "حشوة", "نقلع ضرسة"],
     "kid": ["wlidi", "bnti", "weldi", "mon fils", "ma fille", "lwlad", "bniti"],
     "tooth": ["dersi", "derssa", "snani", "ma dent", "une molaire", "snn", "dersa lfou9", "dersa lte7t"],
+    "day_en": ["tomorrow", "today", "on friday", "on saturday", "next monday", "on thursday", "the day after tomorrow", "next week"],
+    "part_en": ["in the morning", "in the afternoon", "after work", "this evening", "around noon"],
+    "time_en": ["10am", "3pm", "11:30", "9 am", "4 pm"],
+    "service_en": ["a cleaning", "teeth whitening", "an implant", "braces", "a checkup", "a filling", "an extraction", "a consultation"],
+    "kid_en": ["my son", "my daughter", "my kid", "my little boy"],
+    "tooth_en": ["my tooth", "a molar", "my wisdom tooth", "my front tooth", "my gums"],
 }
+
+# English, added after the first model: tourists, expats and students in Casablanca.
+ENGLISH = {
+    "prendre_rdv": [
+        "I'd like to book an appointment", "Can I get an appointment {day_en} {part_en}?", "Do you have anything {day_en}?",
+        "I need {service_en}", "Book me in for {service_en} {day_en}", "Is there a slot {day_en} at {time_en}?",
+        "I want to see the dentist {day_en}", "Appointment for {kid_en} please", "any availability {day_en}",
+        "Can I come in {day_en} {part_en}", "I'd like {service_en}, when are you free?", "booking for {service_en}",
+    ],
+    "urgence": [
+        "I have a terrible toothache", "{tooth_en} hurts a lot", "My tooth broke, can you see me today?", "I think I have an abscess",
+        "My face is swollen", "It's an emergency", "{kid_en} has a toothache", "{tooth_en} is bleeding",
+        "I couldn't sleep because of the pain", "severe pain in {tooth_en}, urgent", "I chipped {tooth_en}", "my filling fell out and it hurts",
+    ],
+    "annuler": [
+        "I need to cancel my appointment", "Please cancel my booking {day_en}", "I can't make it {day_en}", "cancel it please",
+        "I won't be able to come", "Cancel the appointment for {kid_en}", "I have to cancel, sorry",
+    ],
+    "deplacer": [
+        "Can I reschedule my appointment?", "I'd like to move my appointment to {day_en}", "Can we change it to {day_en} {part_en}?",
+        "Could I come {day_en} instead?", "Push my appointment back please", "I need a different time", "move my booking to {time_en}",
+    ],
+    "horaires": [
+        "What are your opening hours?", "When are you open?", "Are you open {day_en}?", "What time do you close?",
+        "Are you open on Sundays?", "What time do you open in the morning?", "opening times please",
+    ],
+    "adresse": [
+        "Where are you located?", "What's the address?", "How do I get to the clinic?", "Is there parking nearby?",
+        "Which floor is it on?", "Send me the location", "Are you near the tram?",
+    ],
+    "question_faq": [
+        "Do you take insurance?", "Do you accept CNSS?", "How much is {service_en}?", "Does {service_en} hurt?",
+        "Can I pay by card?", "Do you treat children?", "Does the dentist speak English?", "Do you do clear aligners?",
+        "How long does {service_en} take?", "Can I get a quote?",
+    ],
+    "salutation": ["hello", "hi there", "good morning", "good evening", "hey", "hello doctor"],
+    "merci": ["thank you", "thanks a lot", "thanks!", "much appreciated", "great, thank you", "cheers"],
+    "affirmer": ["yes", "yes please", "sure", "that works", "sounds good", "perfect", "that one", "ok great"],
+    "nier": ["no", "no thanks", "not that one", "that doesn't work", "another time please", "nope, something else"],
+    "hors_sujet": ["what's the weather like", "are you a robot?", "tell me a joke", "who won the game", "do you know a good restaurant",
+                   "I'm looking for a pharmacy", "are you hiring?", "what is your name"],
+}
+
 
 TEMPLATES = {
     "prendre_rdv": [
@@ -120,3 +169,6 @@ TEMPLATES = {
         "wach kat3rfo tbib dyal jild", "kifach ndir passport",
     ],
 }
+
+for _intent, _phrases in ENGLISH.items():
+    TEMPLATES[_intent].extend(_phrases)

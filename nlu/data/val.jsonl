@@ -1,3 +1,75 @@
+{"text": "wach kayn chi blassa ghda", "intent": "prendre_rdv", "group": "wach kayn chi blassa {day}"}
+{"text": "wach kayn chi blassa samedi", "intent": "prendre_rdv", "group": "wach kayn chi blassa {day}"}
+{"text": "wash kayn chi blassa samedi", "intent": "prendre_rdv", "group": "wach kayn chi blassa {day}"}
+{"text": "wach kayn chi blassa nhar tnin", "intent": "prendre_rdv", "group": "wach kayn chi blassa {day}"}
+{"text": "wesh kayn chi blassa nhar tnin", "intent": "prendre_rdv", "group": "wach kayn chi blassa {day}"}
+{"text": "waach kayn chi blassa nhar tnin", "intent": "prendre_rdv", "group": "wach kayn chi blassa {day}"}
+{"text": "wach kayn chi blassa la semaine prochaine", "intent": "prendre_rdv", "group": "wach kayn chi blassa {day}"}
+{"text": "Wach kayn chi blassa samedi 3afak", "intent": "prendre_rdv", "group": "wach kayn chi blassa {day}"}
+{"text": "wach kayn chi blassa ba3d ghedda", "intent": "prendre_rdv", "group": "wach kayn chi blassa {day}"}
+{"text": "Wash kayn chii blassa ba3d ghedda 3afak", "intent": "prendre_rdv", "group": "wach kayn chi blassa {day}"}
+{"text": "wach kayn chi blassa lkhmis", "intent": "prendre_rdv", "group": "wach kayn chi blassa {day}"}
+{"text": "waach kayn chi blassa lkhmis svp", "intent": "prendre_rdv", "group": "wach kayn chi blassa {day}"}
+{"text": "wach kayn chi blassa jeudi", "intent": "prendre_rdv", "group": "wach kayn chi blassa {day}"}
+{"text": "wach kayn chii blassa jeudi ??", "intent": "prendre_rdv", "group": "wach kayn chi blassa {day}"}
+{"text": "wash kayn chi blassa ghda", "intent": "prendre_rdv", "group": "wach kayn chi blassa {day}"}
+{"text": "Wach kayn chi blassa jeudi 3afak", "intent": "prendre_rdv", "group": "wach kayn chi blassa {day}"}
+{"text": "wach kayn chi blassa jeudi!", "intent": "prendre_rdv", "group": "wach kayn chi blassa {day}"}
+{"text": "kayn chi creneau ghedda?", "intent": "prendre_rdv", "group": "kayn chi creneau {day}?"}
+{"text": "Kayn chii creneau ghedda?", "intent": "prendre_rdv", "group": "kayn chi creneau {day}?"}
+{"text": "Kayn shi creneau ghedda?", "intent": "prendre_rdv", "group": "kayn chi creneau {day}?"}
+{"text": "kayn chi creneau lundi?", "intent": "prendre_rdv", "group": "kayn chi creneau {day}?"}
+{"text": "Kaayn chii creneau lundi?", "intent": "prendre_rdv", "group": "kayn chi creneau {day}?"}
+{"text": "kayn chi creneau la semaine prochaine?", "intent": "prendre_rdv", "group": "kayn chi creneau {day}?"}
+{"text": "kayn chi creneau demain?", "intent": "prendre_rdv", "group": "kayn chi creneau {day}?"}
+{"text": "kayn chi creneau demain? please", "intent": "prendre_rdv", "group": "kayn chi creneau {day}?"}
+{"text": "Kaayn chi creneau demain?", "intent": "prendre_rdv", "group": "kayn chi creneau {day}?"}
+{"text": "kayn chi creneau demain?!", "intent": "prendre_rdv", "group": "kayn chi creneau {day}?"}
+{"text": "kayn chi creneau nhar jem3a?", "intent": "prendre_rdv", "group": "kayn chi creneau {day}?"}
+{"text": "kayn shi creneau nhar jem3a?", "intent": "prendre_rdv", "group": "kayn chi creneau {day}?"}
+{"text": "kaayn chi creneau nhar jem3a?", "intent": "prendre_rdv", "group": "kayn chi creneau {day}?"}
+{"text": "kayn chi creneau vendredi?", "intent": "prendre_rdv", "group": "kayn chi creneau {day}?"}
+{"text": "kayn chi creneau vendredi? ??", "intent": "prendre_rdv", "group": "kayn chi creneau {day}?"}
+{"text": "kayn shi creneau vendredi?", "intent": "prendre_rdv", "group": "kayn chi creneau {day}?"}
+{"text": "Kayn chii creneau nhar jem3a?", "intent": "prendre_rdv", "group": "kayn chi creneau {day}?"}
+{"text": "Kayn chii crneau la semaine prochaine? please", "intent": "prendre_rdv", "group": "kayn chi creneau {day}?"}
+{"text": "momkin nji ghda m3a 9h30", "intent": "prendre_rdv", "group": "momkin nji {day} m3a {time}"}
+{"text": "momkiin nji ghda m3a 9h30", "intent": "prendre_rdv", "group": "momkin nji {day} m3a {time}"}
+{"text": "Momkin nji ghda maa 9h30", "intent": "prendre_rdv", "group": "momkin nji {day} m3a {time}"}
+{"text": "momkin nji nhar sebt m3a m3a jouj", "intent": "prendre_rdv", "group": "momkin nji {day} m3a {time}"}
+{"text": "momkiin nji nhar sebt m3a m3a jouj", "intent": "prendre_rdv", "group": "momkin nji {day} m3a {time}"}
+{"text": "momkin nji lyouma m3a 10h", "intent": "prendre_rdv", "group": "momkin nji {day} m3a {time}"}
+{"text": "momkin nji lyouma m3a 10h 3afak", "intent": "prendre_rdv", "group": "momkin nji {day} m3a {time}"}
+{"text": "momkin nji lkhmis m3a m3a l3achra", "intent": "prendre_rdv", "group": "momkin nji {day} m3a {time}"}
+{"text": "Momkin nji lkhmis m3a m3a l3achra ??", "intent": "prendre_rdv", "group": "momkin nji {day} m3a {time}"}
+{"text": "momkin nji samedi m3a 16h", "intent": "prendre_rdv", "group": "momkin nji {day} m3a {time}"}
+{"text": "momkiin nji samedi m3a 16h", "intent": "prendre_rdv", "group": "momkin nji {day} m3a {time}"}
+{"text": "momkin nji simana jaya m3a m3a ttlata w nos", "intent": "prendre_rdv", "group": "momkin nji {day} m3a {time}"}
+{"text": "momkin nji simana jaya m3a m3a ttlata w nos?", "intent": "prendre_rdv", "group": "momkin nji {day} m3a {time}"}
+{"text": "momkin nji ba3d ghedda m3a 15h", "intent": "prendre_rdv", "group": "momkin nji {day} m3a {time}"}
+{"text": "momkin nji baa3d ghdda m3a 15h", "intent": "prendre_rdv", "group": "momkin nji {day} m3a {time}"}
+{"text": "momkin nji ghedda m3a m3a ttlata w nos", "intent": "prendre_rdv", "group": "momkin nji {day} m3a {time}"}
+{"text": "momkin nji simana jaya m3a m3a jouj", "intent": "prendre_rdv", "group": "momkin nji {day} m3a {time}"}
+{"text": "momkiin nji simana jaya m3a m3a jouj", "intent": "prendre_rdv", "group": "momkin nji {day} m3a {time}"}
+{"text": "bghit nbooki larb3", "intent": "prendre_rdv", "group": "bghit nbooki {day}"}
+{"text": "Bghit nbooki larb3 svp", "intent": "prendre_rdv", "group": "bghit nbooki {day}"}
+{"text": "bghit nbooki larba svp", "intent": "prendre_rdv", "group": "bghit nbooki {day}"}
+{"text": "brit nbooki larb3", "intent": "prendre_rdv", "group": "bghit nbooki {day}"}
+{"text": "bghit nbooki ghedda", "intent": "prendre_rdv", "group": "bghit nbooki {day}"}
+{"text": "bghit nbooki demain", "intent": "prendre_rdv", "group": "bghit nbooki {day}"}
+{"text": "bghit nbooki la semaine prochaine", "intent": "prendre_rdv", "group": "bghit nbooki {day}"}
+{"text": "bghit nbooki laa semaine prochaine", "intent": "prendre_rdv", "group": "bghit nbooki {day}"}
+{"text": "bghit nbooki aujourd'hui", "intent": "prendre_rdv", "group": "bghit nbooki {day}"}
+{"text": "bghit nbooki aaujurd'hui", "intent": "prendre_rdv", "group": "bghit nbooki {day}"}
+{"text": "bghit nbooki lyouma", "intent": "prendre_rdv", "group": "bghit nbooki {day}"}
+{"text": "bghyt nbooki lyouma", "intent": "prendre_rdv", "group": "bghit nbooki {day}"}
+{"text": "bghit nbooki samedi", "intent": "prendre_rdv", "group": "bghit nbooki {day}"}
+{"text": "bghit nbooki samedi ??", "intent": "prendre_rdv", "group": "bghit nbooki {day}"}
+{"text": "bghit nbooki samedi please", "intent": "prendre_rdv", "group": "bghit nbooki {day}"}
+{"text": "brit nbooki samedi", "intent": "prendre_rdv", "group": "bghit nbooki {day}"}
+{"text": "Je voudrais prendre rendez-vous", "intent": "prendre_rdv", "group": "Je voudrais prendre rendez-vous"}
+{"text": "Je vudrais prendre rendez-vous", "intent": "prendre_rdv", "group": "Je voudrais prendre rendez-vous"}
+{"text": "Je voudrais prendre rendez-vous ??", "intent": "prendre_rdv", "group": "Je voudrais prendre rendez-vous"}
 {"text": "Avez-vous un créneau ba3d ghedda ?", "intent": "prendre_rdv", "group": "Avez-vous un créneau {day} ?"}
 {"text": "Avez-vous un créneau ba3d redda ?", "intent": "prendre_rdv", "group": "Avez-vous un créneau {day} ?"}
 {"text": "Avez-vous un créneau lkhmis ?", "intent": "prendre_rdv", "group": "Avez-vous un créneau {day} ?"}
@@ -17,344 +89,308 @@
 {"text": "Avz-vous un créneau lundi ? svp", "intent": "prendre_rdv", "group": "Avez-vous un créneau {day} ?"}
 {"text": "Avez-vous un créneau ghedda ?", "intent": "prendre_rdv", "group": "Avez-vous un créneau {day} ?"}
 {"text": "Avez-vous un créneau ghedda ? ??", "intent": "prendre_rdv", "group": "Avez-vous un créneau {day} ?"}
-{"text": "Bonjour, je cherche un rdv pour wlidi", "intent": "prendre_rdv", "group": "Bonjour, je cherche un rdv pour {kid}"}
-{"text": "Bonjur, je cherche un rdv pour wlidi", "intent": "prendre_rdv", "group": "Bonjour, je cherche un rdv pour {kid}"}
-{"text": "Bonjour, je cherche un rdv pour mon fils", "intent": "prendre_rdv", "group": "Bonjour, je cherche un rdv pour {kid}"}
-{"text": "Bonjour, je cherche un rdv pour mon fils 3afak", "intent": "prendre_rdv", "group": "Bonjour, je cherche un rdv pour {kid}"}
-{"text": "Bonjour, je cherche un rdv pour mon fils svp", "intent": "prendre_rdv", "group": "Bonjour, je cherche un rdv pour {kid}"}
-{"text": "Bonjour, je cherche un rdv pour lwlad", "intent": "prendre_rdv", "group": "Bonjour, je cherche un rdv pour {kid}"}
-{"text": "Bonjor, je cherche un rdv pour lwlad", "intent": "prendre_rdv", "group": "Bonjour, je cherche un rdv pour {kid}"}
-{"text": "Bonjour, j cherche un rdv pour lwlaad please", "intent": "prendre_rdv", "group": "Bonjour, je cherche un rdv pour {kid}"}
-{"text": "Bonjour, je cherche un rdv pour bnti", "intent": "prendre_rdv", "group": "Bonjour, je cherche un rdv pour {kid}"}
-{"text": "Bonjour, je cherche un rdv pour ma fille", "intent": "prendre_rdv", "group": "Bonjour, je cherche un rdv pour {kid}"}
-{"text": "Bonjour, je cherche un rdv pour ma fiille 3afak", "intent": "prendre_rdv", "group": "Bonjour, je cherche un rdv pour {kid}"}
-{"text": "Bonjour, j sherche un rdv pour ma fille", "intent": "prendre_rdv", "group": "Bonjour, je cherche un rdv pour {kid}"}
-{"text": "Bonjor, je cherche un rdv pour bnti", "intent": "prendre_rdv", "group": "Bonjour, je cherche un rdv pour {kid}"}
-{"text": "Bonjour, je cherche un rdv pour weldi", "intent": "prendre_rdv", "group": "Bonjour, je cherche un rdv pour {kid}"}
-{"text": "Bonjour, je cherche un rdv pour ma fille ??", "intent": "prendre_rdv", "group": "Bonjour, je cherche un rdv pour {kid}"}
-{"text": "Bonjour, je cherche un rdv pour ma fiille", "intent": "prendre_rdv", "group": "Bonjour, je cherche un rdv pour {kid}"}
-{"text": "بغيت موعد", "intent": "prendre_rdv", "group": "بغيت موعد"}
-{"text": "بغيت ناخد موعد نهار السبت", "intent": "prendre_rdv", "group": "بغيت ناخد موعد {day_ar}"}
-{"text": "بغيت ناخد موعد بعد غدا", "intent": "prendre_rdv", "group": "بغيت ناخد موعد {day_ar}"}
-{"text": "بغيت ناخد موعد الاثنين", "intent": "prendre_rdv", "group": "بغيت ناخد موعد {day_ar}"}
-{"text": "بغيت ناخد موعد الخميس", "intent": "prendre_rdv", "group": "بغيت ناخد موعد {day_ar}"}
-{"text": "بغيت ناخد موعد نهار الجمعة", "intent": "prendre_rdv", "group": "بغيت ناخد موعد {day_ar}"}
-{"text": "بغيت ناخد موعد غدا", "intent": "prendre_rdv", "group": "بغيت ناخد موعد {day_ar}"}
-{"text": "بغيت ندير نقلع ضرسة", "intent": "prendre_rdv", "group": "بغيت ندير {service_ar}"}
-{"text": "بغيت ندير زرع", "intent": "prendre_rdv", "group": "بغيت ندير {service_ar}"}
-{"text": "بغيت ندير حشوة", "intent": "prendre_rdv", "group": "بغيت ندير {service_ar}"}
-{"text": "بغيت ندير تبييض السنان", "intent": "prendre_rdv", "group": "بغيت ندير {service_ar}"}
-{"text": "بغيت ندير تنظيف السنان", "intent": "prendre_rdv", "group": "بغيت ندير {service_ar}"}
-{"text": "أود حجز موعد عند الطبيبة", "intent": "prendre_rdv", "group": "أود حجز موعد عند الطبيبة"}
-{"text": "bghit nji ndir sossa ghda sba7", "intent": "prendre_rdv", "group": "bghit nji ndir {service} {day} {part}"}
-{"text": "Bghyt nji ndir sossa ghda sba7 merci", "intent": "prendre_rdv", "group": "bghit nji ndir {service} {day} {part}"}
-{"text": "bghit nji ndir sossa ghda f l3chiya", "intent": "prendre_rdv", "group": "bghit nji ndir {service} {day} {part}"}
-{"text": "bghit nji ndir blanchiment demain l3chiya", "intent": "prendre_rdv", "group": "bghit nji ndir {service} {day} {part}"}
-{"text": "bghit nji ndir blanshiment demain l3chiya", "intent": "prendre_rdv", "group": "bghit nji ndir {service} {day} {part}"}
-{"text": "bghit nji ndir plombage simana jaya en fin de journée", "intent": "prendre_rdv", "group": "bghit nji ndir {service} {day} {part}"}
-{"text": "bghit nji ndir sossaa ghda sba7", "intent": "prendre_rdv", "group": "bghit nji ndir {service} {day} {part}"}
-{"text": "bghit nji ndir blanchiment nhar sebt f sba7", "intent": "prendre_rdv", "group": "bghit nji ndir {service} {day} {part}"}
-{"text": "Bghiit nji ndir blanchiment nhar sebt f sba7 please", "intent": "prendre_rdv", "group": "bghit nji ndir {service} {day} {part}"}
-{"text": "bghit nji ndir appareil lyouma f lil", "intent": "prendre_rdv", "group": "bghit nji ndir {service} {day} {part}"}
-{"text": "Bghit nji ndir apparil lyouma f lil", "intent": "prendre_rdv", "group": "bghit nji ndir {service} {day} {part}"}
-{"text": "bghit nji ndir extraction lyouma f l3chiya", "intent": "prendre_rdv", "group": "bghit nji ndir {service} {day} {part}"}
-{"text": "bghit nji ndir consultation samedi sba7", "intent": "prendre_rdv", "group": "bghit nji ndir {service} {day} {part}"}
-{"text": "bghiit nji ndir consultation samedi sba7 svp", "intent": "prendre_rdv", "group": "bghit nji ndir {service} {day} {part}"}
-{"text": "bghit nji ndir consultation samdi sba7", "intent": "prendre_rdv", "group": "bghit nji ndir {service} {day} {part}"}
-{"text": "bghit nji ndir plombage demain le matin", "intent": "prendre_rdv", "group": "bghit nji ndir {service} {day} {part}"}
-{"text": "brit nji ndir plombage demain le matin 3afak", "intent": "prendre_rdv", "group": "bghit nji ndir {service} {day} {part}"}
-{"text": "bghit nji ndir plombaage demain le matin", "intent": "prendre_rdv", "group": "bghit nji ndir {service} {day} {part}"}
-{"text": "dispo nhar tnin?", "intent": "prendre_rdv", "group": "dispo {day}?"}
-{"text": "dispo jeudi?", "intent": "prendre_rdv", "group": "dispo {day}?"}
-{"text": "dispo la semaine prochaine?", "intent": "prendre_rdv", "group": "dispo {day}?"}
-{"text": "dispo nhar jem3a?", "intent": "prendre_rdv", "group": "dispo {day}?"}
-{"text": "Dispo nhar jem3a? svp", "intent": "prendre_rdv", "group": "dispo {day}?"}
-{"text": "dispo demain?", "intent": "prendre_rdv", "group": "dispo {day}?"}
-{"text": "diispo demain? svp", "intent": "prendre_rdv", "group": "dispo {day}?"}
-{"text": "diispo demain?", "intent": "prendre_rdv", "group": "dispo {day}?"}
-{"text": "dispo nhar jem3a?!", "intent": "prendre_rdv", "group": "dispo {day}?"}
-{"text": "diispo nhar jem3a?", "intent": "prendre_rdv", "group": "dispo {day}?"}
-{"text": "dispo samedi?", "intent": "prendre_rdv", "group": "dispo {day}?"}
-{"text": "nqder nji larb3?", "intent": "prendre_rdv", "group": "nqder nji {day}?"}
-{"text": "nqder nji larb3? merci", "intent": "prendre_rdv", "group": "nqder nji {day}?"}
-{"text": "nqder nji lundi?", "intent": "prendre_rdv", "group": "nqder nji {day}?"}
-{"text": "nqder nji nhar sebt?", "intent": "prendre_rdv", "group": "nqder nji {day}?"}
-{"text": "Nqder nji nhar sebt? ??", "intent": "prendre_rdv", "group": "nqder nji {day}?"}
-{"text": "nqder nji nhaar sebt?", "intent": "prendre_rdv", "group": "nqder nji {day}?"}
-{"text": "nqder nji nhar tnin?", "intent": "prendre_rdv", "group": "nqder nji {day}?"}
-{"text": "nqder nji nhar tnin?!", "intent": "prendre_rdv", "group": "nqder nji {day}?"}
-{"text": "nqder nji samedi?", "intent": "prendre_rdv", "group": "nqder nji {day}?"}
-{"text": "nqder nji samedi? please", "intent": "prendre_rdv", "group": "nqder nji {day}?"}
-{"text": "nqder nji demain?", "intent": "prendre_rdv", "group": "nqder nji {day}?"}
-{"text": "Nqder nji demain? ??", "intent": "prendre_rdv", "group": "nqder nji {day}?"}
-{"text": "nqder nji lkhmis?", "intent": "prendre_rdv", "group": "nqder nji {day}?"}
-{"text": "nqdr njii lkhmis?", "intent": "prendre_rdv", "group": "nqder nji {day}?"}
-{"text": "nqder nji ba3d ghedda?", "intent": "prendre_rdv", "group": "nqder nji {day}?"}
-{"text": "nqder nji baa3d ghedda? please", "intent": "prendre_rdv", "group": "nqder nji {day}?"}
-{"text": "ma dent kayderni mn lbare7", "intent": "urgence", "group": "{tooth} kayderni mn lbare7"}
-{"text": "ma dent kayderni mn lbare7!", "intent": "urgence", "group": "{tooth} kayderni mn lbare7"}
-{"text": "snn kayderni mn lbare7", "intent": "urgence", "group": "{tooth} kayderni mn lbare7"}
-{"text": "snn kayderni mn lbareh", "intent": "urgence", "group": "{tooth} kayderni mn lbare7"}
-{"text": "dersa lte7t kayderni mn lbare7", "intent": "urgence", "group": "{tooth} kayderni mn lbare7"}
-{"text": "dersa lteht kayderni mn lbare7", "intent": "urgence", "group": "{tooth} kayderni mn lbare7"}
-{"text": "derssa kayderni mn lbare7", "intent": "urgence", "group": "{tooth} kayderni mn lbare7"}
-{"text": "derssa kayderni mn lbare7 svp", "intent": "urgence", "group": "{tooth} kayderni mn lbare7"}
-{"text": "dersa lfou9 kayderni mn lbare7", "intent": "urgence", "group": "{tooth} kayderni mn lbare7"}
-{"text": "dersa lfou9 kayderni mn lbareh 3afak", "intent": "urgence", "group": "{tooth} kayderni mn lbare7"}
-{"text": "ma dent kayderni mn lbare7?", "intent": "urgence", "group": "{tooth} kayderni mn lbare7"}
-{"text": "Maa dent kayderni mn lbare7 please", "intent": "urgence", "group": "{tooth} kayderni mn lbare7"}
-{"text": "dersa lte7t kayderni mn lbare7 please", "intent": "urgence", "group": "{tooth} kayderni mn lbare7"}
-{"text": "dersa lte7t kaydernii mn lbare7", "intent": "urgence", "group": "{tooth} kayderni mn lbare7"}
-{"text": "une molaire kayderni mn lbare7", "intent": "urgence", "group": "{tooth} kayderni mn lbare7"}
-{"text": "une molaire kayderni mn lbareh", "intent": "urgence", "group": "{tooth} kayderni mn lbare7"}
-{"text": "une molaire kayderni mn lbare7 merci", "intent": "urgence", "group": "{tooth} kayderni mn lbare7"}
-{"text": "dersa lfou9 kaydernii mn lbare7 ??", "intent": "urgence", "group": "{tooth} kayderni mn lbare7"}
-{"text": "fommi mnfou5", "intent": "urgence", "group": "fommi mnfou5"}
-{"text": "fommi mnfo5 ??", "intent": "urgence", "group": "fommi mnfou5"}
-{"text": "Fommi mnfu5", "intent": "urgence", "group": "fommi mnfou5"}
-{"text": "J'ai très mal à dersa lfou9", "intent": "urgence", "group": "J'ai très mal à {tooth}"}
-{"text": "J'ai très mal à drsa lfou9 3afak", "intent": "urgence", "group": "J'ai très mal à {tooth}"}
-{"text": "J'ai très mal à dersa lfo9 ??", "intent": "urgence", "group": "J'ai très mal à {tooth}"}
-{"text": "J'ai très mal à derssa", "intent": "urgence", "group": "J'ai très mal à {tooth}"}
-{"text": "J'aai très mal à derssa ??", "intent": "urgence", "group": "J'ai très mal à {tooth}"}
-{"text": "J'ai très mal à snani", "intent": "urgence", "group": "J'ai très mal à {tooth}"}
-{"text": "J'aai très mal à snani", "intent": "urgence", "group": "J'ai très mal à {tooth}"}
-{"text": "J'ai très mal à snani please", "intent": "urgence", "group": "J'ai très mal à {tooth}"}
-{"text": "J'ai très mal à snn", "intent": "urgence", "group": "J'ai très mal à {tooth}"}
-{"text": "J'ai très mal à dersi", "intent": "urgence", "group": "J'ai très mal à {tooth}"}
-{"text": "J'ai très mal à une molaire", "intent": "urgence", "group": "J'ai très mal à {tooth}"}
-{"text": "J'ai très mal à dersa lte7t", "intent": "urgence", "group": "J'ai très mal à {tooth}"}
-{"text": "J'ai très mal à dersa lte7t svp", "intent": "urgence", "group": "J'ai très mal à {tooth}"}
+{"text": "wlidi tay bki mn ma dent", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "wlidi tay bki mn ma dent ??", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "wlidi tay bki mn dersa lte7t", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "wlidi tay bki mn dersa lteht", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "wliidi tay bki mn drsa lte7t", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "bnti tay bki mn une molaire", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "Bnti tay bki mn une molaire please", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "lwlad tay bki mn dersa lfou9", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "lwlad tay bkii mn dersa lfou9", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "Lwlad tay bki mn dersa lfu9", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "bnti tay bki mn dersa lfou9", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "bnti tay bki mn dersa lfu9", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "bnti taay bki mn dersa lfou9 merci", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "bnti tay bki mn ma dent", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "ma fille tay bki mn ma dent", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "ma fille tay bki mn ma dent?", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "weldi tay bki mn derssa", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "weldi taay bki mn derssa", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "wldi tay bki mn derssa", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "mon fils tay bki mn ma dent", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "mon fils tay bki mn ma dnt", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "mon fils tay bki mn dersi", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "mon fiils taay bki mn dersi", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "mon fiils tay bki mn dersi please", "intent": "urgence", "group": "{kid} tay bki mn {tooth}"}
+{"text": "Ma dent s'est cassée", "intent": "urgence", "group": "Ma dent s'est cassée"}
+{"text": "J'ai un abcès", "intent": "urgence", "group": "J'ai un abcès"}
+{"text": "J'aai un abcès?", "intent": "urgence", "group": "J'ai un abcès"}
 {"text": "Urgence dentaire, je saigne", "intent": "urgence", "group": "Urgence dentaire, je saigne"}
-{"text": "Urgence dentaire, je saigne ??", "intent": "urgence", "group": "Urgence dentaire, je saigne"}
-{"text": "Mon fils a mal à une dent, c'est urgent", "intent": "urgence", "group": "Mon fils a mal à une dent, c'est urgent"}
-{"text": "Mon fils aa mal à une dent, c'est urgent", "intent": "urgence", "group": "Mon fils a mal à une dent, c'est urgent"}
-{"text": "تهرسات ليا سنة", "intent": "urgence", "group": "تهرسات ليا سنة"}
-{"text": "ولدي كيضرو سنو", "intent": "urgence", "group": "ولدي كيضرو سنو"}
-{"text": "حالة مستعجلة", "intent": "urgence", "group": "حالة مستعجلة"}
-{"text": "3andi infection f dersi", "intent": "urgence", "group": "3andi infection f {tooth}"}
-{"text": "3andi infection f dersi!", "intent": "urgence", "group": "3andi infection f {tooth}"}
-{"text": "Aandi infection f dersi", "intent": "urgence", "group": "3andi infection f {tooth}"}
-{"text": "3andi infection f une molaire", "intent": "urgence", "group": "3andi infection f {tooth}"}
-{"text": "Aandi infection f une molaire", "intent": "urgence", "group": "3andi infection f {tooth}"}
-{"text": "3andii infection f une molaire", "intent": "urgence", "group": "3andi infection f {tooth}"}
-{"text": "3andi infection f ma dent", "intent": "urgence", "group": "3andi infection f {tooth}"}
-{"text": "aandi infection f ma dent?", "intent": "urgence", "group": "3andi infection f {tooth}"}
-{"text": "3aandi infection f dersi", "intent": "urgence", "group": "3andi infection f {tooth}"}
-{"text": "3andi infection f dersa lfou9", "intent": "urgence", "group": "3andi infection f {tooth}"}
-{"text": "aandi infection f dersa lfou9", "intent": "urgence", "group": "3andi infection f {tooth}"}
-{"text": "3aandi infection f dersa lfou9", "intent": "urgence", "group": "3andi infection f {tooth}"}
-{"text": "3andi infection f dersa lte7t", "intent": "urgence", "group": "3andi infection f {tooth}"}
-{"text": "3aandi infection f dersa lte7t", "intent": "urgence", "group": "3andi infection f {tooth}"}
-{"text": "3andi infection f dersa lte7t please", "intent": "urgence", "group": "3andi infection f {tooth}"}
-{"text": "3andi infection f snn", "intent": "urgence", "group": "3andi infection f {tooth}"}
-{"text": "3andi infection f snn!", "intent": "urgence", "group": "3andi infection f {tooth}"}
-{"text": "3andi infection f ma dent!", "intent": "urgence", "group": "3andi infection f {tooth}"}
-{"text": "3aandi infction f ma dent", "intent": "urgence", "group": "3andi infection f {tooth}"}
-{"text": "bghit nlghi rendez-vous", "intent": "annuler", "group": "bghit nlghi rendez-vous"}
-{"text": "Bghit nlghi rendez-vus", "intent": "annuler", "group": "bghit nlghi rendez-vous"}
-{"text": "Brit nlghi rendez-vous", "intent": "annuler", "group": "bghit nlghi rendez-vous"}
+{"text": "Je n'ai pas dormi à cause d'une dent", "intent": "urgence", "group": "Je n'ai pas dormi à cause d'une dent"}
+{"text": "Je n'aii pas dormi à cause d'une dent", "intent": "urgence", "group": "Je n'ai pas dormi à cause d'une dent"}
+{"text": "Je n'aaii pas dormi à cause d'une dent", "intent": "urgence", "group": "Je n'ai pas dormi à cause d'une dent"}
+{"text": "fommi kaysil dem", "intent": "urgence", "group": "fommi kaysil dem"}
+{"text": "fommi kaysil dm!", "intent": "urgence", "group": "fommi kaysil dem"}
+{"text": "fommii kaysil dem", "intent": "urgence", "group": "fommi kaysil dem"}
+{"text": "kaysil lia dem mn dersa lte7t", "intent": "urgence", "group": "kaysil lia dem mn {tooth}"}
+{"text": "kaysiil lia dem mn dersa lte7t", "intent": "urgence", "group": "kaysil lia dem mn {tooth}"}
+{"text": "kaysil lia dem mn ma dent", "intent": "urgence", "group": "kaysil lia dem mn {tooth}"}
+{"text": "kaysil lia dem mn une molaire", "intent": "urgence", "group": "kaysil lia dem mn {tooth}"}
+{"text": "kaysil lia dem mn une molaire svp", "intent": "urgence", "group": "kaysil lia dem mn {tooth}"}
+{"text": "kaysil lia dem mn dersi", "intent": "urgence", "group": "kaysil lia dem mn {tooth}"}
+{"text": "kaysil lia dem mn snani", "intent": "urgence", "group": "kaysil lia dem mn {tooth}"}
+{"text": "kaysiil lia dem mn snani", "intent": "urgence", "group": "kaysil lia dem mn {tooth}"}
+{"text": "kaysil lia dem mn derssa", "intent": "urgence", "group": "kaysil lia dem mn {tooth}"}
+{"text": "kaaysil lia dm mn une molaire 3afak", "intent": "urgence", "group": "kaysil lia dem mn {tooth}"}
+{"text": "kaysil lia dem mn snn", "intent": "urgence", "group": "kaysil lia dem mn {tooth}"}
+{"text": "I have a terrible toothache", "intent": "urgence", "group": "I have a terrible toothache"}
+{"text": "I hav a terrible toothache", "intent": "urgence", "group": "I have a terrible toothache"}
+{"text": "I have a terrible toothache merci", "intent": "urgence", "group": "I have a terrible toothache"}
+{"text": "I have a terrible toothashe svp", "intent": "urgence", "group": "I have a terrible toothache"}
+{"text": "I think I have an abscess", "intent": "urgence", "group": "I think I have an abscess"}
+{"text": "I think I have an abscess please", "intent": "urgence", "group": "I think I have an abscess"}
+{"text": "I thiink I have an abscess svp", "intent": "urgence", "group": "I think I have an abscess"}
+{"text": "I think i haave an abscess", "intent": "urgence", "group": "I think I have an abscess"}
+{"text": "my wisdom tooth is bleeding", "intent": "urgence", "group": "{tooth_en} is bleeding"}
+{"text": "My wisdom tooth is bleeding?", "intent": "urgence", "group": "{tooth_en} is bleeding"}
+{"text": "my tooth is bleeding", "intent": "urgence", "group": "{tooth_en} is bleeding"}
+{"text": "my tooth iis bleeding 3afak", "intent": "urgence", "group": "{tooth_en} is bleeding"}
+{"text": "my front tooth is bleeding", "intent": "urgence", "group": "{tooth_en} is bleeding"}
+{"text": "my gums is bleeding", "intent": "urgence", "group": "{tooth_en} is bleeding"}
+{"text": "my gums is bleeding merci", "intent": "urgence", "group": "{tooth_en} is bleeding"}
+{"text": "a molar is bleeding", "intent": "urgence", "group": "{tooth_en} is bleeding"}
+{"text": "Aa molar is bleeding", "intent": "urgence", "group": "{tooth_en} is bleeding"}
+{"text": "my tooth is bleding", "intent": "urgence", "group": "{tooth_en} is bleeding"}
+{"text": "my front tooth iis bleeding", "intent": "urgence", "group": "{tooth_en} is bleeding"}
+{"text": "I couldn't sleep because of the pain", "intent": "urgence", "group": "I couldn't sleep because of the pain"}
+{"text": "I couldn't sleep because of the paiin please", "intent": "urgence", "group": "I couldn't sleep because of the pain"}
 {"text": "bghit nannuler rdv dyali", "intent": "annuler", "group": "bghit nannuler rdv dyali"}
-{"text": "bghit nannuler rdv di", "intent": "annuler", "group": "bghit nannuler rdv dyali"}
-{"text": "Bghit nannuler rdv dyali svp", "intent": "annuler", "group": "bghit nannuler rdv dyali"}
-{"text": "bghit nannulr rdv dyali", "intent": "annuler", "group": "bghit nannuler rdv dyali"}
-{"text": "ma ghadich nji simana jaya", "intent": "annuler", "group": "ma ghadich nji {day}"}
-{"text": "Ma ghadish nji simana jaya please", "intent": "annuler", "group": "ma ghadich nji {day}"}
-{"text": "ma ghadich nji aujourd'hui", "intent": "annuler", "group": "ma ghadich nji {day}"}
-{"text": "ma ghadich nji aujord'hui", "intent": "annuler", "group": "ma ghadich nji {day}"}
-{"text": "ma ghadich nji ghda", "intent": "annuler", "group": "ma ghadich nji {day}"}
-{"text": "ma radich nji ghda", "intent": "annuler", "group": "ma ghadich nji {day}"}
-{"text": "ma ghadich nji ghda 3afak", "intent": "annuler", "group": "ma ghadich nji {day}"}
-{"text": "ma ghadich nji nhar jem3a", "intent": "annuler", "group": "ma ghadich nji {day}"}
-{"text": "Ma ghadich nji nhar jmaa merci", "intent": "annuler", "group": "ma ghadich nji {day}"}
-{"text": "Ma ghadish nji nhar jem3a", "intent": "annuler", "group": "ma ghadich nji {day}"}
-{"text": "ma radich nji aujourd'hui svp", "intent": "annuler", "group": "ma ghadich nji {day}"}
-{"text": "maa ghadich nji aujourd'hui", "intent": "annuler", "group": "ma ghadich nji {day}"}
-{"text": "ma ghadich nji nhar sebt", "intent": "annuler", "group": "ma ghadich nji {day}"}
-{"text": "ma ghadich nji lkhmis", "intent": "annuler", "group": "ma ghadich nji {day}"}
-{"text": "ma ghadish nji lkhmis", "intent": "annuler", "group": "ma ghadich nji {day}"}
-{"text": "ma ghadich nji l5mis", "intent": "annuler", "group": "ma ghadich nji {day}"}
-{"text": "ma ghadich nji larb3", "intent": "annuler", "group": "ma ghadich nji {day}"}
-{"text": "ma ghadish nji larb3", "intent": "annuler", "group": "ma ghadich nji {day}"}
-{"text": "ma radich nji nhar jemaa", "intent": "annuler", "group": "ma ghadich nji {day}"}
-{"text": "ma n9derch nji nhar tnin", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "Ma n9derch nji nhar tnin?", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "ma n9derch nji nhar tnin!", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "ma n9derch nji nhar sebt", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "Ma n9derch nji nhar sebt!", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "ma n9derch nji nhar jem3a", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "ma n9derch nji nhar jem3a 3afak", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "ma n9dersh nji nhar jemaa", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "ma n9derch nji ghedda", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "ma nqderch nji ghedda", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "ma nqderch nji ghedda!", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "ma n9derch nji simana jaya", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "ma n9derch njii simana jaya", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "Ma nqdersh nji simana jaya", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "ma n9derch nji ba3d ghedda", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "Ma n9derch njii ba3d ghedda", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "ma nqderch nji ba3d ghedda", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "Ma n9dersh nji nhar jem3a ??", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "Ma n9drch nji nhar jem3a please", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "ma n9derch nji nhar jemaa", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "Bghit naannuler rdv dyali", "intent": "annuler", "group": "bghit nannuler rdv dyali"}
+{"text": "Brit nannuler rdv dyali", "intent": "annuler", "group": "bghit nannuler rdv dyali"}
+{"text": "bghyt nannuler rdv dyali", "intent": "annuler", "group": "bghit nannuler rdv dyali"}
+{"text": "ma n9derch nji larb3", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "ma n9dersh nji larb3", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "ma n9drch nji larb3", "intent": "annuler", "group": "ma n9derch nji {day}"}
 {"text": "ma n9derch nji demain", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "Ma n9derch nji demain ??", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "ma n9dersh nji demain ??", "intent": "annuler", "group": "ma n9derch nji {day}"}
-{"text": "Je ne viendrai pas", "intent": "annuler", "group": "Je ne viendrai pas"}
-{"text": "Je ne viendrai pas svp", "intent": "annuler", "group": "Je ne viendrai pas"}
-{"text": "Je ne viendrai pas merci", "intent": "annuler", "group": "Je ne viendrai pas"}
+{"text": "ma n9derch nji demain please", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "ma n9derch nji aujourd'hui", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "ma n9derch nji aujurd'hui", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "ma n9derch nji la semaine prochaine", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "ma n9derch nji ba3d ghedda", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "Maa n9derch nji ba3d ghedda", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "ma n9derch nji lundi", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "maa n9derch nji lundi", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "ma nqdersh nji lundi", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "ma n9drch nji la semaine prochaine!", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "Ma n9derch njii la semaine prochaine", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "ma n9derch nji samedi", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "maa n9derch nji samedi", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "ma n9derch nji vendredi", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "ma n9drch nji vendredi", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "Ma n9drch nji vendredi!", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "maa n9derch nji larb3", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "ma nqdrch nji larb3", "intent": "annuler", "group": "ma n9derch nji {day}"}
+{"text": "Annuler mon rdv de nhar tnin svp", "intent": "annuler", "group": "Annuler mon rdv de {day} svp"}
+{"text": "Annuler mon rdv de larb3 svp", "intent": "annuler", "group": "Annuler mon rdv de {day} svp"}
+{"text": "Annuler mon rdv de larb3 svp?", "intent": "annuler", "group": "Annuler mon rdv de {day} svp"}
+{"text": "Annuler mon rdv de larba svp", "intent": "annuler", "group": "Annuler mon rdv de {day} svp"}
+{"text": "Annuler mon rdv de simana jaya svp", "intent": "annuler", "group": "Annuler mon rdv de {day} svp"}
+{"text": "Annulr mon rdv de simana jaya svp", "intent": "annuler", "group": "Annuler mon rdv de {day} svp"}
+{"text": "Annuler mon rdv de la semaine prochaine svp", "intent": "annuler", "group": "Annuler mon rdv de {day} svp"}
+{"text": "Annuler mon rdv de ba3d ghedda svp", "intent": "annuler", "group": "Annuler mon rdv de {day} svp"}
+{"text": "Annuler mon rdv de nhar jem3a svp", "intent": "annuler", "group": "Annuler mon rdv de {day} svp"}
+{"text": "Annuler mon rdv de aujourd'hui svp", "intent": "annuler", "group": "Annuler mon rdv de {day} svp"}
+{"text": "Annuler mon rdv de aaujourd'hui svp", "intent": "annuler", "group": "Annuler mon rdv de {day} svp"}
+{"text": "Annuler mon rdv de aujurd'hui svp 3afak", "intent": "annuler", "group": "Annuler mon rdv de {day} svp"}
+{"text": "Annuler mon rdv de simaana jaya svp", "intent": "annuler", "group": "Annuler mon rdv de {day} svp"}
+{"text": "Annulr mon rdv de ba3d ghedda svp svp", "intent": "annuler", "group": "Annuler mon rdv de {day} svp"}
+{"text": "Annuler mon rdv de ghedda svp", "intent": "annuler", "group": "Annuler mon rdv de {day} svp"}
+{"text": "cancel it please", "intent": "annuler", "group": "cancel it please"}
+{"text": "I won't be able to come", "intent": "annuler", "group": "I won't be able to come"}
+{"text": "I won't be able to come merci", "intent": "annuler", "group": "I won't be able to come"}
+{"text": "bghit nbeddel rendez-vous", "intent": "deplacer", "group": "bghit nbeddel rendez-vous"}
+{"text": "Bghit nbeddel rendez-vous!", "intent": "deplacer", "group": "bghit nbeddel rendez-vous"}
+{"text": "brit nbeddel rendez-vos", "intent": "deplacer", "group": "bghit nbeddel rendez-vous"}
+{"text": "bghit nbeddel rendez-vus please", "intent": "deplacer", "group": "bghit nbeddel rendez-vous"}
+{"text": "bghit nbeddel rendez-vous?", "intent": "deplacer", "group": "bghit nbeddel rendez-vous"}
+{"text": "bghit nakhro rdv", "intent": "deplacer", "group": "bghit nakhro rdv"}
+{"text": "Brit nakhro rdv svp", "intent": "deplacer", "group": "bghit nakhro rdv"}
+{"text": "bghit naakhro rdv", "intent": "deplacer", "group": "bghit nakhro rdv"}
 {"text": "bghit n9eddem rdv", "intent": "deplacer", "group": "bghit n9eddem rdv"}
 {"text": "brit n9eddem rdv", "intent": "deplacer", "group": "bghit n9eddem rdv"}
-{"text": "Je peux venir lyouma au lieu de demain ?", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux veniir lyouma au lieu de demain ? 3afak", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux venir lkhmis au lieu de la semaine prochaine ?", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "J peux venir lkhmis au lieu de la semaine prochaine ?", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux veniir lkhmis au lieu de la semaine prochaine ?", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux venir nhar jem3a au lieu de larb3 ?", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux venir nhaar jem3a au lieu de larb3 ?", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux venir nhar jem3a au lieu de jeudi ?", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux veniir nhar jem3a au lieu de jeudi ?", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux venir nhar sebt au lieu de nhar jem3a ?", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux venir nhaar sebt au lieu de nhar jem3a ??", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "J peux venir nhar sebt au lieu de nhar jem3a ?", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux venir larb3 au lieu de ba3d ghedda ?", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux venir larba au lieu de ba3d ghedda ?", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux venir simana jaya au lieu de larb3 ?", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux venir simaana jaya au lieu de larb3 ?", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux venir la semaine prochaine au lieu de larb3 ?", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux venir la semaine prochaine au lieu de larba ?", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux venir la semaine prochaine au lieu de larb3 ? ??", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux venir lundi au lieu de lundi ?", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux venir lyouma au lieu de aujourd'hui ?", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux venir lyoumaa au lieu de aujourd'hui ?", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "Je peux venir lyuma au lieu de aujourd'hui ? 3afak", "intent": "deplacer", "group": "Je peux venir {day} au lieu de {day} ?"}
-{"text": "khlliha larb3 blast lyouma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "Khlliha larba blast lyoma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "khlliha la semaine prochaine blast lyouma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "Khlliha la semaine proshaine blast lyouma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "khllihaa la semaine prochaine blast lyouma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "khlliha lyouma blast lyouma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "5lliha lyoma blast lyouma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "khlliha lkhmis blast lyouma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "khlliiha lkhmis blast lyouma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "khlliha ghda blast lyouma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "khllihaa ghda blast lyouma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "5lliha lyouma blast lyouma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "khlliha simana jaya blast lyouma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "Khllihaa simana jaya blast lyuma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "Khlliha simana jaya blast lyoma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "khlliha nhar tnin blast lyouma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "5lliha nhar tnin blast lyouma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "khlliha nhar jem3a blast lyouma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "Khlliha nhar jm3a blast lyouma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "5lliha nhar jemaa blast lyouma", "intent": "deplacer", "group": "khlliha {day} blast lyouma"}
-{"text": "katkhdmo f ramadan?", "intent": "horaires", "group": "katkhdmo f ramadan?"}
-{"text": "katkhdmo f ramadan? please", "intent": "horaires", "group": "katkhdmo f ramadan?"}
-{"text": "kat5dmo f ramadan?", "intent": "horaires", "group": "katkhdmo f ramadan?"}
-{"text": "ما هي ساعات العمل", "intent": "horaires", "group": "ما هي ساعات العمل"}
-{"text": "chmen zen9a", "intent": "adresse", "group": "chmen zen9a"}
-{"text": "chmen zen9aa", "intent": "adresse", "group": "chmen zen9a"}
-{"text": "Chmn zen9aa", "intent": "adresse", "group": "chmen zen9a"}
-{"text": "Il y a un parking ?", "intent": "adresse", "group": "Il y a un parking ?"}
-{"text": "C'est près du tram ?", "intent": "adresse", "group": "C'est près du tram ?"}
-{"text": "C'st près du tram ?", "intent": "adresse", "group": "C'est près du tram ?"}
-{"text": "C'est près du tram ? please", "intent": "adresse", "group": "C'est près du tram ?"}
+{"text": "bghit n9ddem rdv", "intent": "deplacer", "group": "bghit n9eddem rdv"}
+{"text": "decaler rdv ghda", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "Decaler rdv rda ??", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "decaaler rdv ghda!", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "decaler rdv la semaine prochaine", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "decaler rdv la semaiine prochaine", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "Decaler rdv la semaine prochaine!", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "decaler rdv la semaine prochaine ??", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "decaler rdv nhar jem3a", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "decaaler rdv nhar jem3a", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "decaler rdv simana jaya", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "decaler rdv nhar tnin", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "decaler rdv nhar tnin ??", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "decaler rdv nhar tnin svp", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "decaler rdv samedi", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "Decaler rdv samedi?", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "decaler rdv ghedda", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "decaaler rdv ghedda", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "dcaler rdv ghda", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "decaler rdv lyouma", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "decaler rdv lyoma!", "intent": "deplacer", "group": "decaler rdv {day}"}
+{"text": "wach kat7elo f lil", "intent": "horaires", "group": "wach kat7elo f lil"}
+{"text": "wach kat7elo f liil merci", "intent": "horaires", "group": "wach kat7elo f lil"}
+{"text": "Wach kat7elo f liil", "intent": "horaires", "group": "wach kat7elo f lil"}
+{"text": "Quels sont vos horaires ?", "intent": "horaires", "group": "Quels sont vos horaires ?"}
+{"text": "Horaires d'ouverture svp", "intent": "horaires", "group": "Horaires d'ouverture svp"}
+{"text": "Horairs d'ouverture svp", "intent": "horaires", "group": "Horaires d'ouverture svp"}
+{"text": "إمتى كتحلو", "intent": "horaires", "group": "إمتى كتحلو"}
+{"text": "واش محلولين نهار السبت", "intent": "horaires", "group": "واش محلولين نهار السبت"}
+{"text": "jusqu'à quelle heure ?", "intent": "horaires", "group": "jusqu'à quelle heure ?"}
+{"text": "jusqu'à quelle heure ? svp", "intent": "horaires", "group": "jusqu'à quelle heure ?"}
+{"text": "horaires", "intent": "horaires", "group": "horaires"}
+{"text": "horaires 3afak", "intent": "horaires", "group": "horaires"}
+{"text": "horaaires", "intent": "horaires", "group": "horaires"}
+{"text": "What are your opening hours?", "intent": "horaires", "group": "What are your opening hours?"}
+{"text": "What ar your opening hours?", "intent": "horaires", "group": "What are your opening hours?"}
 {"text": "C'est à quel étage ?", "intent": "adresse", "group": "C'est à quel étage ?"}
-{"text": "C'st à quel étage ? merci", "intent": "adresse", "group": "C'est à quel étage ?"}
-{"text": "كيفاش نوصل ليكم", "intent": "adresse", "group": "كيفاش نوصل ليكم"}
+{"text": "C'est à quel étage ? please", "intent": "adresse", "group": "C'est à quel étage ?"}
+{"text": "C'st à quel étage ?", "intent": "adresse", "group": "C'est à quel étage ?"}
 {"text": "أين يقع العيادة", "intent": "adresse", "group": "أين يقع العيادة"}
-{"text": "position google maps", "intent": "adresse", "group": "position google maps"}
-{"text": "position google maaps", "intent": "adresse", "group": "position google maps"}
-{"text": "position googl maps", "intent": "adresse", "group": "position google maps"}
-{"text": "ch7al taman consultation", "intent": "question_faq", "group": "ch7al taman {service}"}
-{"text": "ch7al taman consultatiion", "intent": "question_faq", "group": "ch7al taman {service}"}
-{"text": "ch7al taman consultation!", "intent": "question_faq", "group": "ch7al taman {service}"}
-{"text": "ch7al taman appareil", "intent": "question_faq", "group": "ch7al taman {service}"}
-{"text": "Ch7aal taman appareil", "intent": "question_faq", "group": "ch7al taman {service}"}
-{"text": "ch7al taman sossa", "intent": "question_faq", "group": "ch7al taman {service}"}
-{"text": "ch7al taman détartrage", "intent": "question_faq", "group": "ch7al taman {service}"}
-{"text": "ch7aal taman détartrage", "intent": "question_faq", "group": "ch7al taman {service}"}
-{"text": "ch7al taman contrôle", "intent": "question_faq", "group": "ch7al taman {service}"}
-{"text": "chhal taman contrôle", "intent": "question_faq", "group": "ch7al taman {service}"}
-{"text": "ch7al taman implant", "intent": "question_faq", "group": "ch7al taman {service}"}
-{"text": "Ch7al taman iimplant?", "intent": "question_faq", "group": "ch7al taman {service}"}
-{"text": "Ch7al taman iimplant", "intent": "question_faq", "group": "ch7al taman {service}"}
-{"text": "ch7al taman appareil svp", "intent": "question_faq", "group": "ch7al taman {service}"}
-{"text": "ch7al taman tbyed snani", "intent": "question_faq", "group": "ch7al taman {service}"}
-{"text": "ch7al taman tbyd snani", "intent": "question_faq", "group": "ch7al taman {service}"}
-{"text": "ch7al taman tbyed snani merci", "intent": "question_faq", "group": "ch7al taman {service}"}
-{"text": "Ch7al taman appareil!", "intent": "question_faq", "group": "ch7al taman {service}"}
-{"text": "Combien de séances pour un plombage ?", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combien de séances pur un plombage ?", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combien de séances pour un carie ?", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combien de séances pour un carie ? 3afak", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combiien de séances por un carie ?", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combien de séances pour un tbyed snani ?", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combien de séances pur un tbyed snani ? merci", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combien de séances pour un tbyed snani ? svp", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combien de séances pour un aligneurs ?", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combien de séaances pur un aligneurs ?", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combien de séances pour un aligneurs ? 3afak", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combien de séances pour un détartrage ?", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combien de séances pour un n9le3 dersa ?", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combien de séances pour un nqle3 dersa ?", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combien de séances pour un sossa ?", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combin de séances pour un sossa ?", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combien de séances pour un tnqiya ?", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combiien de séances pour un tnqiya ?", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combien de séances pour un extraction ?", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combien de séances pur un extraction ?", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combin de séances pour un sossa ? please", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "Combien de séances por un sossa ?", "intent": "question_faq", "group": "Combien de séances pour un {service} ?"}
-{"text": "شحال كيسوا زرع", "intent": "question_faq", "group": "شحال كيسوا {service_ar}"}
-{"text": "شحال كيسوا تنظيف السنان", "intent": "question_faq", "group": "شحال كيسوا {service_ar}"}
-{"text": "شحال كيسوا نقلع ضرسة", "intent": "question_faq", "group": "شحال كيسوا {service_ar}"}
-{"text": "شحال كيسوا تبييض السنان", "intent": "question_faq", "group": "شحال كيسوا {service_ar}"}
-{"text": "شحال كيسوا تقويم", "intent": "question_faq", "group": "شحال كيسوا {service_ar}"}
-{"text": "شحال كيسوا حشوة", "intent": "question_faq", "group": "شحال كيسوا {service_ar}"}
-{"text": "واش كتقبلو CNSS", "intent": "question_faq", "group": "واش كتقبلو CNSS"}
-{"text": "slm", "intent": "salutation", "group": "slm"}
-{"text": "slm ??", "intent": "salutation", "group": "slm"}
+{"text": "How do I get to the clinic?", "intent": "adresse", "group": "How do I get to the clinic?"}
+{"text": "wach kat9blo l'assurance", "intent": "question_faq", "group": "wach kat9blo l'assurance"}
+{"text": "wach kat9blo l'assuranc 3afak", "intent": "question_faq", "group": "wach kat9blo l'assurance"}
+{"text": "waach kat9blo l'assurance", "intent": "question_faq", "group": "wach kat9blo l'assurance"}
+{"text": "wesh kat9blo l'assurance", "intent": "question_faq", "group": "wach kat9blo l'assurance"}
+{"text": "wach kat3mro feuille de soins", "intent": "question_faq", "group": "wach kat3mro feuille de soins"}
+{"text": "Wesh kat3mro feuiille de soins", "intent": "question_faq", "group": "wach kat3mro feuille de soins"}
+{"text": "waach kat3mro feuille de soins 3afak", "intent": "question_faq", "group": "wach kat3mro feuille de soins"}
+{"text": "waash kat3mro feuille de soins", "intent": "question_faq", "group": "wach kat3mro feuille de soins"}
+{"text": "wach kat3mro feuiille de soins", "intent": "question_faq", "group": "wach kat3mro feuille de soins"}
+{"text": "wach kaydirou implant", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "wach kaydirou implant please", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "wach kaydirou sossa", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "wesh kaydiru sossa", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "wesh kaydiro sossa please", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "wach kaydirou appareil", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "waach kaydirou appareil", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "wach kaydirou appareil?", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "wach kaydiru implant?", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "wach kaydiru implant 3afak", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "wach kaydiirou implant", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "Wesh kaydirou implant", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "wach kaydirou carie", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "wash kaydirou carie", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "wach kaydirou carie svp", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "wach kaydirou n9le3 dersa", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "Wach kaydirou n9l3 dersa", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "wach kaydiru n9le3 dersa", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "wach kaydirou blanchiment", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "wach kaydirou blanchimnt please", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "wach kaydirou détartrage", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "Wach kaydiro détartrage", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "waach kaydiirou détartrage", "intent": "question_faq", "group": "wach kaydirou {service}"}
+{"text": "wach khass nsom 9bel n9le3 dersa", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "Wach khass nsom 9bel n9lea dersa merci", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "wach khass nsom 9bel n9lea dersa", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "wach khass nsom 9bel carie", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "wach khass nsom 9bel tnqiya", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "wesh khass nsom 9bel tnqiya merci", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "wach khass nsom 9bel tnqiya?", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "wach khass nsom 9bel appareil", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "Wash khass nsom 9bel appareil", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "Wash khass nsom qbel appareil ??", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "wach khass nsom 9bel détartrage", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "Wash khass nsom 9bel détartrage", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "wach khass nsom 9bel tnqiya please", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "wach khass nsom 9bel contrôle", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "wesh khass nsom 9bel contrôle!", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "wach khass nsom qbel contrôle?", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "wach khass nsom 9bel sossa", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "waach khass nsom 9bel sossa", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "Wesh khass nsom 9bel sossa", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "wach khass nsom 9bel consultation", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "wach khass nsom 9bl consultation", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "wach khass nsom 9bel tbyed snani", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "Wach khass nsom 9bl tbyed snani", "intent": "question_faq", "group": "wach khass nsom 9bel {service}"}
+{"text": "Vous acceptez la CNSS ?", "intent": "question_faq", "group": "Vous acceptez la CNSS ?"}
+{"text": "Vous acceptez la CNSS ? merci", "intent": "question_faq", "group": "Vous acceptez la CNSS ?"}
+{"text": "Faites-vous le détartrage ?", "intent": "question_faq", "group": "Faites-vous le {service} ?"}
+{"text": "Faites-vous le appareil ?", "intent": "question_faq", "group": "Faites-vous le {service} ?"}
+{"text": "Faaites-vous le appareil ?", "intent": "question_faq", "group": "Faites-vous le {service} ?"}
+{"text": "Faites-vous le plombage ?", "intent": "question_faq", "group": "Faites-vous le {service} ?"}
+{"text": "Faits-vous le plombage ?", "intent": "question_faq", "group": "Faites-vous le {service} ?"}
+{"text": "Faites-vous le carie ?", "intent": "question_faq", "group": "Faites-vous le {service} ?"}
+{"text": "Faiites-vous le carie ?", "intent": "question_faq", "group": "Faites-vous le {service} ?"}
+{"text": "Faites-vous le carie ?!", "intent": "question_faq", "group": "Faites-vous le {service} ?"}
+{"text": "Faites-vous le tbyed snani ?", "intent": "question_faq", "group": "Faites-vous le {service} ?"}
+{"text": "Faaites-vous le tbyed snani ?!", "intent": "question_faq", "group": "Faites-vous le {service} ?"}
+{"text": "Faites-vos le tbyed snani ?", "intent": "question_faq", "group": "Faites-vous le {service} ?"}
+{"text": "Faites-vus le appareil ? merci", "intent": "question_faq", "group": "Faites-vous le {service} ?"}
+{"text": "Faiites-vous le tbyed snani ?", "intent": "question_faq", "group": "Faites-vous le {service} ?"}
+{"text": "Faites-vus le tbyed snani ?", "intent": "question_faq", "group": "Faites-vous le {service} ?"}
+{"text": "Faites-vous le sossa ?", "intent": "question_faq", "group": "Faites-vous le {service} ?"}
+{"text": "Faiites-vous le sossa ?", "intent": "question_faq", "group": "Faites-vous le {service} ?"}
+{"text": "Faites-vos le appareil ?", "intent": "question_faq", "group": "Faites-vous le {service} ?"}
+{"text": "bonjour", "intent": "salutation", "group": "bonjour"}
+{"text": "bonjur", "intent": "salutation", "group": "bonjour"}
+{"text": "bonjour svp", "intent": "salutation", "group": "bonjour"}
+{"text": "سلام", "intent": "salutation", "group": "سلام"}
+{"text": "مرحبا", "intent": "salutation", "group": "مرحبا"}
+{"text": "salam labas", "intent": "salutation", "group": "salam labas"}
+{"text": "saalam labas!", "intent": "salutation", "group": "salam labas"}
 {"text": "coucou", "intent": "salutation", "group": "coucou"}
-{"text": "coucou 3afak", "intent": "salutation", "group": "coucou"}
-{"text": "Coucou?", "intent": "salutation", "group": "coucou"}
-{"text": "choukran bzaf", "intent": "merci", "group": "choukran bzaf"}
-{"text": "chukran bzaf", "intent": "merci", "group": "choukran bzaf"}
+{"text": "cocou", "intent": "salutation", "group": "coucou"}
+{"text": "hello doctor", "intent": "salutation", "group": "hello doctor"}
+{"text": "merci", "intent": "merci", "group": "merci"}
+{"text": "Mrcii", "intent": "merci", "group": "merci"}
 {"text": "merci beaucoup", "intent": "merci", "group": "merci beaucoup"}
-{"text": "Merci beaucoup svp", "intent": "merci", "group": "merci beaucoup"}
-{"text": "Merci beaucoup merci", "intent": "merci", "group": "merci beaucoup"}
 {"text": "mrci beaucoup", "intent": "merci", "group": "merci beaucoup"}
-{"text": "merci bien", "intent": "merci", "group": "merci bien"}
-{"text": "top merci", "intent": "merci", "group": "top merci"}
-{"text": "Top mercii?", "intent": "merci", "group": "top merci"}
-{"text": "top mercii", "intent": "merci", "group": "top merci"}
-{"text": "Top merci svp", "intent": "merci", "group": "top merci"}
-{"text": "إيه", "intent": "affirmer", "group": "إيه"}
-{"text": "oui svp", "intent": "affirmer", "group": "oui svp"}
-{"text": "oi svp", "intent": "affirmer", "group": "oui svp"}
-{"text": "Ouii svp", "intent": "affirmer", "group": "oui svp"}
-{"text": "ui svp", "intent": "affirmer", "group": "oui svp"}
-{"text": "yes", "intent": "affirmer", "group": "yes"}
-{"text": "ys", "intent": "affirmer", "group": "yes"}
-{"text": "hadak mzyan", "intent": "affirmer", "group": "hadak mzyan"}
-{"text": "hadak mzyan 3afak", "intent": "affirmer", "group": "hadak mzyan"}
-{"text": "hadak mzyan ??", "intent": "affirmer", "group": "hadak mzyan"}
-{"text": "la", "intent": "nier", "group": "la"}
-{"text": "la ??", "intent": "nier", "group": "la"}
-{"text": "la ma ymkench", "intent": "nier", "group": "la ma ymkench"}
-{"text": "la ma ymkench ??", "intent": "nier", "group": "la ma ymkench"}
-{"text": "kifach lj3", "intent": "hors_sujet", "group": "kifach lj3"}
-{"text": "kifaach lj3 merci", "intent": "hors_sujet", "group": "kifach lj3"}
-{"text": "kayn chi pharmacie de garde", "intent": "hors_sujet", "group": "kayn chi pharmacie de garde"}
-{"text": "Kaayn chi pharmacie de garde", "intent": "hors_sujet", "group": "kayn chi pharmacie de garde"}
-{"text": "kayn chi pharmacie de garde 3afak", "intent": "hors_sujet", "group": "kayn chi pharmacie de garde"}
-{"text": "Qui a gagné le match ?", "intent": "hors_sujet", "group": "Qui a gagné le match ?"}
-{"text": "Quii a gagné le match ?", "intent": "hors_sujet", "group": "Qui a gagné le match ?"}
-{"text": "فين كاينة الصيدلية", "intent": "hors_sujet", "group": "فين كاينة الصيدلية"}
-{"text": "bghit nchri dar", "intent": "hors_sujet", "group": "bghit nchri dar"}
-{"text": "briit nchri dar", "intent": "hors_sujet", "group": "bghit nchri dar"}
-{"text": "bghyt nchri dar", "intent": "hors_sujet", "group": "bghit nchri dar"}
-{"text": "bghit nshri dar 3afak", "intent": "hors_sujet", "group": "bghit nchri dar"}
-{"text": "wach kat3rfo tbib dyal jild", "intent": "hors_sujet", "group": "wach kat3rfo tbib dyal jild"}
-{"text": "Wach kat3rfo tbiib dyal jild", "intent": "hors_sujet", "group": "wach kat3rfo tbib dyal jild"}
-{"text": "wesh kat3rfo tbiib dyal jild", "intent": "hors_sujet", "group": "wach kat3rfo tbib dyal jild"}
+{"text": "mercii beaucoup", "intent": "merci", "group": "merci beaucoup"}
+{"text": "شكرا", "intent": "merci", "group": "شكرا"}
+{"text": "شكرا بزاف", "intent": "merci", "group": "شكرا بزاف"}
+{"text": "thanks", "intent": "merci", "group": "thanks"}
+{"text": "thaanks", "intent": "merci", "group": "thanks"}
+{"text": "lah ybarek fik", "intent": "merci", "group": "lah ybarek fik"}
+{"text": "Lah ybarek fiik", "intent": "merci", "group": "lah ybarek fik"}
+{"text": "lah ybarek fik ??", "intent": "merci", "group": "lah ybarek fik"}
+{"text": "lah ybarek fik?", "intent": "merci", "group": "lah ybarek fik"}
+{"text": "great, thank you", "intent": "merci", "group": "great, thank you"}
+{"text": "great, thank yu", "intent": "merci", "group": "great, thank you"}
+{"text": "great, thank you svp", "intent": "merci", "group": "great, thank you"}
+{"text": "wakha", "intent": "affirmer", "group": "wakha"}
+{"text": "waakha", "intent": "affirmer", "group": "wakha"}
+{"text": "wa5a", "intent": "affirmer", "group": "wakha"}
+{"text": "ayeh", "intent": "affirmer", "group": "ayeh"}
+{"text": "ayeh svp", "intent": "affirmer", "group": "ayeh"}
+{"text": "ça marche", "intent": "affirmer", "group": "ça marche"}
+{"text": "ça marche!", "intent": "affirmer", "group": "ça marche"}
+{"text": "nickel", "intent": "affirmer", "group": "nickel"}
+{"text": "niickel", "intent": "affirmer", "group": "nickel"}
+{"text": "nickel?", "intent": "affirmer", "group": "nickel"}
+{"text": "that one", "intent": "affirmer", "group": "that one"}
+{"text": "la la", "intent": "nier", "group": "la la"}
+{"text": "la la?", "intent": "nier", "group": "la la"}
+{"text": "laa la merci", "intent": "nier", "group": "la la"}
+{"text": "la la ??", "intent": "nier", "group": "la la"}
+{"text": "ma nqderch f had lw9t", "intent": "nier", "group": "ma nqderch f had lw9t"}
+{"text": "maa nqderch f had lw9t", "intent": "nier", "group": "ma nqderch f had lw9t"}
+{"text": "Ma nqderch f had lw9t ??", "intent": "nier", "group": "ma nqderch f had lw9t"}
+{"text": "autre heure svp", "intent": "nier", "group": "autre heure svp"}
+{"text": "autre heure svp svp", "intent": "nier", "group": "autre heure svp"}
+{"text": "pas celui-là", "intent": "nier", "group": "pas celui-là"}
+{"text": "paas celui-là", "intent": "nier", "group": "pas celui-là"}
+{"text": "pas celuii-là", "intent": "nier", "group": "pas celui-là"}
+{"text": "no", "intent": "nier", "group": "no"}
+{"text": "no please", "intent": "nier", "group": "no"}
+{"text": "No ??", "intent": "nier", "group": "no"}
+{"text": "another time please", "intent": "nier", "group": "another time please"}
+{"text": "another time please ??", "intent": "nier", "group": "another time please"}
+{"text": "Another tiime please", "intent": "nier", "group": "another time please"}
+{"text": "another time please 3afak", "intent": "nier", "group": "another time please"}
+{"text": "bghit nkhdem m3akom", "intent": "hors_sujet", "group": "bghit nkhdem m3akom"}
+{"text": "bghyt nkhdem m3akom", "intent": "hors_sujet", "group": "bghit nkhdem m3akom"}
+{"text": "kanqelleb 3la stage", "intent": "hors_sujet", "group": "kanqelleb 3la stage"}
+{"text": "kanqelleb 3la stage ??", "intent": "hors_sujet", "group": "kanqelleb 3la stage"}
+{"text": "Kanqelleb ala stage", "intent": "hors_sujet", "group": "kanqelleb 3la stage"}
+{"text": "3tini blague", "intent": "hors_sujet", "group": "3tini blague"}
+{"text": "3tiini blague?", "intent": "hors_sujet", "group": "3tini blague"}
+{"text": "3tini blagu", "intent": "hors_sujet", "group": "3tini blague"}
+{"text": "ok google", "intent": "hors_sujet", "group": "ok google"}
+{"text": "Ok googl", "intent": "hors_sujet", "group": "ok google"}
+{"text": "tell me a joke", "intent": "hors_sujet", "group": "tell me a joke"}
+{"text": "who won the game", "intent": "hors_sujet", "group": "who won the game"}
+{"text": "who won th game", "intent": "hors_sujet", "group": "who won the game"}
+{"text": "who won the game ??", "intent": "hors_sujet", "group": "who won the game"}

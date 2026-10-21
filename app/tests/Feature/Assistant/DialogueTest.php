@@ -183,4 +183,18 @@ class DialogueTest extends TestCase
         $this->postJson('/api/appointments', $payload)->assertStatus(409);
         $this->assertSame('0687654321', Patient::sole()->phone);
     }
+
+    public function test_an_english_speaker_gets_english_answers(): void
+    {
+        $text = 'Hi, my tooth hurts a lot, can I come tomorrow morning?';
+        $this->nlu[$text] = $this->parsed('urgence', 0.95, ['date' => '2026-10-22', 'part_of_day' => 'morning', 'service' => 'urgence', 'emergency' => true]);
+
+        $r = $this->say($text);
+
+        $this->assertStringStartsWith('Sorry about the pain.', $r['text']);
+        $this->assertSame('Tomorrow · 09:00', $r['chips'][0]['label']);
+
+        $r = $this->say('Tomorrow · 09:00', $r['token'], $r['chips'][0]['value']);
+        $this->assertSame('Great, tomorrow at 09:00. What name should I book it under?', $r['text']);
+    }
 }

@@ -2,7 +2,10 @@
 @section('title', 'Demandes')
 
 @section('content')
-<div class="top"><h1>Demandes<small>Ce que l’assistant n’a pas réglé seul, ou qui attend votre accord</small></h1></div>
+<div class="top">
+    <h1>Demandes<small>Ce que l’assistant n’a pas réglé seul, ou qui attend votre accord</small></h1>
+    @include('dashboard.partials.translate-toggle')
+</div>
 <div class="row g-3">
     <div class="col-xl-7">
         <div class="box">

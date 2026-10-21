@@ -2,7 +2,7 @@
 
 Un projet complet pour un cabinet dentaire à Casablanca : site vitrine, réservation en
 ligne sur de vrais créneaux, dashboard pour la dentiste et la secrétaire, et un assistant
-qui comprend la **darija** (en lettres latines ou arabes), le français et l'arabe.
+qui comprend la **darija** (en lettres latines ou arabes), le français, l'arabe et l'anglais.
 
 L'assistant tourne sur **un modèle entraîné par nous**, hébergé avec l'application.
 Aucune donnée patient n'est envoyée à une API externe.
@@ -11,7 +11,7 @@ Aucune donnée patient n'est envoyée à une API externe.
 navigateur ──► Laravel 13 (Blade, Bootstrap 5.3, JS, FullCalendar, GSAP)
                  │  moteur de créneaux · dialogue · auth · API JSON
                  ├──► MySQL 8
-                 └──► nlu (Python 3.12, FastAPI, scikit-learn)  /parse  /faq
+                 └──► nlu (Python 3.12, FastAPI, scikit-learn)  /parse  /faq  /interpret
 ```
 
 ## Lancer le projet
@@ -53,10 +53,10 @@ dernier filet contre le double booking.
 **Assistant** (`app/app/Assistant`) — une machine à états. Le modèle dit ce que le patient
 veut ; Laravel décide quoi faire. Les heures proposées et les réponses viennent toujours
 de la base, jamais du modèle. Il répond dans le registre du patient (darija latine,
-arabe, français).
+arabe, français, anglais).
 
 **Dashboard** — Aujourd'hui (programme, statuts, demandes, patient au fauteuil + schéma
-dentaire), Agenda (glisser-déposer, création, fermetures), Demandes (confirmer, refuser,
+dentaire), explication de chaque message patient en français ou en anglais (voir plus bas), Agenda (glisser-déposer, création, fermetures), Demandes (confirmer, refuser,
 accepter un déplacement, transformer une question en FAQ), Patients, Assistant AI
 (santé du modèle, intentions, corrections), Horaires & soins.
 
@@ -69,20 +69,38 @@ accepter un déplacement, transformer une question en FAQ), Patients, Assistant 
 | FAQ | similarité cosinus sur la FAQ validée du cabinet, seuil 0,45 | domaine médical : pas de génération libre |
 | Décision | trois niveaux de confiance | le modèle sait quand il doute |
 
-Résultats sur **105 phrases de test écrites à la main**, jamais vues à l'entraînement
+Résultats sur **126 phrases de test écrites à la main** (dont 21 en anglais), jamais vues à l'entraînement
 (`nlu/reports/metrics.md`) :
 
 | représentation | F1 validation croisée (5 plis groupés par gabarit) | F1 test |
 |---|---|---|
-| mots 1–2 | 0,612 | 0,804 |
-| **caractères 2–5** | **0,710** | **0,872** |
-| mots + caractères | 0,689 | 0,854 |
+| mots 1–2 | 0,584 | 0,789 |
+| **caractères 2–5** | **0,665** | **0,844** |
+| mots + caractères | 0,646 | 0,841 |
 
 | niveau | confiance | part du test | ce que fait l'assistant | justesse |
 |---|---|---|---|---|
-| agit seul | ≥ 0,58 | 70 % | répond / réserve | 99 % |
-| demande confirmation | 0,26 – 0,58 | 25 % | propose 3 boutons | bonne réponse parmi les 3 : 92 % |
-| passe la main | < 0,26 | 5 % | crée une demande pour le cabinet | — |
+| agit seul | ≥ 0,76 | 52 % | répond / réserve | 98 % |
+| demande confirmation | 0,36 – 0,76 | 37 % | propose 3 boutons | bonne réponse parmi les 3 : 96 % |
+| passe la main | < 0,36 | 10 % | crée une demande pour le cabinet | — |
+
+Exactitude globale 84,1 %. Avant l'ajout de l'anglais : 86,7 % sur les 105 phrases
+d'origine, et 70 % des messages traités seuls. L'anglais (15/21 justes) a rendu le modèle
+plus prudent : il demande confirmation plus souvent plutôt que de se tromper.
+
+**Expliquer la darija à la dentiste.** Un médecin venu d'ailleurs ne lit pas forcément
+« 3andi wjee3 f dersi mn lbare7 ». Aucun modèle libre ne traduit bien la darija en
+lettres latines vers le français ou l'anglais (les modèles Terjman d'AtlasIA vont dans
+l'autre sens, anglais → darija). Sous chaque message, le dashboard affiche donc :
+
+- une phrase construite à partir de ce que le modèle a compris (intention, jour, moment,
+  soin), en français ou en anglais au choix : « The patient reports pain and wants to be
+  seen as soon as possible, for Thursday 22 October in the morning. » ;
+- un glossaire des mots darija reconnus (`wjee3` douleur / pain, `dersi` ma molaire / my
+  molar, `mn lbare7` depuis hier / since yesterday…), 60 entrées dans `nlu/snan_nlu/glossary.py`.
+
+Ce n'est pas une traduction et le dashboard ne le présente pas comme telle : rien n'est
+inventé, et le message d'origine reste affiché au-dessus.
 
 **Boucle d'amélioration.** Dans *Assistant AI*, l'équipe corrige une intention mal
 comprise. Ensuite :
@@ -101,8 +119,8 @@ exportées.
 ## Tests
 
 ```bash
-docker compose exec app php artisan test                 # 28 tests : créneaux, dialogue, dashboard
-docker compose exec nlu python -W ignore -m pytest -q    # 47 tests : entités, API, FAQ
+docker compose exec app php artisan test                 # 31 tests : créneaux, dialogue, dashboard, explication
+docker compose exec nlu python -W ignore -m pytest -q    # 56 tests : entités (4 langues), API, FAQ, glossaire
 ```
 
 ## Choix et limites

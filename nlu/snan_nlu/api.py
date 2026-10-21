@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 
 from . import faq
 from .entities import extract
+from .glossary import gloss
 from .model import load
 
 app = FastAPI(title="snan. NLU", version="1.0")
@@ -53,3 +54,9 @@ def parse(body: ParseIn) -> dict:
 @app.post("/faq")
 def faq_match(body: FaqIn) -> dict:
     return {"match": faq.match(load(), body.text, [f.model_dump() for f in body.faqs]), "threshold": faq.THRESHOLD}
+
+
+@app.post("/interpret")
+def interpret(body: ParseIn) -> dict:
+    """What the dashboard shows under a patient's message: intent, entities, glossed words."""
+    return {**parse(body), "glossary": gloss(body.text)}

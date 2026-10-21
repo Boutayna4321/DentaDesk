@@ -26,6 +26,14 @@ class RequestController extends Controller
         ]);
     }
 
+    /** Language of the explanation shown under each patient message. */
+    public function translation(Request $request): RedirectResponse
+    {
+        session(['translate_to' => $request->input('to') === 'en' ? 'en' : 'fr']);
+
+        return back();
+    }
+
     public function act(Request $request, AssistantRequest $assistantRequest, string $action, Booker $booker): RedirectResponse
     {
         $r = $assistantRequest;

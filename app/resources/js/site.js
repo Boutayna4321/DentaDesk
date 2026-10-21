@@ -190,7 +190,7 @@ function assistant(panel) {
         fab.hidden = true;
         gsap.from(panel, { scale: 0.92, opacity: 0, duration: 0.25, ease: 'power2.out' });
         if (!log.children.length) {
-            bubble('Salam 👋 Je suis l’assistant du cabinet. Écrivez comme vous parlez : darija, français ou عربي.', 'bot');
+            bubble('Salam 👋 Je suis l’assistant du cabinet. Écrivez comme vous parlez : darija, français, عربي or English.', 'bot');
             chips([
                 { label: 'Prendre rendez-vous', value: 'intent:prendre_rdv' },
                 { label: '3andi wjee3', value: 'intent:urgence' },

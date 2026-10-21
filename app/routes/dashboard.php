@@ -28,6 +28,7 @@ Route::middleware('auth')->prefix('dashboard')->name('dash.')->group(function ()
     Route::patch('appointments/{appointment}/note', [AppointmentController::class, 'note'])->name('appointments.note')->can('medical');
 
     Route::get('demandes', [RequestController::class, 'index'])->name('requests');
+    Route::post('traduction', [RequestController::class, 'translation'])->name('translation');
     Route::post('demandes/{assistantRequest}/{action}', [RequestController::class, 'act'])
         ->whereIn('action', ['confirm', 'decline', 'accept', 'done', 'faq'])->name('requests.act');
 

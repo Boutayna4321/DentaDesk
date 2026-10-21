@@ -132,7 +132,7 @@
                     <li><i>✓</i>Radio panoramique numérique sur place</li>
                     <li><i>✓</i>Feuille CNSS et mutuelle remplie au cabinet</li>
                     <li><i>✓</i>Rappel WhatsApp la veille de votre rendez-vous</li>
-                    <li><i>✓</i>On parle darija, français, arabe et anglais</li>
+                    <li><i>✓</i>On parle darija, français, arabe et anglais, l’assistant aussi</li>
                 </ul>
                 <div class="doctor">
                     <img src="/img/doctor.jpg" alt="{{ $cabinet['doctor'] }}">
@@ -221,12 +221,12 @@
 {{-- Assistant --}}
 <button class="assistant-fab" data-open-assistant aria-label="Ouvrir l’assistant">
     <span class="dot"><x-icon name="chat" size="16" /></span>
-    <span>Une question&nbsp;?<small>Écrivez en darija, français ou عربي</small></span>
+    <span>Une question&nbsp;?<small>Darija, français, عربي, English</small></span>
 </button>
 <div class="assistant" data-assistant hidden role="dialog" aria-label="Assistant du cabinet">
     <div class="hd">
         <span class="live"></span>
-        <div><b>Assistant snan.</b><small>Répond tout de suite · darija · FR · عربي</small></div>
+        <div><b>Assistant snan.</b><small>Répond tout de suite · darija · FR · عربي · EN</small></div>
         <button class="btn-close btn-close-white" data-close-assistant aria-label="Fermer"></button>
     </div>
     <div class="log" data-log aria-live="polite"></div>
