@@ -10,16 +10,13 @@ class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Demo accounts, documented in the README. Change them before going live.
+        $dentist = User::create(['name' => 'Dr Nadia Alaoui', 'email' => 'dentiste@snan.test', 'password' => 'snan2026', 'role' => 'dentist']);
+        User::create(['name' => 'Khadija Amrani', 'email' => 'secretaire@snan.test', 'password' => 'snan2026', 'role' => 'secretary']);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $this->call(CabinetSeeder::class, parameters: ['dentist' => $dentist]);
+        $this->call(DemoSeeder::class);
     }
 }
