@@ -240,8 +240,11 @@ if (editor) {
         editor.querySelector('[data-total]').textContent = fmt(total);
     };
     const add = (values = {}) => {
-        body.insertAdjacentHTML('beforeend', tpl.innerHTML.replaceAll('__i__', next++));
-        const tr = body.lastElementChild;
+        // An act picked from the price list fills the empty line if there is one, instead of
+        // leaving a blank required line that would block saving.
+        const blank = values.label && [...body.querySelectorAll('[data-line]')].find((r) => !r.querySelector('[name$="[label]"]').value.trim());
+        if (!blank) body.insertAdjacentHTML('beforeend', tpl.innerHTML.replaceAll('__i__', next++));
+        const tr = blank || body.lastElementChild;
         for (const [k, v] of Object.entries(values)) tr.querySelector(`[name$="[${k}]"]`).value = v;
         recalc();
         tr.querySelector(values.label ? '[name$="[tooth]"]' : 'input').focus();
@@ -347,9 +350,13 @@ if (calendarEl) (async () => {
     calendar.render();
 
     document.querySelectorAll('#rdv [data-status]').forEach((b) => b.addEventListener('click', async () => {
-        await send(`/dashboard/appointments/${current.id}/status`, 'PATCH', { status: b.dataset.status });
-        detail.hide();
-        calendar.refetchEvents();
+        try {
+            await send(`/dashboard/appointments/${current.id}/status`, 'PATCH', { status: b.dataset.status });
+            detail.hide();
+            calendar.refetchEvents();
+        } catch (err) {
+            alertBox(err.message);
+        }
     }));
 
     // New appointment: search an existing patient, or type a new one.

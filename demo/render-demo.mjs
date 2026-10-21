@@ -37,7 +37,10 @@ const send = (method, params = {}) => new Promise((r) => { const i = ++id; pendi
 const val = async (expr) => (await send('Runtime.evaluate', { expression: expr, returnByValue: true })).result?.value;
 
 await send('Page.enable');
+// Belt and braces: accept any dialog so nothing can block the page.
+handlers.push((m) => { if (m.method === 'Page.javascriptDialogOpening') send('Page.handleJavaScriptDialog', { accept: true }); });
 await send('Runtime.enable');
+handlers.push((m) => { if (m.method === 'Runtime.exceptionThrown') console.log('[stage exception]', m.params.exceptionDetails.exception?.description ?? m.params.exceptionDetails.text); });
 handlers.push((m) => { if (m.method === 'Runtime.consoleAPICalled' && ['warning', 'error'].includes(m.params.type)) console.log('[stage]', m.params.args.map((a) => a.value).join(' ')); });
 await send('Emulation.setDeviceMetricsOverride', { width: 540, height: 675, deviceScaleFactor: 2, mobile: false });
 

@@ -10,6 +10,7 @@ use App\Models\Patient;
 use App\Models\Practitioner;
 use App\Models\Service;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -49,7 +50,14 @@ class AppointmentController extends Controller
     public function status(Request $request, Appointment $appointment): JsonResponse|RedirectResponse
     {
         $data = $request->validate(['status' => ['required', Rule::in(array_keys(Appointment::STATUSES))]]);
-        $appointment->update($data);
+        try {
+            $appointment->update($data);
+        } catch (UniqueConstraintViolationException) {
+            // A cancelled or missed appointment freed its slot, and someone else has it now.
+            $message = 'Ce créneau a été repris par un autre rendez-vous : déplacez celui-ci avant de le réactiver.';
+
+            return $request->expectsJson() ? response()->json(['message' => $message], 409) : back()->with('error', $message);
+        }
 
         return $request->expectsJson() ? response()->json(['status' => $appointment->status]) : back();
     }

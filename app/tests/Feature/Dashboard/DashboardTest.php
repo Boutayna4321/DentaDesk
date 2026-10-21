@@ -133,4 +133,13 @@ class DashboardTest extends TestCase
         $this->assertNull($patient->teeth()->where('tooth', 26)->first());
         $this->assertSame(3, \App\Models\ToothEvent::count());
     }
+
+    public function test_reactivating_a_missed_appointment_whose_slot_was_taken_is_refused_cleanly(): void
+    {
+        $missed = $this->appointment('2026-10-22 09:00', 'no_show');
+        $this->appointment('2026-10-22 09:00', 'confirmed')->update(['patient_id' => Patient::create(['first_name' => 'O', 'phone' => '0611111111'])->id]);
+
+        $this->actingAs($this->dentist)->patchJson("/dashboard/appointments/{$missed->id}/status", ['status' => 'arrived'])->assertStatus(409);
+        $this->assertSame('no_show', $missed->fresh()->status);
+    }
 }

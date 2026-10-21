@@ -11,7 +11,7 @@
   /* Same frame as the Instagram reels (dark, lime mark), in LinkedIn's 4:5. */
   :root { --bg: #0e0e0e; --ink: #f5f5f2; --dim: rgba(245,245,242,.6); --mark: #c8f560; --glow: #1f56d6; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { width: 540px; height: 675px; overflow: hidden; background: var(--bg); color: var(--ink); font-family: Inter, sans-serif; -webkit-font-smoothing: antialiased; }
+  html, body { width: 540px; height: 675px; overflow: clip; background: var(--bg); color: var(--ink); font-family: Inter, sans-serif; -webkit-font-smoothing: antialiased; }
   .frame { position: relative; width: 540px; height: 675px; overflow: hidden; }
   .glow { position: absolute; width: 560px; height: 560px; left: -10px; top: 250px; border-radius: 50%; background: radial-gradient(circle, var(--glow) 0%, transparent 66%); opacity: .34; filter: blur(30px); }
   .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px); background-size: 36px 36px; mask-image: linear-gradient(180deg, #000 0%, transparent 50%); }
@@ -48,7 +48,7 @@
   .phone.small .screen { width: 138px; height: 299px; border-radius: 24px; } .phone.small iframe { transform: scale(.3538); }
   .phone.small .island { width: 40px; height: 11px; margin-left: -20px; top: 7px; }
 
-  .card { position: absolute; left: 24px; right: 24px; top: 30px; display: none; }
+  .card { position: absolute; left: 24px; right: 24px; top: 214px; display: none; }
   .card ul { list-style: none; display: grid; gap: 10px; margin-top: 6px; }
   .card li { font: 600 17px 'Inter Tight', sans-serif; letter-spacing: -.01em; padding: 14px 16px; border-radius: 12px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); display: flex; gap: 12px; align-items: center; }
   .card li i { width: 8px; height: 8px; border-radius: 50%; background: var(--mark); flex: none; }
@@ -94,6 +94,7 @@ function render(text) {
   return text.split('\n').map((line) => `<span class="line"><span class="in">${line.replace(/\*(.+?)\*/g, '<span class="hl">$1</span>')}</span></span>`).join('');
 }
 async function caption(key, chapter = null) {
+  document.scrollingElement.scrollTop = 0; // the stage itself must never scroll
   const c = C[key];
   const t = $('title'), s = $('sub'), st = $('step');
   const old = [...t.querySelectorAll('.in'), s, st];
@@ -123,13 +124,20 @@ function layout(kind) {
 
 // ── Driving the iframes ─────────────────────────────────────────────
 const win = (f) => frames[f].contentWindow;
+// Every page the iframes load answers "yes" to confirm(): a dialog would freeze the recording.
+Object.keys(frames).forEach((f) => frames[f].addEventListener('load', () => { try { win(f).confirm = () => true; } catch {} }));
 const doc = (f) => frames[f].contentDocument;
 const el = (f, sel) => { const e = typeof sel === 'string' ? doc(f).querySelector(sel) : sel; if (!e) console.warn('missing', f, sel); return e; };
 
 function go(f, path) {
   return new Promise((resolve) => {
-    frames[f].onload = async () => { await sleep(900); try { win(f).confirm = () => true; } catch {} resolve(); };
-    frames[f].src = path;
+    let done = false;
+    const finish = async () => { if (done) return; done = true; await sleep(900); try { win(f).confirm = () => true; } catch {} resolve(); };
+    frames[f].onload = finish;
+    setTimeout(finish, 8000); // never wait forever on a page
+    // A unique query string forces a real load, even when only the #hash differs.
+    const [base, hash] = path.split('#');
+    frames[f].src = `${base}${base.includes('?') ? '&' : '?'}r=${Date.now()}${hash ? '#' + hash : ''}`;
     if (f === 'desk') $('addr').textContent = 'localhost:8000' + path.replace(/#.*/, '');
   });
 }
@@ -169,7 +177,7 @@ async function type(f, target, text, speed = 45) {
   e.focus(); e.value = '';
   for (const ch of text) { e.value += ch; e.dispatchEvent(new Event('input', { bubbles: true })); await sleep(speed + Math.random() * 30); }
 }
-async function scrollTo(f, target, offset = 80, dur = 900) {
+async function scrollFrame(f, target, offset = 80, dur = 900) {
   const w = win(f);
   const y = typeof target === 'number' ? target : el(f, target).getBoundingClientRect().top + w.scrollY - offset;
   w.scrollTo({ top: y, behavior: 'smooth' });
@@ -229,7 +237,9 @@ async function siteScene() {
   await type('desk', '#bk-phone', '0677 88 99 00', 45);
   await click('desk', '[data-form] button[type=submit]');
   hideCursor();
-  await waitFor('desk', '[data-done]:not([hidden])'); await sleep(1600);
+  await waitFor('desk', '[data-done]:not([hidden])');
+  console.warn('booking error text:', doc('desk').querySelector('[data-error]')?.textContent, doc('desk').querySelector('[data-phone-error]')?.textContent);
+  await sleep(1600);
   await zoom(null);
 }
 
@@ -274,7 +284,7 @@ async function agendaScene() {
   await go('desk', '/dashboard/agenda');
   await caption('agenda', 4);
   await sleep(900);
-  await click('desk', '.fc-timegrid-event');
+  await click('desk', '.fc-timegrid-event.st-confirmed');
   await sleep(1100);
   await click('desk', '#rdv [data-status=arrived]');
   hideCursor();
@@ -284,7 +294,7 @@ async function agendaScene() {
 async function teethScene() {
   await go('desk', '/dashboard/patients/3');
   await caption('teeth', 5);
-  await scrollTo('desk', '[data-odontogram]', 20, 700);
+  await scrollFrame('desk', '[data-odontogram]', 20, 700);
   await zoom('.odo-mouth', 1.25);
   await sleep(600);
   await click('desk', '.tooth[data-tooth="36"]', { svg: true });
@@ -296,7 +306,9 @@ async function teethScene() {
   hideCursor();
   layout('combo');
   await go('mob', '/dashboard/patients/3');
-  win('mob').document.querySelector('[data-odontogram]')?.scrollIntoView({ block: 'start' });
+  // scrollIntoView would also scroll the stage itself: scroll the phone's own window instead.
+  const odo = win('mob').document.querySelector('[data-odontogram]');
+  if (odo) win('mob').scrollTo(0, odo.getBoundingClientRect().top + win('mob').scrollY - 70);
   await sleep(1400);
   win('mob').document.querySelector('[data-arch=lower]')?.click();
   await sleep(1800);
@@ -322,7 +334,7 @@ async function invoiceScene() {
   printUrl.searchParams.delete('embed');
   await go('desk', printUrl.pathname);
   hideCursor();
-  await scrollTo('desk', '.words', 300, 600);
+  await scrollFrame('desk', '.words', 300, 600);
   await zoom('.words', 1.8);
   await sleep(2200);
   await zoom(null, 1, .5);
@@ -334,13 +346,13 @@ async function statsScene() {
   await zoom('.insight-box', 1.5);
   await sleep(2300);
   await zoom(null, 1, .5);
-  await scrollTo('desk', '[data-donut]', 60, 700);
+  await scrollFrame('desk', '[data-donut]', 60, 700);
   await hover('desk', '.donut .slice:nth-of-type(2)', ['mouseenter']);
   await sleep(1500);
-  await scrollTo('desk', '[data-heat]', 40, 800);
+  await scrollFrame('desk', '[data-heat]', 40, 800);
   await hover('desk', '.heat .cell:nth-of-type(12)', ['mousemove']);
   await sleep(1300);
-  await scrollTo('desk', '[data-treemap]', 40, 800);
+  await scrollFrame('desk', '[data-treemap]', 40, 800);
   hideCursor();
   await sleep(1800);
 }
@@ -403,19 +415,13 @@ async function endScene() {
   layout('phone');
   window.__ready = true;
   beat('start');
-  await hookAndAssistant();
-  await siteScene();
-  await assistantLanguages();
-  await todayScene();
-  await requestsScene();
-  await agendaScene();
-  await teethScene();
-  await invoiceScene();
-  await statsScene();
-  await teamScene();
-  await aiScene();
-  await stackScene();
-  await endScene();
+  // A scene that fails logs and lets the next one play: the recording always finishes.
+  for (const scene of [hookAndAssistant, siteScene, assistantLanguages, todayScene, requestsScene, agendaScene,
+    teethScene, invoiceScene, statsScene, teamScene, aiScene, stackScene, endScene]) {
+    const t = Date.now();
+    try { await scene(); } catch (e) { console.warn('scene failed', scene.name, e.message); }
+    console.warn('scene', scene.name, ((Date.now() - t) / 1000).toFixed(1) + ' s');
+  }
   beat('end');
 })();
 </script>
