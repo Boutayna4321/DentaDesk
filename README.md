@@ -7,6 +7,12 @@ qui comprend la **darija** (en lettres latines ou arabes), le français, l'arabe
 L'assistant tourne sur **un modèle entraîné par nous**, hébergé avec l'application.
 Aucune donnée patient n'est envoyée à une API externe.
 
+![snan.](app/public/img/og.png)
+
+> Projet de démonstration : le cabinet, la dentiste et les patients sont fictifs.
+> Vidéo de démo (2 min) : [post LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7518725908128694272/).
+> Conçu et développé par Boutayna Metarfi, Master Ingénierie logicielle et Intelligence artificielle.
+
 ```
 navigateur ──► Laravel 13 (Blade, Bootstrap 5.3, JS, FullCalendar, GSAP)
                  │  moteur de créneaux · dialogue · auth · API JSON
