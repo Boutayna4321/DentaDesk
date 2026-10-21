@@ -1,24 +1,31 @@
-// Dental chart (odontogram), FDI numbering, drawn as the dentist sees the patient:
-//   18 … 11 | 21 … 28   upper arch, roots up
-//   48 … 41 | 31 … 38   lower arch, roots down
-// Each tooth: whole-tooth state (missing, implant, crown, root canal, to extract) and
-// findings per surface (M, O, D, V, L: caries or filling). Phone: one arch at a time,
-// editing in a bottom sheet.
+// Dental chart drawn as an open mouth, the way the dentist looks into it:
+// the upper arch (∩) on top, the lower arch (U) below, every tooth seen from its biting
+// surface with the shape of its kind (incisor, canine, premolar, molar), FDI numbers
+// outside the arch. Each tooth carries a whole-tooth state (missing, implant, crown,
+// root canal, to extract) and findings on its five surfaces (M, O, D, V, L).
+// Clicking a tooth opens it large: biting surface (tap a surface to chart it) and a side
+// view with its roots. Phone: one arch at a time and a bottom sheet.
 
 const STATES = { present: 'Présente', missing: 'Absente', implant: 'Implant', crown: 'Couronne', root_canal: 'Dévitalisée', to_extract: 'À extraire' };
 const FINDINGS = { caries: 'Carie', filling: 'Obturation' };
 const SURFACE_NAMES = { M: 'mésiale', O: 'occlusale', D: 'distale', V: 'vestibulaire', L: 'linguale / palatine' };
 const POSITION = ['', 'incisive centrale', 'incisive latérale', 'canine', '1re prémolaire', '2e prémolaire', '1re molaire', '2e molaire', 'dent de sagesse'];
 const QUADRANT = ['', 'supérieure droite', 'supérieure gauche', 'inférieure gauche', 'inférieure droite'];
-const UPPER_R = [18, 17, 16, 15, 14, 13, 12, 11];
-const UPPER_L = [21, 22, 23, 24, 25, 26, 27, 28];
-const LOWER_R = [48, 47, 46, 45, 44, 43, 42, 41];
-const LOWER_L = [31, 32, 33, 34, 35, 36, 37, 38];
-const SVG = 'http://www.w3.org/2000/svg';
+const UPPER = [18, 17, 16, 15, 14, 13, 12, 11, 21, 22, 23, 24, 25, 26, 27, 28];
+const LOWER = [48, 47, 46, 45, 44, 43, 42, 41, 31, 32, 33, 34, 35, 36, 37, 38];
+const NS = 'http://www.w3.org/2000/svg';
+
+// Relative size seen from above: [mesio-distal width, bucco-lingual depth].
+const SIZE = { 1: [0.8, 0.62], 2: [0.64, 0.58], 3: [0.7, 0.74], 4: [0.68, 0.86], 5: [0.66, 0.84], 6: [1, 1.02], 7: [0.94, 0.98], 8: [0.86, 0.92] };
+const LOWER_SIZE = { 1: [0.56, 0.56], 2: [0.6, 0.58] }; // lower incisors are narrow
 
 const toothName = (n) => { const s = `${POSITION[n % 10]} ${QUADRANT[Math.floor(n / 10)]}`; return s[0].toUpperCase() + s.slice(1); };
 const isUpper = (n) => n < 30;
-const roots = (n) => { const p = n % 10; return p >= 6 ? (isUpper(n) ? 3 : 2) : p === 4 && isUpper(n) ? 2 : 1; };
+const kind = (n) => { const p = n % 10; return p <= 2 ? 'incisor' : p === 3 ? 'canine' : p <= 5 ? 'premolar' : 'molar'; };
+const rootCount = (n) => { const p = n % 10; return p >= 6 ? (isUpper(n) ? 3 : 2) : p === 4 && isUpper(n) ? 2 : 1; };
+const size = (n) => (!isUpper(n) && LOWER_SIZE[n % 10]) || SIZE[n % 10];
+const el = (name, attrs = {}) => { const e = document.createElementNS(NS, name); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); return e; };
+let uid = 0;
 
 export function describe(t) {
     if (!t) return 'Saine';
@@ -30,89 +37,220 @@ export function describe(t) {
     return parts.length ? parts.join(' · ').replace(/^./, (c) => c.toUpperCase()) : 'Saine';
 }
 
-// Which side of the drawn square is which surface. Vestibular faces outward (top above,
-// bottom below); mesial faces the midline (right for the patient's right side).
-function sides(n) {
-    const q = Math.floor(n / 10);
-    const mesialRight = q === 1 || q === 4;
-    return isUpper(n)
-        ? { top: 'V', bottom: 'L', right: mesialRight ? 'M' : 'D', left: mesialRight ? 'D' : 'M' }
-        : { top: 'L', bottom: 'V', right: mesialRight ? 'M' : 'D', left: mesialRight ? 'D' : 'M' };
+// ── One tooth seen from its biting surface, centred on (0,0) ────────────────
+// Local axes: x runs along the arch, -y points outward (the vestibular side).
+function outline(type, w, d) {
+    const hw = w / 2, hd = d / 2;
+    switch (type) {
+        case 'incisor': // wide on the lip side, narrowing to the cingulum
+            return `M ${-hw} ${-hd * 0.2} Q ${-hw} ${-hd} 0 ${-hd} Q ${hw} ${-hd} ${hw} ${-hd * 0.2} Q ${hw * 0.85} ${hd * 0.6} 0 ${hd} Q ${-hw * 0.85} ${hd * 0.6} ${-hw} ${-hd * 0.2} Z`;
+        case 'canine': // a rounded diamond around the cusp
+            return `M ${-hw} 0 Q ${-hw * 0.9} ${-hd} 0 ${-hd} Q ${hw * 0.9} ${-hd} ${hw} 0 Q ${hw * 0.85} ${hd} 0 ${hd} Q ${-hw * 0.85} ${hd} ${-hw} 0 Z`;
+        case 'premolar': { // an oval, a little squared
+            const r = Math.min(hw, hd) * 0.9;
+            return `M ${-hw + r} ${-hd} H ${hw - r} Q ${hw} ${-hd} ${hw} ${-hd + r} V ${hd - r} Q ${hw} ${hd} ${hw - r} ${hd} H ${-hw + r} Q ${-hw} ${hd} ${-hw} ${hd - r} V ${-hd + r} Q ${-hw} ${-hd} ${-hw + r} ${-hd} Z`;
+        }
+        default: { // molar: a rounded square with a slight bulge on each side
+            const r = Math.min(hw, hd) * 0.42, b = w * 0.04;
+            return `M ${-hw + r} ${-hd} Q 0 ${-hd - b} ${hw - r} ${-hd} Q ${hw} ${-hd} ${hw} ${-hd + r} Q ${hw + b} 0 ${hw} ${hd - r} Q ${hw} ${hd} ${hw - r} ${hd} Q 0 ${hd + b} ${-hw + r} ${hd} Q ${-hw} ${hd} ${-hw} ${hd - r} Q ${-hw - b} 0 ${-hw} ${-hd + r} Q ${-hw} ${-hd} ${-hw + r} ${-hd} Z`;
+        }
+    }
 }
 
-const el = (name, attrs = {}) => { const e = document.createElementNS(SVG, name); for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v); return e; };
+// Grooves and ridges, drawn faintly so a tooth reads as a tooth.
+function anatomy(type, w, d) {
+    const hw = w / 2, hd = d / 2;
+    switch (type) {
+        case 'incisor': return [`M ${-hw * 0.7} ${-hd * 0.55} Q 0 ${-hd * 0.7} ${hw * 0.7} ${-hd * 0.55}`];
+        case 'canine': return [`M 0 ${-hd * 0.75} L 0 ${hd * 0.55}`, `M ${-hw * 0.7} 0 L 0 ${-hd * 0.2} L ${hw * 0.7} 0`];
+        case 'premolar': return [`M ${-hw * 0.6} 0 Q 0 ${hd * 0.12} ${hw * 0.6} 0`];
+        default: return [
+            `M ${-hw * 0.65} ${-hd * 0.05} Q 0 ${hd * 0.15} ${hw * 0.65} ${-hd * 0.05}`,
+            `M ${-hw * 0.05} ${-hd * 0.7} L 0 ${hd * 0.05} L ${hw * 0.1} ${hd * 0.7}`,
+        ];
+    }
+}
 
-// A square crown seen from above, cut into five surfaces.
-function crown(n, t, x, y, s, { big = false } = {}) {
-    const g = el('g', { class: 'crown' });
-    const i = s * 0.3; // inner square inset
-    const side = sides(n);
-    const polys = {
-        [side.top]: [[x, y], [x + s, y], [x + s - i, y + i], [x + i, y + i]],
-        [side.right]: [[x + s, y], [x + s, y + s], [x + s - i, y + s - i], [x + s - i, y + i]],
-        [side.bottom]: [[x, y + s], [x + s, y + s], [x + s - i, y + s - i], [x + i, y + s - i]],
-        [side.left]: [[x, y], [x, y + s], [x + i, y + s - i], [x + i, y + i]],
-        O: [[x + i, y + i], [x + s - i, y + i], [x + s - i, y + s - i], [x + i, y + s - i]],
+// Five surface areas cut from the tooth's box: V outward, L inward, M toward the midline.
+function surfaceAreas(w, d, mesialPlusX) {
+    const hw = w / 2, hd = d / 2, ix = w * 0.24, iy = d * 0.24;
+    const box = {
+        top: [[-hw, -hd], [hw, -hd], [hw - ix, -hd + iy], [-hw + ix, -hd + iy]],
+        bottom: [[-hw, hd], [hw, hd], [hw - ix, hd - iy], [-hw + ix, hd - iy]],
+        right: [[hw, -hd], [hw, hd], [hw - ix, hd - iy], [hw - ix, -hd + iy]],
+        left: [[-hw, -hd], [-hw, hd], [-hw + ix, hd - iy], [-hw + ix, -hd + iy]],
+        centre: [[-hw + ix, -hd + iy], [hw - ix, -hd + iy], [hw - ix, hd - iy], [-hw + ix, hd - iy]],
     };
-    for (const [surface, pts] of Object.entries(polys)) {
-        const finding = t?.surfaces?.[surface];
-        const p = el('polygon', { points: pts.map((pt) => pt.join(',')).join(' '), class: `sf ${finding || ''}`, 'data-surface': surface });
-        g.append(p);
-        if (big) {
-            const cx = pts.reduce((a, pt) => a + pt[0], 0) / 4, cy = pts.reduce((a, pt) => a + pt[1], 0) / 4;
-            const label = el('text', { x: cx, y: cy + 4, class: 'sf-label' });
-            label.textContent = surface;
-            g.append(label);
-        }
-    }
-    if (t?.state === 'crown') g.append(el('rect', { x: x - 2.5, y: y - 2.5, width: s + 5, height: s + 5, rx: 4, class: 'crown-ring' }));
-    return g;
+    return { V: box.top, L: box.bottom, O: box.centre, M: mesialPlusX ? box.right : box.left, D: mesialPlusX ? box.left : box.right };
 }
 
-// Roots: one, two or three tapered strokes; a screw for an implant.
-function rootsShape(n, t, cx, y0, dir, len) {
-    const g = el('g', { class: 'roots' });
+/**
+ * Draws a tooth into a <g>. `scale` is pixels per unit; `labels` writes M/O/D/V/L on it.
+ * Returns the group; surfaces carry data-surface so the big view can be clicked.
+ */
+function occlusalTooth(n, t, scale, mesialPlusX, { labels = false } = {}) {
+    const [sw, sd] = size(n);
+    const w = sw * scale, d = sd * scale;
+    const type = kind(n);
+    const g = el('g', { class: `occ ${t?.state || ''}` });
+    const clipId = `clip-${++uid}`;
+    const shape = outline(type, w, d);
+    const clip = el('clipPath', { id: clipId });
+    clip.append(el('path', { d: shape }));
+    g.append(clip, el('path', { d: shape, class: 'enamel' }));
+
+    const areas = el('g', { 'clip-path': `url(#${clipId})` });
+    for (const [s, pts] of Object.entries(surfaceAreas(w, d, mesialPlusX))) {
+        const finding = t?.surfaces?.[s];
+        areas.append(el('polygon', { points: pts.map((p) => p.join(',')).join(' '), class: `sf ${finding || ''}`, 'data-surface': s }));
+    }
+    g.append(areas);
+    for (const a of anatomy(type, w, d)) g.append(el('path', { d: a, class: 'groove' }));
+    g.append(el('path', { d: shape, class: 'edge' }));
+
+    if (t?.state === 'crown') g.append(el('path', { d: shape, class: 'crown-ring' }));
     if (t?.state === 'implant') {
-        const w = 9;
-        g.append(el('rect', { x: cx - w / 2, y: dir > 0 ? y0 : y0 - len, width: w, height: len, rx: 2, class: 'screw' }));
-        for (let k = 1; k < 5; k++) {
-            const yy = y0 + dir * (len * k) / 5;
-            g.append(el('line', { x1: cx - w / 2 - 2, x2: cx + w / 2 + 2, y1: yy, y2: yy, class: 'thread' }));
-        }
-        return g;
+        const r = Math.min(w, d) * 0.2;
+        g.append(el('circle', { r, class: 'implant-head' }), el('path', { d: `M ${-r * 0.55} 0 H ${r * 0.55} M 0 ${-r * 0.55} V ${r * 0.55}`, class: 'implant-cross' }));
     }
-    const count = roots(n);
-    const spread = count === 1 ? [0] : count === 2 ? [-5, 5] : [-7, 0, 7];
-    for (const dx of spread) {
-        const tip = y0 + dir * len * (count === 3 && dx === 0 ? 0.8 : 1);
-        const w = count === 1 ? 6 : 4.5;
-        g.append(el('path', { d: `M ${cx + dx - w} ${y0} C ${cx + dx - w} ${(y0 + tip) / 2} ${cx + dx - 1.5} ${tip} ${cx + dx} ${tip} C ${cx + dx + 1.5} ${tip} ${cx + dx + w} ${(y0 + tip) / 2} ${cx + dx + w} ${y0} Z`, class: 'root' }));
-        if (t?.state === 'root_canal') g.append(el('line', { x1: cx + dx, x2: cx + dx, y1: y0, y2: tip - dir * 3, class: 'canal' }));
+    if (t?.state === 'root_canal') g.append(el('circle', { r: Math.min(w, d) * 0.09, class: 'canal-dot' }));
+    if (t?.state === 'to_extract') {
+        const k = Math.min(w, d) * 0.42;
+        g.append(el('path', { d: `M ${-k} ${-k} L ${k} ${k} M ${k} ${-k} L ${-k} ${k}`, class: 'extract' }));
+    }
+    if (labels) {
+        for (const [s, pts] of Object.entries(surfaceAreas(w, d, mesialPlusX))) {
+            const cx = pts.reduce((a, p) => a + p[0], 0) / 4, cy = pts.reduce((a, p) => a + p[1], 0) / 4;
+            const tx = el('text', { x: cx, y: cy + 5, class: 'sf-label' });
+            tx.textContent = s;
+            g.append(tx);
+        }
     }
     return g;
 }
 
-function toothSvg(n, t, w) {
-    const upper = isUpper(n);
-    const h = 104, s = 28, cx = w / 2;
-    const svg = el('svg', { viewBox: `0 0 ${w} ${h}`, width: w, height: h, class: `tooth-svg ${t?.state || ''}` });
-    const crownY = upper ? 52 : 24;
-    const rootLen = (n % 10) === 3 ? 40 : 34;
-    svg.append(rootsShape(n, t, cx, upper ? crownY : crownY + s, upper ? -1 : 1, rootLen));
-    svg.append(crown(n, t, cx - s / 2, crownY, s));
-    if (t?.state === 'to_extract') {
-        svg.append(el('line', { x1: 6, y1: 8, x2: w - 6, y2: h - 22, class: 'extract' }), el('line', { x1: w - 6, y1: 8, x2: 6, y2: h - 22, class: 'extract' }));
+// ── The arch: teeth laid along half an ellipse, sized by kind ───────────────
+function archPoints(cx, cy, rx, ry, upper) {
+    const pts = [];
+    for (let i = 0; i <= 600; i++) {
+        const th = Math.PI - (Math.PI * i) / 600; // left end → apex → right end
+        // A slightly flattened ellipse: narrow at the front, near-parallel at the back.
+        const c = Math.cos(th), s = Math.sin(th);
+        const x = cx + rx * Math.sign(c) * Math.abs(c) ** 0.92;
+        const y = upper ? cy - ry * s ** 1.15 : cy + ry * s ** 1.15;
+        pts.push([x, y]);
     }
-    const num = el('text', { x: cx, y: upper ? h - 6 : 14, class: 'num' });
-    num.textContent = n;
-    svg.append(num);
+    let len = 0;
+    return pts.map((p, i) => { if (i) len += Math.hypot(p[0] - pts[i - 1][0], p[1] - pts[i - 1][1]); return { x: p[0], y: p[1], s: len }; });
+}
+
+function at(pts, s) {
+    let i = pts.findIndex((p) => p.s >= s);
+    if (i < 1) i = 1;
+    const a = pts[i - 1], b = pts[i];
+    const f = (s - a.s) / (b.s - a.s || 1);
+    return { x: a.x + (b.x - a.x) * f, y: a.y + (b.y - a.y) * f, tx: b.x - a.x, ty: b.y - a.y };
+}
+
+// Desktop: a wide, shallow mouth with both arches. Phone: one deep, narrow arch filling
+// the screen width, so each tooth is big enough for a finger.
+const LAYOUTS = { wide: { W: 800, H: 340, rx: 318, ry: 238 }, phone: { W: 600, H: 420, rx: 238, ry: 318 } };
+const phone = () => window.matchMedia('(max-width: 767.98px)').matches;
+
+function drawArch(svg, teeth, data, selected, upper, onPick) {
+    const { W, H, rx, ry } = LAYOUTS[phone() ? 'phone' : 'wide'];
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    const cx = W / 2, cy = upper ? H - 40 : 40;
+    const pts = archPoints(cx, cy, rx, ry, upper);
+    const total = pts.at(-1).s;
+    const gap = 0.05;
+    const units = teeth.reduce((a, n) => a + size(n)[0], 0) + gap * (teeth.length - 1) + 0.25; // + a little space at the midline
+    const scale = (total * 0.97) / units;
+
+    // The gum the teeth sit in.
+    const gum = el('path', { d: `M ${pts.map((p) => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' L ')}`, class: 'gum', 'stroke-width': scale * 1.35 });
+    svg.append(gum);
+
+    let s = total * 0.015;
+    teeth.forEach((n, i) => {
+        const [w] = size(n);
+        if (i === 8) s += scale * 0.25;
+        const p = at(pts, s + (w * scale) / 2);
+        s += w * scale + gap * scale;
+        const tl = Math.hypot(p.tx, p.ty) || 1;
+        // Outward normal: perpendicular to the arch, away from its inside.
+        let nx = p.ty / tl, ny = -p.tx / tl;
+        if ((p.x - cx) * nx + (p.y - cy) * ny < 0) { nx = -nx; ny = -ny; }
+        const rot = (Math.atan2(nx, -ny) * 180) / Math.PI;
+        // Local +x follows the travel on the upper arch and goes against it on the lower one.
+        const beforeMidline = i < 8;
+        const mesialPlusX = upper ? beforeMidline : !beforeMidline;
+
+        const t = data[n];
+        const g = el('g', {
+            class: `tooth ${selected === n ? 'on' : ''} ${t ? 'has' : ''}`, tabindex: 0, role: 'button',
+            transform: `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) rotate(${rot.toFixed(1)})`,
+            'aria-label': `${n}, ${toothName(n)} : ${describe(t)}`, 'data-tooth': n,
+        });
+        const title = el('title');
+        title.textContent = `${n} · ${describe(t)}${t?.note ? ' — ' + t.note : ''}`;
+        g.append(title, el('circle', { r: scale * 0.62, class: 'hit' }), occlusalTooth(n, t, scale, mesialPlusX));
+        g.addEventListener('click', () => onPick(n));
+        g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPick(n); } });
+        svg.append(g);
+
+        const [, dd] = size(n);
+        const lx = p.x + nx * (dd * scale * 0.5 + 15), ly = p.y + ny * (dd * scale * 0.5 + 15);
+        const label = el('text', { x: lx.toFixed(1), y: (ly + 4).toFixed(1), class: `num ${selected === n ? 'on' : ''}` });
+        label.textContent = n;
+        svg.append(label);
+    });
+    // Side labels once between the two arches on desktop; each arch keeps its own on a phone.
+    const side = (x, txt) => { const tx = el('text', { x, y: upper ? H - 8 : 22, class: `side ${upper ? '' : 'phone-only'}` }); tx.textContent = txt; svg.append(tx); };
+    side(24, 'DROITE');
+    side(W - 24, 'GAUCHE');
+}
+
+// ── Side view of the selected tooth: crown and roots of its kind ─────────────
+function profileTooth(n, t) {
+    const svg = el('svg', { viewBox: '0 0 120 200', class: 'profile' });
+    const up = isUpper(n), type = kind(n);
+    const g = el('g', { transform: up ? 'translate(60 200) scale(1 -1)' : 'translate(60 0)' }); // roots go up for upper teeth
+    const cw = type === 'molar' ? 74 : type === 'premolar' ? 52 : type === 'canine' ? 46 : 44;
+    const ch = type === 'incisor' ? 70 : 62;
+    const crownD = type === 'molar'
+        ? `M ${-cw / 2} 30 Q ${-cw / 2 - 4} 4 ${-cw / 4} 10 Q ${-cw / 8} 0 0 8 Q ${cw / 8} 0 ${cw / 4} 10 Q ${cw / 2 + 4} 4 ${cw / 2} 30 L ${cw / 2 - 4} ${ch} Q 0 ${ch + 6} ${-cw / 2 + 4} ${ch} Z`
+        : type === 'incisor'
+            ? `M ${-cw / 2} 6 Q 0 2 ${cw / 2} 6 L ${cw / 2 - 6} ${ch} Q 0 ${ch + 6} ${-cw / 2 + 6} ${ch} Z`
+            : `M ${-cw / 2} 26 Q ${-cw / 4} 8 0 2 Q ${cw / 4} 8 ${cw / 2} 26 L ${cw / 2 - 5} ${ch} Q 0 ${ch + 6} ${-cw / 2 + 5} ${ch} Z`;
+    // Roots
+    const rootTop = ch - 2, len = type === 'canine' ? 120 : type === 'incisor' ? 104 : 96;
+    if (t?.state === 'implant') {
+        const w = 20;
+        g.append(el('rect', { x: -w / 2, y: rootTop, width: w, height: len - 10, rx: 5, class: 'screw' }));
+        for (let k = 1; k < 7; k++) g.append(el('line', { x1: -w / 2 - 4, x2: w / 2 + 4, y1: rootTop + (k * (len - 10)) / 7, y2: rootTop + (k * (len - 10)) / 7, class: 'thread' }));
+    } else if (t?.state !== 'missing') {
+        const c = rootCount(n);
+        const xs = c === 1 ? [0] : c === 2 ? [-cw / 4, cw / 4] : [-cw / 3, 0, cw / 3];
+        xs.forEach((x, i) => {
+            const L = c === 3 && i === 1 ? len * 0.85 : len;
+            const rw = c === 1 ? cw * 0.32 : cw * 0.17;
+            g.append(el('path', { d: `M ${x - rw} ${rootTop} C ${x - rw} ${rootTop + L * 0.6} ${x - 3} ${rootTop + L} ${x} ${rootTop + L} C ${x + 3} ${rootTop + L} ${x + rw} ${rootTop + L * 0.6} ${x + rw} ${rootTop} Z`, class: 'root' }));
+            if (t?.state === 'root_canal') g.append(el('path', { d: `M ${x} ${rootTop - 14} L ${x} ${rootTop + L - 8}`, class: 'canal' }));
+        });
+    }
+    g.append(el('path', { d: crownD, class: `crown-side ${t?.state === 'missing' ? 'missing' : ''}` }));
+    if (t?.state === 'crown') g.append(el('path', { d: crownD, class: 'crown-cap' }));
+    if (t?.state === 'to_extract') g.append(el('path', { d: 'M -40 10 L 40 150 M 40 10 L -40 150', class: 'extract' }));
+    svg.append(g);
     return svg;
 }
 
+// ── Mount ────────────────────────────────────────────────────────────────────
 export function mountOdontogram(root) {
     const data = JSON.parse(root.dataset.teeth || '{}');
     const history = JSON.parse(root.dataset.history || '{}');
-    const editable = root.dataset.url !== undefined && root.dataset.url !== '';
+    const editable = !!root.dataset.url;
     const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
     let selected = null;
     let draft = null;
@@ -125,58 +263,45 @@ export function mountOdontogram(root) {
                 <button type="button" role="tab" data-arch="upper" class="on">Haut</button><button type="button" role="tab" data-arch="lower">Bas</button>
             </div>
         </div>
-        <div class="odo-chart" data-chart>
+        <div class="odo-mouth">
             ${editable ? '<p class="odo-hint">Cliquez une dent pour noter une carie, une obturation, une couronne…</p>' : ''}
-            <div class="odo-side-labels"><span>Droite du patient</span><span>Gauche du patient</span></div>
-            <div class="odo-arch upper" data-arch-row="upper"><div class="q" data-q="${UPPER_R}"></div><div class="mid"></div><div class="q" data-q="${UPPER_L}"></div></div>
-            <div class="odo-arch lower" data-arch-row="lower"><div class="q" data-q="${LOWER_R}"></div><div class="mid"></div><div class="q" data-q="${LOWER_L}"></div></div>
+            <svg class="arch upper" viewBox="0 0 800 340" data-arch-svg="upper" aria-label="Arcade supérieure"></svg>
+            <svg class="arch lower" viewBox="0 0 800 340" data-arch-svg="lower" aria-label="Arcade inférieure"></svg>
         </div>
         <div class="odo-legend">
             <span><i class="lg caries"></i>Carie</span><span><i class="lg filling"></i>Obturation</span><span><i class="lg ring"></i>Couronne</span>
-            <span><i class="lg canal"></i>Dévitalisée</span><span><i class="lg screw"></i>Implant</span><span><i class="lg missing"></i>Absente</span><span><i class="lg extract"></i>À extraire</span>
+            <span><i class="lg canal"></i>Dévitalisée</span><span><i class="lg implant"></i>Implant</span><span><i class="lg missing"></i>Absente</span><span><i class="lg extract"></i>À extraire</span>
         </div>
         <div class="odo-sheet-backdrop" data-backdrop hidden></div>
         <aside class="odo-editor" data-editor hidden></aside>`;
 
-    const chart = root.querySelector('[data-chart]');
     const editor = root.querySelector('[data-editor]');
     const backdrop = root.querySelector('[data-backdrop]');
 
     function drawChart() {
-        chart.querySelectorAll('[data-q]').forEach((q) => {
-            q.replaceChildren(...q.dataset.q.split(',').map(Number).map((n) => {
-                const t = data[n];
-                const b = document.createElement('button');
-                b.type = 'button';
-                b.className = `odo-tooth ${t ? 'has' : ''} ${t?.state === 'missing' ? 'missing' : ''} ${selected === n ? 'on' : ''}`;
-                b.dataset.tooth = n;
-                b.setAttribute('aria-label', `${n}, ${toothName(n)} : ${describe(t)}`);
-                b.title = `${n} · ${describe(t)}${t?.note ? ' — ' + t.note : ''}`;
-                b.append(toothSvg(n, t, 44));
-                b.onclick = () => select(n);
-                return b;
-            }));
-        });
+        for (const [key, teeth] of [['upper', UPPER], ['lower', LOWER]]) {
+            const svg = root.querySelector(`[data-arch-svg="${key}"]`);
+            svg.replaceChildren();
+            drawArch(svg, teeth, data, selected, key === 'upper', select);
+        }
         const list = Object.entries(data).sort(([a], [b]) => a - b);
         const summary = root.querySelector('[data-summary]');
-        const toTreat = list.filter(([, t]) => t.state === 'to_extract' || Object.values(t.surfaces || {}).includes('caries')).length;
+        const urgent = (t) => t.state === 'to_extract' || Object.values(t.surfaces || {}).includes('caries');
+        const toTreat = list.filter(([, t]) => urgent(t)).length;
         summary.replaceChildren();
-        if (!list.length) summary.textContent = 'Aucune observation : toutes les dents sont saines.';
-        else {
-            const head = document.createElement('b');
-            head.textContent = toTreat ? `${toTreat} dent${toTreat > 1 ? 's' : ''} à traiter` : 'Rien à traiter';
-            summary.append(head);
-            for (const [n, t] of list) {
-                const chip = document.createElement('button');
-                chip.type = 'button';
-                const urgent = t.state === 'to_extract' || Object.values(t.surfaces || {}).includes('caries');
-                chip.className = `odo-chip ${urgent ? 'urgent' : ''}`;
-                chip.innerHTML = '<span class="n"></span><span></span>';
-                chip.firstChild.textContent = n;
-                chip.lastChild.textContent = describe(t);
-                chip.onclick = () => { arch = isUpper(+n) ? 'upper' : 'lower'; syncArch(); select(+n); };
-                summary.append(chip);
-            }
+        if (!list.length) { summary.textContent = 'Aucune observation : toutes les dents sont saines.'; return; }
+        const head = document.createElement('b');
+        head.textContent = toTreat ? `${toTreat} dent${toTreat > 1 ? 's' : ''} à traiter` : 'Rien à traiter';
+        summary.append(head);
+        for (const [n, t] of list) {
+            const chip = document.createElement('button');
+            chip.type = 'button';
+            chip.className = `odo-chip ${urgent(t) ? 'urgent' : ''}`;
+            chip.innerHTML = '<span class="n"></span><span></span>';
+            chip.firstChild.textContent = n;
+            chip.lastChild.textContent = describe(t);
+            chip.onclick = () => { arch = isUpper(+n) ? 'upper' : 'lower'; syncArch(); select(+n); };
+            summary.append(chip);
         }
     }
 
@@ -205,37 +330,48 @@ export function mountOdontogram(root) {
         drawChart();
     }
     backdrop.onclick = close;
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !editor.hidden) close(); });
 
     function drawEditor() {
         const n = selected;
         const noSurfaces = draft.state === 'missing' || draft.state === 'implant';
+        const shown = { state: draft.state, surfaces: draft.surfaces };
         editor.innerHTML = `
             <div class="ed-hd"><div><b>${n}</b><span>${toothName(n)}</span></div><button type="button" class="ed-x" aria-label="Fermer">✕</button></div>
+            <div class="ed-views">
+                <figure><div data-big></div><figcaption>Vue de dessus · ${noSurfaces ? 'pas de faces' : 'touchez une face'}</figcaption></figure>
+                <figure><div data-profile></div><figcaption>Vue de profil</figcaption></figure>
+            </div>
             <div class="ed-label">État de la dent</div>
-            <div class="ed-states">${Object.entries(STATES).map(([k, v]) => `<button type="button" data-state="${k}" class="${draft.state === k ? 'on' : ''}" ${editable ? '' : 'disabled'}>${k === 'present' ? 'Présente' : v}</button>`).join('')}</div>
-            <div class="ed-label">Faces <span>${noSurfaces ? 'sans objet pour une dent ' + (draft.state === 'missing' ? 'absente' : 'implantée') : 'touchez une face : carie, puis obturation, puis rien'}</span></div>
-            <div class="ed-surfaces ${noSurfaces ? 'off' : ''}" data-big></div>
-            <div class="ed-surface-list">${['M', 'O', 'D', 'V', 'L'].map((s) => `<span>${s} <small>${SURFACE_NAMES[s]}</small> <b>${draft.surfaces[s] ? FINDINGS[draft.surfaces[s]] : '—'}</b></span>`).join('')}</div>
+            <div class="ed-states">${Object.entries(STATES).map(([k, v]) => `<button type="button" data-state="${k}" class="${draft.state === k ? 'on' : ''}" ${editable ? '' : 'disabled'}>${v}</button>`).join('')}</div>
+            <div class="ed-label">Faces <span>${noSurfaces ? 'sans objet pour une dent ' + (draft.state === 'missing' ? 'absente' : 'implantée') : 'carie, puis obturation, puis rien'}</span></div>
+            <div class="ed-surface-list">${['M', 'O', 'D', 'V', 'L'].map((s) => `<button type="button" data-face="${s}" ${editable && !noSurfaces ? '' : 'disabled'} class="${draft.surfaces[s] || ''}"><b>${s}</b> ${SURFACE_NAMES[s]}<em>${draft.surfaces[s] ? FINDINGS[draft.surfaces[s]] : '—'}</em></button>`).join('')}</div>
             <label class="ed-label" for="ed-note">Note</label>
-            <input id="ed-note" class="form-control form-control-sm" maxlength="200" placeholder="Ex : composite 2024, sensible au froid" value="" ${editable ? '' : 'disabled'}>
+            <input id="ed-note" class="form-control form-control-sm" maxlength="200" placeholder="Ex : composite 2024, sensible au froid" ${editable ? '' : 'disabled'}>
             ${editable ? '<div class="ed-actions"><button type="button" class="btn btn-outline-secondary btn-sm" data-clear>Dent saine</button><button type="button" class="btn btn-primary btn-sm" data-save>Enregistrer</button></div>' : ''}
             <div class="ed-label">Historique</div>
             <ul class="ed-history">${(history[n] || []).map((h) => `<li><span>${h.at}${h.who ? ' · ' + h.who : ''}</span>${h.what.replace(/</g, '&lt;')}</li>`).join('') || '<li class="empty">Aucune modification enregistrée.</li>'}</ul>`;
         editor.querySelector('#ed-note').value = draft.note;
 
-        const big = editor.querySelector('[data-big]');
-        const svg = el('svg', { viewBox: '0 0 160 160', width: 160, height: 160 });
-        svg.append(crown(n, { surfaces: draft.surfaces, state: draft.state }, 10, 10, 140, { big: true }));
-        big.append(svg);
-        if (editable && !noSurfaces) {
-            svg.querySelectorAll('[data-surface]').forEach((p) => p.addEventListener('click', () => {
-                const s = p.dataset.surface;
-                draft.surfaces[s] = draft.surfaces[s] === undefined || draft.surfaces[s] === null ? 'caries' : draft.surfaces[s] === 'caries' ? 'filling' : null;
-                if (!draft.surfaces[s]) delete draft.surfaces[s];
-                draft.note = editor.querySelector('#ed-note').value;
-                drawEditor();
-            }));
-        }
+        // Big biting surface, oriented like in the mouth (vestibular up for the upper teeth).
+        const big = el('svg', { viewBox: '-95 -95 190 190', class: 'big-occ' });
+        const mesialPlusX = UPPER.indexOf(n) > -1 ? UPPER.indexOf(n) < 8 : LOWER.indexOf(n) >= 8;
+        const g = occlusalTooth(n, shown, 150, mesialPlusX, { labels: !noSurfaces });
+        if (!isUpper(n)) g.setAttribute('transform', 'rotate(180)');
+        g.querySelectorAll('.sf-label').forEach((tx) => { if (!isUpper(n)) tx.setAttribute('transform', `rotate(180 ${tx.getAttribute('x')} ${+tx.getAttribute('y') - 5})`); });
+        big.append(g);
+        editor.querySelector('[data-big]').append(big);
+        editor.querySelector('[data-profile]').append(profileTooth(n, shown));
+
+        const cycle = (s) => {
+            if (!editable || noSurfaces) return;
+            draft.surfaces[s] = !draft.surfaces[s] ? 'caries' : draft.surfaces[s] === 'caries' ? 'filling' : null;
+            if (!draft.surfaces[s]) delete draft.surfaces[s];
+            draft.note = editor.querySelector('#ed-note').value;
+            drawEditor();
+        };
+        big.querySelectorAll('[data-surface]').forEach((p) => p.addEventListener('click', () => cycle(p.dataset.surface)));
+        editor.querySelectorAll('[data-face]').forEach((b) => b.addEventListener('click', () => cycle(b.dataset.face)));
         editor.querySelector('.ed-x').onclick = close;
         editor.querySelectorAll('[data-state]').forEach((b) => b.addEventListener('click', () => {
             draft.state = b.dataset.state;
@@ -259,6 +395,9 @@ export function mountOdontogram(root) {
             close();
         });
     }
+
+    // Redraw when crossing the phone/desktop boundary (rotation, window resize).
+    window.matchMedia('(max-width: 767.98px)').addEventListener('change', drawChart);
 
     syncArch();
     drawChart();
