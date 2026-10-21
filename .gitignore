@@ -2,3 +2,4 @@
 nlu/models/*.joblib
 nlu/**/__pycache__/
 nlu/.pytest_cache/
+nlu/data/corrections.jsonl

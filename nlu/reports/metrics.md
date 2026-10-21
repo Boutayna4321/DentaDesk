@@ -1,4 +1,4 @@
-# Modèle d'intention · version 20261021-1051
+# Modèle d'intention · version 20261021-1115
 
 Données : 2053 phrases d'entraînement (gabarits + variantes d'orthographe), validation croisée 5 plis groupés par gabarit, **105 phrases de test écrites à la main**, jamais vues pendant l'entraînement ni utilisées pour régler quoi que ce soit.
 

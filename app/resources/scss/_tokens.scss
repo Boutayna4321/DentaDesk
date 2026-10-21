@@ -1,0 +1,43 @@
+// Shared by the site and the dashboard. Bootstrap reads these before it builds.
+$ink: #0c2350;
+$blue: #1f56d6;
+$tint: #eef3fd;
+$line: #e3e9f4;
+$mute: #5b6b86;
+$paper: #f7f9fd;
+$green: #1a8f5a;
+$amber: #b26a00;
+$red: #c0392b;
+
+$primary: $blue;
+$dark: $ink;
+$body-color: $ink;
+$secondary-color: $mute;
+$border-color: $line;
+$link-color: $blue;
+$link-decoration: none;
+
+$font-family-sans-serif: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+$headings-font-weight: 800;
+$headings-color: $ink;
+$font-size-base: .9375rem;
+$line-height-base: 1.55;
+
+$border-radius: .375rem;
+$border-radius-sm: .3rem;
+$border-radius-lg: .625rem;
+$border-radius-xl: .75rem;
+
+$btn-font-weight: 700;
+$btn-padding-y: .65rem;
+$btn-padding-x: 1.15rem;
+$btn-font-size: .875rem;
+$input-padding-y: .6rem;
+$input-focus-border-color: $blue;
+$input-btn-focus-color: rgba($blue, .18);
+$box-shadow: 0 14px 34px rgba($ink, .10);
+$box-shadow-lg: 0 18px 40px rgba($ink, .18);
+$accordion-button-active-bg: $tint;
+$accordion-button-active-color: $ink;
+$enable-shadows: false;
+$enable-negative-margins: true;

@@ -6,11 +6,12 @@ services:
     build:
       context: docker/php
       args: { UID: "${UID:-1000}", GID: "${GID:-1000}" }
-    volumes: [ "./app:/var/www/app" ]
+    volumes: [ "./app:/var/www/app", "./nlu/data:/var/www/nlu-data" ]
     command: php artisan serve --host=0.0.0.0 --port=8000
     ports: [ "8000:8000" ]
     environment:
       NLU_URL: http://nlu:8001
+      NLU_DATA_DIR: /var/www/nlu-data
     depends_on:
       mysql: { condition: service_healthy }
       nlu: { condition: service_started }

@@ -4,6 +4,7 @@ namespace App\Assistant;
 
 use App\Booking\Availability;
 use App\Booking\Booker;
+use App\Booking\OpeningHours;
 use App\Booking\SlotTaken;
 use App\Models\Appointment;
 use App\Models\AssistantRequest;
@@ -12,7 +13,6 @@ use App\Models\Faq;
 use App\Models\Patient;
 use App\Models\Practitioner;
 use App\Models\Service;
-use App\Models\WorkingHour;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Str;
 
@@ -52,7 +52,8 @@ class Dialogue
         if ($value === null) {
             $nlu = $this->nlu->parse($text, CarbonImmutable::today()->toDateString());
         }
-        $conversation->messages()->create([
+        $stepBefore = $this->state['step'] ?? null;
+        $message = $conversation->messages()->create([
             'role' => 'patient',
             'body' => $text,
             'intent' => $nlu['intent'] ?? null,
@@ -66,6 +67,10 @@ class Dialogue
             $reply = $this->respond($text, $value, $nlu ?? ['intent' => null, 'tier' => 'act', 'entities' => [], 'alternatives' => []]);
         }
 
+        // An answer to "your name?" or "your number?" is not a request: keep it out of the intent stats.
+        if (in_array($stepBefore, ['name', 'phone'], true) || $value !== null) {
+            $message->update(['intent' => null, 'confidence' => null]);
+        }
         $conversation->messages()->create(['role' => 'assistant', 'body' => $reply->text]);
         $conversation->update(['state' => $this->state, 'last_message_at' => now()]);
 
@@ -137,7 +142,7 @@ class Dialogue
                     }
                     $this->state['step'] = 'phone';
 
-                    return new Reply(Phrases::say('ask_phone', $this->lang, ['name' => $name]));
+                    return new Reply(Phrases::say('ask_phone', $this->lang, ['name' => strtok($name, ' ')]));
                 }
 
                 return new Reply(Phrases::say('ask_name', $this->lang, ['slot' => $this->chosenLabel()]));
@@ -505,30 +510,7 @@ class Dialogue
 
     private function hoursText(): string
     {
-        $dayNames = [1 => 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
-        $byDay = WorkingHour::where('practitioner_id', $this->practitioner()->id)->orderBy('weekday')->orderBy('opens_at')->get()
-            ->groupBy('weekday')
-            ->map(fn ($spans) => $spans->map(fn ($s) => substr($s->opens_at, 0, 5).'–'.substr($s->closes_at, 0, 5))->implode(', '));
-
-        // Merge consecutive days with the same hours: "lundi–vendredi 09:00–13:00, 14:30–19:00".
-        $parts = [];
-        $run = null;
-        foreach ($byDay as $day => $hours) {
-            if ($run && $run['hours'] === $hours && $run['to'] === $day - 1) {
-                $run['to'] = $day;
-
-                continue;
-            }
-            if ($run) {
-                $parts[] = $run;
-            }
-            $run = ['from' => $day, 'to' => $day, 'hours' => $hours];
-        }
-        if ($run) {
-            $parts[] = $run;
-        }
-
-        return collect($parts)->map(fn ($r) => ($r['from'] === $r['to'] ? $dayNames[$r['from']] : $dayNames[$r['from']].'–'.$dayNames[$r['to']]).' '.$r['hours'])->implode(' · ');
+        return OpeningHours::summary($this->practitioner());
     }
 
     private function lastPatientMessage(): string

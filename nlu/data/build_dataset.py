@@ -4,7 +4,9 @@ Three sources, kept apart on purpose:
   1. templates.py   phrasings x fillers (days, times, services) in darija, French, Arabic
   2. augment()      the spelling noise real people type: 3/a, 9/q, 7/h, ou/o/u, dropped
                     vowels, doubled letters, missing spaces
-  3. handwritten_test.jsonl   written by hand and NEVER generated or augmented. It is the
+  3. corrections.jsonl  exported from the dashboard (php artisan nlu:export): intents the
+                    clinic corrected and the FAQ variants it added. Training only.
+  4. handwritten_test.jsonl   written by hand and NEVER generated or augmented. It is the
                     only honest measure of how the model does on messages it has not seen.
 
 Usage: python data/build_dataset.py  ->  data/train.jsonl, data/val.jsonl
@@ -70,6 +72,15 @@ def build() -> tuple[list[dict], list[dict]]:
                         continue
                     seen.add(key)
                     rows.append({"text": v, "intent": intent, "template": tpl})
+
+    corrections = HERE / "corrections.jsonl"
+    if corrections.exists():
+        for line in corrections.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                r = json.loads(line)
+                if r["text"].lower().strip() not in seen:
+                    seen.add(r["text"].lower().strip())
+                    rows.append({"text": r["text"], "intent": r["intent"], "template": "correction:" + r["text"]})
 
     # Split by template, not by row: variants of one template must not sit on both
     # sides, or validation would only measure memorisation.

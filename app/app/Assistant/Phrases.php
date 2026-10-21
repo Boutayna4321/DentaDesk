@@ -251,6 +251,12 @@ class Phrases
     /** Short label for a slot chip: "Mer 22 · 10:30". */
     public static function slotChip(CarbonImmutable $at, string $lang): string
     {
+        $diff = (int) $at->startOfDay()->diffInDays(CarbonImmutable::today(), true);
+        if ($diff < 2) {
+            $word = [['da' => 'Lyouma', 'fr' => 'Aujourd’hui', 'ar' => 'اليوم'], ['da' => 'Ghedda', 'fr' => 'Demain', 'ar' => 'غدا']][$diff][$lang];
+
+            return $word.' · '.$at->format('H:i');
+        }
         $day = match ($lang) {
             'da' => ucfirst(self::DAYS['da'][$at->isoWeekday()]),
             'ar' => self::DAYS['ar'][$at->isoWeekday()],

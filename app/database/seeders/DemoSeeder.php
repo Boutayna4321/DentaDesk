@@ -69,6 +69,24 @@ class DemoSeeder extends Seeder
             $this->appointment($patients[$who], $slug, $start, $this->statusFor($start, $now, $who), $source, $reason);
         }
 
+        // Most of today's patients have been here before; Omar and Rania have not.
+        foreach (['Karim', 'Hiba', 'Mehdi', 'Nour', 'Yassine', 'Leila'] as $who) {
+            for ($k = 0, $n = mt_rand(1, 3); $k < $n; $k++) {
+                $this->appointment($patients[$who], ['controle', 'detartrage', 'carie'][mt_rand(0, 2)],
+                    $today->subDays(mt_rand(20, 400))->setTime(mt_rand(9, 17), [0, 30][mt_rand(0, 1)]), 'done', ['phone', 'web'][mt_rand(0, 1)]);
+            }
+        }
+        // The last three weeks, so the agenda is not empty behind today.
+        $availabilityPast = app(Availability::class);
+        foreach (range(1, 18) as $back) {
+            $d = $today->subDays($back);
+            $service = Service::where('slug', ['controle', 'detartrage', 'consultation', 'carie'][$back % 4])->first();
+            $slots = $availabilityPast->slots($this->dr, $service, $d, $d->subDay());
+            foreach ($slots->shuffle()->take(mt_rand(3, 6)) as $i => $at) {
+                $this->appointment($patients->values()[($back + $i) % 9 + 7], $service->slug, $at, $i === 0 && $back % 6 === 0 ? 'no_show' : 'done', ['phone', 'web', 'assistant'][mt_rand(0, 2)]);
+            }
+        }
+
         // Salma's history and odontogram, so the patient file has something to show.
         $this->appointment($patients['Salma'], 'carie', $today->subDays(13)->setTime(10, 30), 'done', 'assistant', 'Carie 36 · 1re séance',
             'Carie profonde sur 36, curetage et pansement provisoire. Composite à la séance suivante.');
@@ -81,17 +99,18 @@ class DemoSeeder extends Seeder
         // The next ten opening days, two to five bookings each.
         $availability = app(Availability::class);
         $services = Service::where('is_emergency', false)->get();
-        $others = $patients->values()->slice(8);
+        $everyone = $patients->values();
         for ($i = 1; $i <= 14; $i++) {
             $d = $today->addDays($i);
-            for ($n = 0, $max = mt_rand(2, 5); $n < $max; $n++) {
+            foreach ($everyone->shuffle()->take(mt_rand(2, 5)) as $patient) {
                 $service = $services->random();
                 $slots = $availability->slots($this->dr, $service, $d, $now);
                 if ($slots->isEmpty()) {
                     break;
                 }
-                $this->appointment($others->random(), $service->slug, $slots->random(), mt_rand(0, 3) ? 'confirmed' : 'pending',
-                    ['phone', 'web', 'assistant'][mt_rand(0, 2)]);
+                $a = $this->appointment($patient, $service->slug, $slots->random(), mt_rand(0, 3) ? 'confirmed' : 'pending',
+                    ['phone', 'web', 'assistant', 'assistant'][mt_rand(0, 3)]);
+                $a->forceFill(['created_at' => $now->subHours(mt_rand(2, 330))])->saveQuietly();
             }
         }
 
@@ -145,7 +164,11 @@ class DemoSeeder extends Seeder
         ]));
 
         $fatima = Patient::create(['first_name' => 'Fatima Zahra', 'last_name' => 'Kadiri', 'phone' => '0677889900', 'coverage' => 'cnops']);
-        $kidSlot = app(Availability::class)->upcoming($this->dr, Service::where('slug', 'enfant')->first(), $today->addDays(2), limit: 2, now: $now);
+        $enfant = Service::where('slug', 'enfant')->first();
+        $kidSlot = collect([
+            app(Availability::class)->upcoming($this->dr, $enfant, $today->addDays(2), limit: 1, window: ['16:00', '19:00'], now: $now)->first(),
+            app(Availability::class)->upcoming($this->dr, $enfant, $today->addDays(4), limit: 1, window: ['09:00', '12:00'], now: $now)->first(),
+        ])->filter()->values();
         if ($kidSlot->count() === 2) {
             $kid = $this->appointment($fatima, 'enfant', $kidSlot[0], 'confirmed', 'phone', 'Pour sa fille Lina, 7 ans');
             $this->conversation($fatima, [
