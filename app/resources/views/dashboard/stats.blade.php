@@ -87,14 +87,14 @@
     </div>
     <div class="col-xl-4">
         <div class="box h-100">
-            <div class="hd">Reste à encaisser</div>
+            <div class="hd">Encaissé et reste à encaisser <span>sur la période</span></div>
             <div class="p-3">
-                <div class="big-number">{{ Money::format($outstanding['amount']) }}</div>
-                <p class="text-mute small mb-3">{{ $outstanding['count'] }} facture(s) ouverte(s), toutes périodes confondues.</p>
+                @php
+                    $donut = $methods->filter(fn ($m) => $m['value'] > 0)->values()->push(['label' => 'Reste à encaisser', 'value' => $outstanding['amount'], 'muted' => true]);
+                @endphp
+                <div data-donut='@json($donut)' data-title="Facturé"></div>
+                <p class="text-mute small mt-3 mb-2"><b class="text-danger">{{ Money::format($outstanding['amount']) }}</b> à encaisser sur {{ $outstanding['count'] }} facture(s) ouverte(s). Passez la souris sur le cercle pour le détail.</p>
                 <a class="btn btn-outline-primary btn-sm" href="{{ route('dash.documents', ['tab' => 'collect']) }}">Voir les factures à encaisser</a>
-                <hr>
-                <div class="fw-bold small mb-2">Comment les patients paient</div>
-                <div data-share='@json($methods)' data-format="money"></div>
             </div>
         </div>
     </div>
@@ -113,13 +113,17 @@
     <div class="col-xl-5">
         <div class="box h-100">
             <div class="hd">D’où viennent les rendez-vous</div>
-            <div class="p-3"><div data-share='@json($sources)' data-format="int"></div></div>
+            <div class="p-3"><div data-rings='@json($sources)'></div></div>
         </div>
     </div>
 </div>
 
 <div class="box mt-3">
     <div class="hd">Ce qui rapporte <span>montant facturé par acte sur la période</span></div>
-    <div class="p-3"><div data-ranked='@json($acts)'></div></div>
+    @php
+        $top = $acts->take(8);
+        $tree = $top->when($acts->count() > 8, fn ($c) => $c->push(['label' => 'Autres actes', 'value' => $acts->slice(8)->sum('value'), 'count' => $acts->slice(8)->sum('count'), 'muted' => true]));
+    @endphp
+    <div class="p-3"><div data-treemap='@json($tree->values())'></div></div>
 </div>
 @endsection

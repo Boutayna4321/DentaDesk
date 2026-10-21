@@ -189,7 +189,7 @@ class PracticeStats
             ->where('documents.type', 'invoice')->where('documents.status', 'validated')
             ->whereBetween('documents.issued_on', [$this->from->toDateString(), $this->to->toDateString()])
             ->selectRaw('document_lines.label, SUM(document_lines.amount_cents) as total, SUM(document_lines.quantity) as n')
-            ->groupBy('document_lines.label')->orderByDesc('total')->take(7)->get()
+            ->groupBy('document_lines.label')->orderByDesc('total')->get()
             ->map(fn ($r) => ['label' => $r->label, 'value' => (int) $r->total, 'count' => (int) $r->n]);
     }
 

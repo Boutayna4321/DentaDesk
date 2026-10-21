@@ -181,3 +181,147 @@ export function ranked(node, items, format = 'money', sub = null) {
         node.append(row);
     });
 }
+
+// ── Donut: part of a whole, the hovered slice slides out ───────────────────
+// items: [{label, value, color?, muted?}]; the centre shows the total, or the hovered slice.
+export function donut(node, items, { title = 'Total', format = 'money' } = {}) {
+    const total = items.reduce((a, b) => a + b.value, 0) || 1;
+    const S = 220, R = 92, r = 62, cx = S / 2, cy = S / 2;
+    const wrap = Object.assign(document.createElement('div'), { className: 'donut-wrap' });
+    const svg = el('svg', { viewBox: `0 0 ${S} ${S}`, class: 'donut', role: 'img', 'aria-label': title });
+    const defs = el('defs');
+    const pat = el('pattern', { id: 'donut-rest', width: 6, height: 6, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' });
+    pat.append(el('rect', { width: 6, height: 6, fill: '#dfe4ee' }), el('line', { x1: 0, y1: 0, x2: 0, y2: 6, stroke: '#c5cddc', 'stroke-width': 3 }));
+    defs.append(pat);
+    svg.append(defs);
+    const centre = el('g', { class: 'centre' });
+    const cLabel = el('text', { x: cx, y: cy - 12, class: 'c-label', 'text-anchor': 'middle' });
+    const cValue = el('text', { x: cx, y: cy + 12, class: 'c-value', 'text-anchor': 'middle' });
+    const cPct = el('text', { x: cx, y: cy + 32, class: 'c-pct', 'text-anchor': 'middle' });
+    centre.append(cLabel, cValue, cPct);
+    const setCentre = (label, value, pct) => {
+        centre.classList.remove('swap'); void centre.getBBox(); centre.classList.add('swap');
+        cLabel.textContent = label; cValue.textContent = fmt[format](value); cPct.textContent = pct ?? '';
+    };
+
+    const pt = (a, rad) => [cx + rad * Math.sin(a), cy - rad * Math.cos(a)];
+    let a0 = 0, colorIndex = 0;
+    const legend = Object.assign(document.createElement('div'), { className: 'donut-legend' });
+    const slices = [];
+    items.filter((it) => it.value > 0).forEach((it) => {
+        const frac = it.value / total;
+        const a1 = a0 + frac * Math.PI * 2 - (frac < 1 ? 0.012 : 0); // a hairline of surface between slices
+        const large = a1 - a0 > Math.PI ? 1 : 0;
+        const [x0, y0] = pt(a0, R), [x1, y1] = pt(a1, R), [x2, y2] = pt(a1, r), [x3, y3] = pt(a0, r);
+        const color = it.muted ? 'url(#donut-rest)' : it.color || CATEGORICAL[colorIndex++ % CATEGORICAL.length];
+        const mid = (a0 + a1) / 2;
+        const g = el('g', { class: 'slice', tabindex: 0, style: `--dx:${(Math.sin(mid) * 8).toFixed(1)}px;--dy:${(-Math.cos(mid) * 8).toFixed(1)}px` });
+        g.append(el('path', { d: `M ${x0} ${y0} A ${R} ${R} 0 ${large} 1 ${x1} ${y1} L ${x2} ${y2} A ${r} ${r} 0 ${large} 0 ${x3} ${y3} Z`, fill: color }));
+        const pct = `${Math.round(frac * 100)} %`;
+        const on = () => { slices.forEach((s) => s.classList.toggle('dim', s !== g)); g.classList.add('on'); row.classList.add('on'); setCentre(it.label, it.value, pct); };
+        const off = () => { slices.forEach((s) => s.classList.remove('dim', 'on')); legend.querySelectorAll('.on').forEach((x) => x.classList.remove('on')); setCentre(title, total, null); };
+        g.addEventListener('mouseenter', on); g.addEventListener('mouseleave', off);
+        g.addEventListener('focus', on); g.addEventListener('blur', off);
+        slices.push(g);
+        svg.append(g);
+        const row = document.createElement('div');
+        row.innerHTML = `<i style="background:${it.muted ? 'repeating-linear-gradient(45deg,#dfe4ee 0 3px,#c5cddc 3px 5px)' : color}"></i><span></span><b>${pct}</b>`;
+        row.querySelector('span').textContent = it.label;
+        row.addEventListener('mouseenter', on); row.addEventListener('mouseleave', off);
+        legend.append(row);
+        a0 += frac * Math.PI * 2;
+    });
+    svg.append(centre);
+    setCentre(title, total, null);
+    wrap.append(svg, legend);
+    node.append(wrap);
+}
+
+// ── Rings: one per category, filled to its share, animated on view ─────────
+export function rings(node, items) {
+    const total = items.reduce((a, b) => a + b.value, 0) || 1;
+    const grid = Object.assign(document.createElement('div'), { className: 'rings' });
+    items.forEach((it, i) => {
+        const frac = it.value / total;
+        const R = 44, C = 2 * Math.PI * R;
+        const color = CATEGORICAL[i % CATEGORICAL.length];
+        const card = Object.assign(document.createElement('div'), { className: 'ring', tabIndex: 0 });
+        const svg = el('svg', { viewBox: '0 0 110 110', 'aria-hidden': 'true' });
+        svg.append(el('circle', { cx: 55, cy: 55, r: R, class: 'track' }));
+        const arc = el('circle', { cx: 55, cy: 55, r: R, class: 'arc', stroke: color, 'stroke-dasharray': `0 ${C}`, transform: 'rotate(-90 55 55)' });
+        svg.append(arc);
+        const t = el('text', { x: 55, y: 61, 'text-anchor': 'middle', class: 'ring-pct' });
+        t.textContent = `${Math.round(frac * 100)} %`;
+        svg.append(t);
+        card.append(svg);
+        const cap = document.createElement('div');
+        cap.innerHTML = '<b></b><span></span>';
+        cap.querySelector('b').textContent = it.label;
+        cap.querySelector('span').textContent = `${it.value} rendez-vous`;
+        card.append(cap);
+        grid.append(card);
+        // Fill the ring once it scrolls into view.
+        new IntersectionObserver(([e], obs) => {
+            if (!e.isIntersecting) return;
+            requestAnimationFrame(() => arc.setAttribute('stroke-dasharray', `${(frac * C).toFixed(1)} ${C}`));
+            obs.disconnect();
+        }, { threshold: 0.4 }).observe(card);
+    });
+    node.append(grid);
+}
+
+// ── Treemap: each act gets the area of what it brings in ───────────────────
+function squarify(items, x, y, w, h) {
+    const out = [];
+    const total = items.reduce((a, b) => a + b.value, 0);
+    let rest = items.map((it) => ({ ...it, area: (it.value / total) * w * h }));
+    while (rest.length) {
+        const short = Math.min(w, h);
+        let row = [rest[0]], worst = Infinity;
+        const score = (r) => { const s = r.reduce((a, b) => a + b.area, 0); const mx = Math.max(...r.map((i) => i.area)), mn = Math.min(...r.map((i) => i.area)); return Math.max((short * short * mx) / (s * s), (s * s) / (short * short * mn)); };
+        worst = score(row);
+        for (let k = 1; k < rest.length; k++) {
+            const next = score([...row, rest[k]]);
+            if (next > worst) break;
+            row = [...row, rest[k]]; worst = next;
+        }
+        const sum = row.reduce((a, b) => a + b.area, 0);
+        const thick = sum / short;
+        let off = 0;
+        for (const it of row) {
+            const len = it.area / thick;
+            out.push(w >= h ? { ...it, x, y: y + off, w: thick, h: len } : { ...it, x: x + off, y, w: len, h: thick });
+            off += len;
+        }
+        if (w >= h) { x += thick; w -= thick; } else { y += thick; h -= thick; }
+        rest = rest.slice(row.length);
+    }
+    return out;
+}
+
+export function treemap(node, items, format = 'money') {
+    responsive(node, (W) => {
+        const H = Math.max(260, Math.min(360, W * 0.42));
+        const box = Object.assign(document.createElement('div'), { className: 'treemap' });
+        box.style.height = `${H}px`;
+        const total = items.reduce((a, b) => a + b.value, 0) || 1;
+        const shades = ['#0d366b', '#184f95', '#1f56d6', '#3987e5', '#5598e7', '#86b6ef', '#b7d3f6', '#cde2fb'];
+        squarify([...items].sort((a, b) => b.value - a.value), 0, 0, W, H).forEach((c, i) => {
+            const cell = Object.assign(document.createElement('div'), { className: 'tm-cell', tabIndex: 0 });
+            Object.assign(cell.style, { left: `${c.x}px`, top: `${c.y}px`, width: `${c.w}px`, height: `${c.h}px`, animationDelay: `${i * 60}ms` });
+            cell.style.setProperty('--bg', c.muted ? '#e3e9f4' : shades[Math.min(i, shades.length - 1)]); // custom properties need setProperty
+            if (i >= 4 || c.muted) cell.classList.add('light');
+            const pct = Math.round((c.value / total) * 100);
+            if (c.w > 90 && c.h > 54) cell.innerHTML = `<b></b><span>${fmt[format](c.value)}</span><em>${pct} %</em>`;
+            else if (c.w > 46 && c.h > 30) cell.innerHTML = `<em>${pct} %</em>`;
+            cell.querySelector('b') && (cell.querySelector('b').textContent = c.label);
+            const msg = `<b>${esc(c.label)}</b><div>${fmt[format](c.value)} · ${pct} %${c.count ? ` · ${c.count} acte(s)` : ''}</div>`;
+            cell.addEventListener('mousemove', (e) => tip(msg, e.clientX, e.clientY));
+            cell.addEventListener('mouseleave', () => tip(null));
+            cell.addEventListener('focus', () => { const b = cell.getBoundingClientRect(); tip(msg, b.left, b.top); });
+            cell.addEventListener('blur', () => tip(null));
+            box.append(cell);
+        });
+        node.append(box);
+    });
+}

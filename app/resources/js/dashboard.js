@@ -3,7 +3,7 @@ import 'bootstrap/js/dist/collapse';
 import Modal from 'bootstrap/js/dist/modal';
 import Offcanvas from 'bootstrap/js/dist/offcanvas';
 import { mountOdontogram } from './odontogram';
-import { trend, sparkline, heatmap, share, ranked } from './charts';
+import { trend, sparkline, heatmap, share, ranked, donut, rings, treemap } from './charts';
 
 const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
 
@@ -209,6 +209,9 @@ document.querySelectorAll('[data-spark]').forEach((n) => sparkline(n, JSON.parse
 document.querySelectorAll('[data-heat]').forEach((n) => heatmap(n, JSON.parse(n.dataset.heat)));
 document.querySelectorAll('[data-share]').forEach((n) => share(n, JSON.parse(n.dataset.share), n.dataset.format));
 document.querySelectorAll('[data-ranked]').forEach((n) => ranked(n, JSON.parse(n.dataset.ranked), 'money', (it) => `${it.count} acte(s)`));
+document.querySelectorAll('[data-donut]').forEach((n) => donut(n, JSON.parse(n.dataset.donut), { title: n.dataset.title }));
+document.querySelectorAll('[data-rings]').forEach((n) => rings(n, JSON.parse(n.dataset.rings)));
+document.querySelectorAll('[data-treemap]').forEach((n) => treemap(n, JSON.parse(n.dataset.treemap)));
 
 // ── Destructive actions ask first ───────────────────────────────────
 document.addEventListener('submit', (e) => {

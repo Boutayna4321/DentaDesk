@@ -370,3 +370,40 @@ $caries: #d64545;
 
 .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 1fr; gap: 1rem; height: 100%;
   @include media-breakpoint-down(md) { grid-template-columns: repeat(2, 1fr); } }
+
+// donut
+.donut-wrap { display: grid; grid-template-columns: 1fr; gap: .8rem; justify-items: center; }
+.donut { width: 100%; max-width: 230px; overflow: visible;
+  .slice { cursor: pointer; outline: none; transition: transform .22s cubic-bezier(.2,.8,.2,1), opacity .2s; transform-origin: 110px 110px;
+    &.on { transform: translate(var(--dx), var(--dy)) scale(1.04); }
+    &.dim { opacity: .35; } }
+  .c-label { font: 600 11px Manrope, sans-serif; fill: $mute; }
+  .c-value { font: 800 19px Manrope, sans-serif; fill: $ink; }
+  .c-pct { font: 700 12px Manrope, sans-serif; fill: $blue; }
+  .centre.swap { animation: centre-in .25s ease-out; } }
+@keyframes centre-in { from { opacity: 0; transform: translateY(4px); } }
+.donut-legend { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: .1rem .6rem;
+  > div { display: grid; grid-template-columns: 12px 1fr auto; gap: .55rem; align-items: center; font-size: .8rem; padding: .32rem .4rem; border-radius: .35rem; transition: background .15s; cursor: default;
+    i { width: 12px; height: 12px; border-radius: 3px; } b { font-variant-numeric: tabular-nums; }
+    &.on { background: $tint; } } }
+// rings
+.rings { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; }
+.ring { text-align: center; border: 1px solid $line; border-radius: .7rem; padding: .8rem .4rem; outline: none; transition: transform .2s, box-shadow .2s;
+  svg { width: 100%; max-width: 110px; }
+  .track { fill: none; stroke: #eef1f6; stroke-width: 10; }
+  .arc { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dasharray 1.1s cubic-bezier(.2,.8,.2,1); }
+  .ring-pct { font: 800 20px Manrope, sans-serif; fill: $ink; }
+  b { display: block; font-size: .84rem; } span { font-size: .74rem; color: $mute; }
+  &:hover, &:focus { transform: translateY(-3px); box-shadow: $box-shadow; } }
+// treemap
+.treemap { position: relative; width: 100%; }
+.tm-cell { position: absolute; padding: 2px; outline: none; animation: tm-in .5s cubic-bezier(.2,.8,.2,1) both;
+  &::before { content: ''; position: absolute; inset: 2px; border-radius: 8px; background: var(--bg); transition: transform .2s, filter .2s, box-shadow .2s; }
+  b, span, em { position: relative; display: block; color: #fff; padding: 0 .7rem; }
+  b { font-size: .84rem; padding-top: .6rem; line-height: 1.25; } span { font-size: .78rem; opacity: .9; margin-top: .15rem; }
+  em { font-style: normal; font-weight: 800; font-size: .74rem; position: absolute; right: .3rem; bottom: .45rem; opacity: .85; }
+  &.light b, &.light span, &.light em { color: $ink; }
+  &:hover::before, &:focus::before { transform: scale(.985); filter: brightness(1.08); box-shadow: 0 10px 24px rgba($ink, .22); }
+  &:hover, &:focus { z-index: 2; } }
+@keyframes tm-in { from { opacity: 0; transform: scale(.94); } }
+@media (prefers-reduced-motion: reduce) { .tm-cell, .donut .slice, .ring .arc, .ring { animation: none !important; transition: none !important; } }
