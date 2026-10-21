@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=540">
+<title>snan. demo stage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  /* Same frame as the Instagram reels (dark, lime mark), in LinkedIn's 4:5. */
+  :root { --bg: #0e0e0e; --ink: #f5f5f2; --dim: rgba(245,245,242,.6); --mark: #c8f560; --glow: #1f56d6; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 540px; height: 675px; overflow: hidden; background: var(--bg); color: var(--ink); font-family: Inter, sans-serif; -webkit-font-smoothing: antialiased; }
+  .frame { position: relative; width: 540px; height: 675px; overflow: hidden; }
+  .glow { position: absolute; width: 560px; height: 560px; left: -10px; top: 250px; border-radius: 50%; background: radial-gradient(circle, var(--glow) 0%, transparent 66%); opacity: .34; filter: blur(30px); }
+  .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px); background-size: 36px 36px; mask-image: linear-gradient(180deg, #000 0%, transparent 50%); }
+  .top { position: absolute; top: 20px; left: 24px; right: 24px; display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; font-weight: 600; }
+  .handle { display: flex; align-items: center; gap: 7px; color: var(--dim); }
+  .handle i { width: 7px; height: 7px; border-radius: 50%; background: var(--mark); }
+  .series { height: 24px; padding: 0 10px; border-radius: 7px; border: 1px solid rgba(255,255,255,.16); display: inline-flex; align-items: center; gap: 6px; letter-spacing: .06em; font-size: 10.5px; }
+  .series b { color: var(--mark); }
+
+  .cap { position: absolute; top: 56px; left: 24px; right: 24px; }
+  .step { font: 500 10.5px 'IBM Plex Mono', monospace; color: var(--mark); letter-spacing: .04em; height: 14px; }
+  .title { font-family: 'Inter Tight', sans-serif; font-weight: 700; font-size: 28px; line-height: 1.06; letter-spacing: -.03em; margin-top: 6px; min-height: 60px; }
+  .title .hl { color: var(--mark); }
+  .title .line { display: block; overflow: hidden; padding-bottom: 2px; }
+  .sub { font-size: 12px; line-height: 1.45; color: var(--dim); margin-top: 8px; max-width: 470px; min-height: 35px; }
+
+  .stagearea { position: absolute; left: 0; right: 0; top: 196px; height: 448px; }
+  .browser { position: absolute; left: 20px; top: 8px; width: 500px; border-radius: 12px; overflow: hidden; background: #1b1b1b; box-shadow: 0 0 0 1.5px #2e2e2e, 0 36px 70px -20px rgba(0,0,0,.85); transition: opacity .4s; }
+  .chrome { height: 22px; display: flex; align-items: center; gap: 5px; padding: 0 10px; }
+  .chrome i { width: 7px; height: 7px; border-radius: 50%; background: #3a3a3a; }
+  .chrome span { margin-left: 8px; flex: 1; height: 13px; border-radius: 4px; background: #262626; color: rgba(245,245,242,.55); font-size: 7.5px; display: flex; align-items: center; padding-left: 7px; font-family: 'IBM Plex Mono', monospace; }
+  .viewport { position: relative; width: 500px; height: 390px; overflow: hidden; background: #fff; }
+  .cam { position: absolute; left: 0; top: 0; width: 500px; height: 390px; transform-origin: 0 0; }
+  .viewport iframe { width: 1280px; height: 998px; border: 0; transform: scale(.390625); transform-origin: 0 0; display: block; }
+
+  .phone { position: absolute; border-radius: 34px; background: #1b1b1b; padding: 6px; box-shadow: 0 0 0 1.5px #2e2e2e, 0 36px 70px -20px rgba(0,0,0,.85); transition: opacity .4s; }
+  .screen { position: relative; overflow: hidden; border-radius: 28px; background: #fff; }
+  .island { position: absolute; top: 9px; left: 50%; width: 60px; height: 16px; margin-left: -30px; border-radius: 12px; background: #000; z-index: 3; }
+  .screen iframe { width: 390px; height: 844px; border: 0; transform-origin: 0 0; display: block; }
+  /* big phone (centre) and small phone (beside the browser) */
+  .phone.big { left: 50%; top: 2px; width: 220px; margin-left: -110px; }
+  .phone.big .screen { width: 208px; height: 450px; } .phone.big iframe { transform: scale(.5333); }
+  .phone.small { right: 18px; top: 150px; width: 150px; }
+  .phone.small .screen { width: 138px; height: 299px; border-radius: 24px; } .phone.small iframe { transform: scale(.3538); }
+  .phone.small .island { width: 40px; height: 11px; margin-left: -20px; top: 7px; }
+
+  .card { position: absolute; left: 24px; right: 24px; top: 30px; display: none; }
+  .card ul { list-style: none; display: grid; gap: 10px; margin-top: 6px; }
+  .card li { font: 600 17px 'Inter Tight', sans-serif; letter-spacing: -.01em; padding: 14px 16px; border-radius: 12px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); display: flex; gap: 12px; align-items: center; }
+  .card li i { width: 8px; height: 8px; border-radius: 50%; background: var(--mark); flex: none; }
+  .card .cta { margin-top: 26px; font: 600 15px Inter, sans-serif; color: var(--ink); border-left: 3px solid var(--mark); padding-left: 12px; line-height: 1.4; }
+  .card .who { font: 700 15px Inter, sans-serif; color: var(--dim); }
+
+  .cursor { position: absolute; left: 0; top: 0; width: 18px; height: 18px; z-index: 50; pointer-events: none; opacity: 0; filter: drop-shadow(0 2px 3px rgba(0,0,0,.45)); }
+  .ripple { position: absolute; width: 28px; height: 28px; margin: -14px 0 0 -14px; border-radius: 50%; border: 2px solid var(--mark); z-index: 49; pointer-events: none; opacity: 0; }
+
+  .progress { position: absolute; left: 24px; right: 24px; bottom: 14px; display: flex; gap: 4px; }
+  .progress span { flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.12); position: relative; overflow: hidden; }
+  .progress span b { position: absolute; inset: 0; background: var(--mark); transform: scaleX(0); transform-origin: 0 0; }
+  .progress span.done b { transform: scaleX(1); }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="glow"></div><div class="grid"></div>
+  <div class="top"><span class="handle"><i></i>@boutayna_metarfi</span><span class="series"><span id="series">PROJET</span> <b>snan.</b></span></div>
+  <div class="cap"><div class="step" id="step"></div><h1 class="title" id="title"></h1><p class="sub" id="sub"></p></div>
+  <div class="stagearea">
+    <div class="browser" id="browser"><div class="chrome"><i></i><i></i><i></i><span id="addr">localhost:8000</span></div>
+      <div class="viewport"><div class="cam" id="cam"><iframe id="desk" title="desktop"></iframe></div></div></div>
+    <div class="phone big" id="phone"><div class="screen"><div class="island"></div><iframe id="mob" title="phone"></iframe></div></div>
+  </div>
+  <div class="card" id="card"></div>
+  <div class="progress" id="progress"></div>
+  <svg class="cursor" id="cursor" viewBox="0 0 24 24"><path d="M4 2 L4 19 L8.5 14.8 L11.6 21.5 L14.4 20.2 L11.3 13.6 L17.5 13.6 Z" fill="#fff" stroke="#0e0e0e" stroke-width="1.4" stroke-linejoin="round"/></svg>
+  <div class="ripple" id="ripple"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script>
+const q = new URLSearchParams(location.search);
+const LANG = q.get('lang') || 'fr';
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const $ = (id) => document.getElementById(id);
+const frames = { desk: $('desk'), mob: $('mob') };
+let C; // captions for the language
+
+// ── Captions ────────────────────────────────────────────────────────
+function render(text) {
+  return text.split('\n').map((line) => `<span class="line"><span class="in">${line.replace(/\*(.+?)\*/g, '<span class="hl">$1</span>')}</span></span>`).join('');
+}
+async function caption(key, chapter = null) {
+  const c = C[key];
+  const t = $('title'), s = $('sub'), st = $('step');
+  const old = [...t.querySelectorAll('.in'), s, st];
+  await gsap.to(old, { opacity: 0, y: -8, duration: .22, stagger: .02 });
+  t.innerHTML = render(c.title);
+  s.textContent = c.sub || '';
+  st.textContent = chapter === null ? '' : `${String(chapter + 1).padStart(2, '0')} / ${C.chapters.length} · ${C.chapters[chapter].toUpperCase()}`;
+  gsap.set([s, st], { opacity: 0, y: 8 });
+  gsap.from(t.querySelectorAll('.in'), { yPercent: 105, duration: .55, ease: 'power3.out', stagger: .08 });
+  gsap.to([st, s], { opacity: 1, y: 0, duration: .45, delay: .2 });
+  if (chapter !== null) {
+    [...$('progress').children].forEach((sp, i) => {
+      sp.classList.toggle('done', i < chapter);
+      if (i === chapter) gsap.fromTo(sp.querySelector('b'), { scaleX: 0 }, { scaleX: 1, duration: SCENE_LEN[chapter], ease: 'none' });
+    });
+  }
+}
+
+// ── Layouts ─────────────────────────────────────────────────────────
+function layout(kind) {
+  const b = $('browser'), p = $('phone'), card = $('card');
+  card.style.display = kind === 'card' ? 'block' : 'none';
+  b.style.opacity = kind === 'desk' || kind === 'combo' ? 1 : 0;
+  p.style.opacity = kind === 'phone' || kind === 'combo' ? 1 : 0;
+  p.className = `phone ${kind === 'combo' ? 'small' : 'big'}`;
+}
+
+// ── Driving the iframes ─────────────────────────────────────────────
+const win = (f) => frames[f].contentWindow;
+const doc = (f) => frames[f].contentDocument;
+const el = (f, sel) => { const e = typeof sel === 'string' ? doc(f).querySelector(sel) : sel; if (!e) console.warn('missing', f, sel); return e; };
+
+function go(f, path) {
+  return new Promise((resolve) => {
+    frames[f].onload = async () => { await sleep(900); try { win(f).confirm = () => true; } catch {} resolve(); };
+    frames[f].src = path;
+    if (f === 'desk') $('addr').textContent = 'localhost:8000' + path.replace(/#.*/, '');
+  });
+}
+const waitFor = async (f, sel, ms = 8000) => { for (let t = 0; t < ms; t += 100) { if (doc(f)?.querySelector(sel)) return; await sleep(100); } console.warn('timeout', sel); };
+
+// Where an element of an iframe sits in the stage (follows the zoom).
+function point(f, target) {
+  const e = el(f, target); if (!e) return null;
+  const fr = frames[f].getBoundingClientRect();
+  const k = fr.width / frames[f].offsetWidth;
+  const r = e.getBoundingClientRect();
+  return { x: fr.left + (r.left + r.width / 2) * k, y: fr.top + (r.top + r.height / 2) * k };
+}
+async function moveTo(f, target, dur = .6) {
+  const p = point(f, target); if (!p) return;
+  gsap.to('#cursor', { opacity: 1, duration: .2 });
+  await gsap.to('#cursor', { x: p.x - 3, y: p.y - 2, duration: dur, ease: 'power2.inOut' });
+}
+async function click(f, target, { svg = false } = {}) {
+  await moveTo(f, target);
+  const p = point(f, target);
+  gsap.fromTo('#ripple', { left: p.x, top: p.y, scale: .4, opacity: 1 }, { scale: 1.6, opacity: 0, duration: .45 });
+  gsap.fromTo('#cursor', { scale: .85 }, { scale: 1, duration: .2 });
+  const e = el(f, target);
+  if (svg || !e.click) e.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+  else e.click();
+  await sleep(250);
+}
+async function hover(f, target, events = ['mouseenter', 'mousemove', 'mouseover']) {
+  await moveTo(f, target);
+  const e = el(f, target), r = e.getBoundingClientRect();
+  for (const ev of events) e.dispatchEvent(new MouseEvent(ev, { bubbles: ev !== 'mouseenter', clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 }));
+}
+async function type(f, target, text, speed = 45) {
+  await moveTo(f, target, .4);
+  const e = el(f, target);
+  e.focus(); e.value = '';
+  for (const ch of text) { e.value += ch; e.dispatchEvent(new Event('input', { bubbles: true })); await sleep(speed + Math.random() * 30); }
+}
+async function scrollTo(f, target, offset = 80, dur = 900) {
+  const w = win(f);
+  const y = typeof target === 'number' ? target : el(f, target).getBoundingClientRect().top + w.scrollY - offset;
+  w.scrollTo({ top: y, behavior: 'smooth' });
+  await sleep(dur);
+}
+
+// Camera: zoom the browser onto an element, keeping the frame filled.
+async function zoom(target, z = 1.6, dur = .9) {
+  const cam = $('cam');
+  if (!target) return gsap.to(cam, { x: 0, y: 0, scale: 1, duration: dur, ease: 'power2.inOut' });
+  const e = el('desk', target); if (!e) return;
+  const s0 = .390625, r = e.getBoundingClientRect();
+  const cx = (r.left + r.width / 2) * s0, cy = (r.top + r.height / 2) * s0;
+  const W = 500, H = 390;
+  const x = Math.min(0, Math.max(W - z * W, W / 2 - z * cx)), y = Math.min(0, Math.max(H - z * H, H / 2 - z * cy));
+  await gsap.to(cam, { x, y, scale: z, duration: dur, ease: 'power2.inOut' });
+}
+const hideCursor = () => gsap.to('#cursor', { opacity: 0, duration: .25 });
+
+// ── Scenes ──────────────────────────────────────────────────────────
+const SCENE_LEN = [12, 7, 7, 8, 7, 12, 11, 12, 10, 6, 5];
+const beat = (name) => { window.__beats = window.__beats || []; window.__beats.push([name, Date.now()]); if (name === 'start') window.__t0 = Date.now(); if (name === 'end') window.__tEnd = Date.now(); };
+
+async function hookAndAssistant() {
+  layout('phone');
+  await caption('hook');
+  await sleep(700);
+  await click('mob', '.assistant-fab');
+  await sleep(500);
+  await type('mob', '[data-chat-form] input', '3andi wjee3 f dersi mn lbare7, kayn chi blassa ghedda f sba7?', 32);
+  doc('mob').querySelector('[data-chat-form]').requestSubmit();
+  hideCursor();
+  await waitFor('mob', '.quick .chip'); await sleep(900);
+  await click('mob', '.quick .chip');
+  await waitFor('mob', '.msg.bot:nth-last-of-type(1)'); await sleep(1100);
+  await type('mob', '[data-chat-form] input', 'smiti Youssef Amrani', 40);
+  doc('mob').querySelector('[data-chat-form]').requestSubmit();
+  await sleep(1500);
+  await type('mob', '[data-chat-form] input', '06 61 22 33 44', 50);
+  doc('mob').querySelector('[data-chat-form]').requestSubmit();
+  hideCursor();
+  await waitFor('mob', '.booked'); await sleep(2000);
+}
+
+async function siteScene() {
+  layout('desk');
+  await caption('site', 0);
+  await sleep(500);
+  await zoom('[data-booking]', 1.55);
+  await click('desk', '[data-days] .chip:nth-child(2)');
+  await waitFor('desk', '[data-slots] .chip.free'); await sleep(500);
+  await click('desk', '[data-slots] .chip.free');
+  await click('desk', '[data-continue]');
+  await sleep(300);
+  await zoom('[data-form]', 1.7, .6);
+  await type('desk', '#bk-first', 'Salma', 60);
+  await type('desk', '#bk-phone', '0677 88 99 00', 45);
+  await click('desk', '[data-form] button[type=submit]');
+  hideCursor();
+  await waitFor('desk', '[data-done]:not([hidden])'); await sleep(1600);
+  await zoom(null);
+}
+
+async function assistantLanguages() {
+  layout('phone');
+  await caption('assistant', 1);
+  try { win('mob').localStorage.removeItem('snan.token'); } catch {}
+  await go('mob', '/#assistant');
+  await sleep(400);
+  await type('mob', '[data-chat-form] input', 'Hi, my tooth hurts, can I come tomorrow morning?', 30);
+  doc('mob').querySelector('[data-chat-form]').requestSubmit();
+  hideCursor();
+  await waitFor('mob', '.quick .chip'); await sleep(2300);
+}
+
+async function todayScene() {
+  layout('desk');
+  await go('desk', '/dashboard');
+  await caption('today', 2);
+  await sleep(1200);
+  await hover('desk', '.row-tl.now');
+  await sleep(800);
+  await zoom('.req', 1.7);
+  await sleep(2400);
+  await zoom(null, 1, .6);
+}
+
+async function requestsScene() {
+  await go('desk', '/dashboard/demandes');
+  await caption('requests', 3);
+  await zoom('.req .meaning', 1.9);
+  await sleep(1800);
+  await click('desk', '.translate-toggle button[value=en]');
+  await sleep(1300);
+  await zoom('.req .meaning', 1.9, .5);
+  hideCursor();
+  await sleep(2200);
+  await zoom(null, 1, .5);
+}
+
+async function agendaScene() {
+  await go('desk', '/dashboard/agenda');
+  await caption('agenda', 4);
+  await sleep(900);
+  await click('desk', '.fc-timegrid-event');
+  await sleep(1100);
+  await click('desk', '#rdv [data-status=arrived]');
+  hideCursor();
+  await sleep(2600);
+}
+
+async function teethScene() {
+  await go('desk', '/dashboard/patients/3');
+  await caption('teeth', 5);
+  await scrollTo('desk', '[data-odontogram]', 20, 700);
+  await zoom('.odo-mouth', 1.25);
+  await sleep(600);
+  await click('desk', '.tooth[data-tooth="36"]', { svg: true });
+  await sleep(500);
+  await zoom(null, 1, .6);
+  await sleep(300);
+  await click('desk', '[data-big] [data-surface="M"]', { svg: true });
+  await sleep(900);
+  hideCursor();
+  layout('combo');
+  await go('mob', '/dashboard/patients/3');
+  win('mob').document.querySelector('[data-odontogram]')?.scrollIntoView({ block: 'start' });
+  await sleep(1400);
+  win('mob').document.querySelector('[data-arch=lower]')?.click();
+  await sleep(1800);
+}
+
+async function invoiceScene() {
+  layout('desk');
+  await go('desk', '/dashboard/patients/3');
+  await caption('invoice', 6);
+  await sleep(300);
+  await click('desk', 'form[action$="/factures"] button');
+  await waitFor('desk', '[data-act-picker]'); await sleep(700);
+  await zoom('.box', 1.35);
+  await moveTo('desk', '[data-act-picker]');
+  const picker = el('desk', '[data-act-picker]');
+  picker.value = [...picker.options].find((o) => o.textContent.startsWith('Radio panoramique')).value;
+  picker.dispatchEvent(new Event('change'));
+  await sleep(1000);
+  await zoom(null, 1, .5);
+  await click('desk', '[data-validate]');
+  await waitFor('desk', '[data-doc-frame]'); await sleep(600);
+  const printUrl = new URL(doc('desk').querySelector('[data-doc-frame]').getAttribute('src'), location.origin);
+  printUrl.searchParams.delete('embed');
+  await go('desk', printUrl.pathname);
+  hideCursor();
+  await scrollTo('desk', '.words', 300, 600);
+  await zoom('.words', 1.8);
+  await sleep(2200);
+  await zoom(null, 1, .5);
+}
+
+async function statsScene() {
+  await go('desk', '/dashboard/statistiques');
+  await caption('stats', 7);
+  await zoom('.insight-box', 1.5);
+  await sleep(2300);
+  await zoom(null, 1, .5);
+  await scrollTo('desk', '[data-donut]', 60, 700);
+  await hover('desk', '.donut .slice:nth-of-type(2)', ['mouseenter']);
+  await sleep(1500);
+  await scrollTo('desk', '[data-heat]', 40, 800);
+  await hover('desk', '.heat .cell:nth-of-type(12)', ['mousemove']);
+  await sleep(1300);
+  await scrollTo('desk', '[data-treemap]', 40, 800);
+  hideCursor();
+  await sleep(1800);
+}
+
+async function teamScene() {
+  await go('desk', '/dashboard');
+  await caption('team', 8);
+  await click('desk', 'a[data-open-messages]');
+  await sleep(900);
+  await click('desk', '[data-quick] button');
+  await sleep(1600);
+  await click('desk', '[data-close-messages]');
+  doc('desk').dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }));
+  await sleep(500);
+  await type('desk', '[data-search-input]', 'salma', 90);
+  hideCursor();
+  await sleep(2000);
+}
+
+async function aiScene() {
+  await go('desk', '/dashboard/assistant');
+  await caption('ai', 9);
+  await zoom('.box', 1.55);
+  await sleep(3600);
+  await zoom(null, 1, .5);
+}
+
+async function stackScene() {
+  layout('card');
+  await caption('stack', 10);
+  $('card').innerHTML = `<ul style="margin-top:20px">${C.stack.items.map((i) => `<li><i></i>${i}</li>`).join('')}</ul>`;
+  gsap.from('#card li', { x: -20, opacity: 0, stagger: .12, duration: .5, ease: 'power3.out' });
+  await sleep(4200);
+}
+
+async function endScene() {
+  [...$('progress').children].forEach((sp) => sp.classList.add('done'));
+  await caption('end');
+  $('card').innerHTML = `<div class="cta">${C.end.cta}</div>`;
+  gsap.from('#card .cta', { opacity: 0, y: 10, duration: .6, delay: .4 });
+  await sleep(4500);
+}
+
+// ── Run ─────────────────────────────────────────────────────────────
+(async () => {
+  C = (await (await fetch('/_demo/captions.json')).json())[LANG];
+  document.documentElement.lang = LANG;
+  $('series').textContent = C.series;
+  $('progress').innerHTML = C.chapters.map(() => '<span><b></b></span>').join('');
+  // Pre-roll, not recorded: log in, warm the pages, reset the patient-side chat.
+  await go('desk', '/login');
+  doc('desk').querySelector('#email').value = 'dentiste@snan.test';
+  doc('desk').querySelector('#password').value = 'snan2026';
+  await new Promise((r) => { frames.desk.onload = r; doc('desk').querySelector('form').submit(); });
+  await go('desk', '/');
+  try { localStorage.clear(); } catch {}
+  await go('mob', '/');
+  try { win('mob').localStorage.removeItem('snan.token'); } catch {}
+  await sleep(1500);
+  layout('phone');
+  window.__ready = true;
+  beat('start');
+  await hookAndAssistant();
+  await siteScene();
+  await assistantLanguages();
+  await todayScene();
+  await requestsScene();
+  await agendaScene();
+  await teethScene();
+  await invoiceScene();
+  await statsScene();
+  await teamScene();
+  await aiScene();
+  await stackScene();
+  await endScene();
+  beat('end');
+})();
+</script>
+</body>
+</html>

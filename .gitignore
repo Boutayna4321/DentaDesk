@@ -3,3 +3,7 @@ nlu/models/*.joblib
 nlu/**/__pycache__/
 nlu/.pytest_cache/
 nlu/data/corrections.jsonl
+
+# demo renders
+demo/out/
+app/public/_demo/
