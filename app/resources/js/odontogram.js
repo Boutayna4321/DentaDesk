@@ -152,13 +152,12 @@ function at(pts, s) {
     return { x: a.x + (b.x - a.x) * f, y: a.y + (b.y - a.y) * f, tx: b.x - a.x, ty: b.y - a.y };
 }
 
-// Desktop: a wide, shallow mouth with both arches. Phone: one deep, narrow arch filling
-// the screen width, so each tooth is big enough for a finger.
-const LAYOUTS = { wide: { W: 800, H: 340, rx: 318, ry: 238 }, phone: { W: 600, H: 420, rx: 238, ry: 318 } };
-const phone = () => window.matchMedia('(max-width: 767.98px)').matches;
+// A real arch is deeper than it is wide. Both screens use the same proportions: the
+// phone shows one arch at a time, the desktop stacks them like an open mouth.
+const W = 600, H = 420, RX = 238, RY = 318;
 
 function drawArch(svg, teeth, data, selected, upper, onPick) {
-    const { W, H, rx, ry } = LAYOUTS[phone() ? 'phone' : 'wide'];
+    const rx = RX, ry = RY;
     svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
     const cx = W / 2, cy = upper ? H - 40 : 40;
     const pts = archPoints(cx, cy, rx, ry, upper);
@@ -167,9 +166,30 @@ function drawArch(svg, teeth, data, selected, upper, onPick) {
     const units = teeth.reduce((a, n) => a + size(n)[0], 0) + gap * (teeth.length - 1) + 0.25; // + a little space at the midline
     const scale = (total * 0.97) / units;
 
-    // The gum the teeth sit in.
-    const gum = el('path', { d: `M ${pts.map((p) => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' L ')}`, class: 'gum', 'stroke-width': scale * 1.35 });
-    svg.append(gum);
+    // Palate (upper) or tongue (lower) inside the arch, fading toward the throat so the
+    // open back of the arch has no hard edge; then the gum the teeth sit in.
+    const gid = `soft-${++uid}`;
+    const defs = el('defs');
+    const grad = el('radialGradient', { id: gid, cx: '50%', cy: upper ? '8%' : '92%', r: '95%' });
+    const tone = upper ? '#efc4c4' : '#e9a9ab';
+    grad.append(el('stop', { offset: '0%', 'stop-color': tone, 'stop-opacity': upper ? 0.5 : 0.55 }),
+        el('stop', { offset: '70%', 'stop-color': tone, 'stop-opacity': 0.18 }), el('stop', { offset: '100%', 'stop-color': tone, 'stop-opacity': 0 }));
+    defs.append(grad);
+    const inner = archPoints(cx, cy, rx - scale * 0.7, ry - scale * 0.7, upper);
+    const soft = el('path', { d: `M ${inner.map((p) => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' L ')} Z`, fill: `url(#${gid})` });
+    const gum = el('path', { d: `M ${pts.map((p) => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' L ')}`, class: 'gum', 'stroke-width': scale * 1.4 });
+    svg.append(defs, soft, gum);
+    if (upper) {
+        // The palatal seam and ridges, faint: they make the roof of the mouth read as one.
+        const top = inner[300];
+        svg.append(el('path', { d: `M ${cx} ${top.y + 18} L ${cx} ${cy - ry * 0.25}`, class: 'raphe' }));
+        for (const k of [0.14, 0.24, 0.34]) {
+            const y = top.y + ry * k;
+            svg.append(el('path', { d: `M ${cx - rx * 0.42} ${y + 14} Q ${cx - rx * 0.2} ${y - 6} ${cx - 8} ${y + 2} M ${cx + 8} ${y + 2} Q ${cx + rx * 0.2} ${y - 6} ${cx + rx * 0.42} ${y + 14}`, class: 'rugae' }));
+        }
+    } else {
+        svg.append(el('path', { d: `M ${cx} ${cy + ry * 0.25} L ${cx} ${inner[300].y - 22}`, class: 'raphe tongue-line' }));
+    }
 
     let s = total * 0.015;
     teeth.forEach((n, i) => {
@@ -265,8 +285,14 @@ export function mountOdontogram(root) {
         </div>
         <div class="odo-mouth">
             ${editable ? '<p class="odo-hint">Cliquez une dent pour noter une carie, une obturation, une couronne…</p>' : ''}
-            <svg class="arch upper" viewBox="0 0 800 340" data-arch-svg="upper" aria-label="Arcade supérieure"></svg>
-            <svg class="arch lower" viewBox="0 0 800 340" data-arch-svg="lower" aria-label="Arcade inférieure"></svg>
+            <div class="mouth-frame">
+                <span class="mouth-side">Droite<br>du patient</span>
+                <div class="mouth-arches">
+                    <svg class="arch upper" viewBox="0 0 600 420" data-arch-svg="upper" aria-label="Arcade supérieure"></svg>
+                    <svg class="arch lower" viewBox="0 0 600 420" data-arch-svg="lower" aria-label="Arcade inférieure"></svg>
+                </div>
+                <span class="mouth-side">Gauche<br>du patient</span>
+            </div>
         </div>
         <div class="odo-legend">
             <span><i class="lg caries"></i>Carie</span><span><i class="lg filling"></i>Obturation</span><span><i class="lg ring"></i>Couronne</span>
@@ -395,9 +421,6 @@ export function mountOdontogram(root) {
             close();
         });
     }
-
-    // Redraw when crossing the phone/desktop boundary (rotation, window resize).
-    window.matchMedia('(max-width: 767.98px)').addEventListener('change', drawChart);
 
     syncArch();
     drawChart();
