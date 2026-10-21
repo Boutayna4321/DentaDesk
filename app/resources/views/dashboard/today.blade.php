@@ -27,7 +27,7 @@
                 <div class="row-tl {{ $current?->id === $a->id ? 'now' : '' }}">
                     <span class="mono text-mute">{{ $a->starts_at->format('H:i') }}</span>
                     <div class="p"><b><a class="text-reset" href="{{ route('dash.patients.show', $a->patient) }}">{{ $a->patient->full_name }}</a>
-                        @if ($a->patient->appointments()->where('status', 'done')->where('starts_at', '<', $a->starts_at)->doesntExist())<span class="tag">1re visite</span>@endif</b>
+                        @unless ($returning->has($a->patient_id))<span class="tag">1re visite</span>@endunless</b>
                         <span>{{ $a->service->name }}{{ $a->reason ? ' · '.$a->reason : '' }}</span></div>
                     <span class="src {{ $a->source }}">{{ $a->source_label }}</span>
                     @include('dashboard.partials.status', ['appointment' => $a])

@@ -26,13 +26,18 @@ class LoginController extends Controller
         if (RateLimiter::tooManyAttempts($key, 5)) {
             return back()->withErrors(['email' => 'Trop de tentatives. Réessayez dans '.RateLimiter::availableIn($key).' secondes.'])->onlyInput('email');
         }
-        if (! Auth::attempt($credentials, $request->boolean('remember'))) {
+        // A deactivated account fails like a wrong password would, plus a clear reason.
+        if (! Auth::attempt([...$credentials, 'is_active' => true], $request->boolean('remember'))) {
             RateLimiter::hit($key, 60);
+            $inactive = \App\Models\User::where('email', $credentials['email'])->where('is_active', false)->exists();
 
-            return back()->withErrors(['email' => 'Email ou mot de passe incorrect.'])->onlyInput('email');
+            return back()->withErrors(['email' => $inactive
+                ? 'Ce compte est désactivé. Demandez à la dentiste de le réactiver.'
+                : 'Email ou mot de passe incorrect.'])->onlyInput('email');
         }
         RateLimiter::clear($key);
         $request->session()->regenerate();
+        $request->user()->forceFill(['last_login_at' => now()])->save();
 
         return redirect()->intended(route('dash.today'));
     }

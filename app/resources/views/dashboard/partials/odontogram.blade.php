@@ -7,7 +7,7 @@
         <div class="arch {{ $i ? 'low' : '' }}">
             @foreach (array_merge($left, $right) as $n)
                 @php $t = $teeth[$n] ?? null; @endphp
-                <button type="button" class="tooth" data-tooth="{{ $n }}" data-state="{{ $t?->state }}" title="{{ $n }}{{ $t ? ' · '.\App\Models\ToothRecord::STATES[$t->state].($t->note ? ' — '.$t->note : '') : '' }}" @disabled(! $editable)>{{ $n }}</button>
+                 <button type="button" class="tooth" data-tooth="{{ $n }}" data-state="{{ $t?->state }}" data-note="{{ $t?->note }}" title="{{ $n }}{{ $t ? ' · '.\App\Models\ToothRecord::STATES[$t->state].($t->note ? ' — '.$t->note : '') : '' }}" @disabled(! $editable)>{{ $n }}</button>
             @endforeach
         </div>
     @endforeach
@@ -15,6 +15,6 @@
         <span><i style="background:#fde8e8;border:1px solid #e57373"></i>À traiter</span>
         <span><i style="background:#eef3fd;border:1px solid #1f56d6"></i>Soignée</span>
         <span><i style="border:1px dashed #cbd5e6"></i>Absente</span>
-        @if ($editable)<span class="ms-auto">Cliquez une dent pour changer son état</span>@endif
+        @if ($editable)<span class="ms-auto">Cliquez une dent pour son état et une note</span>@endif
     </div>
 </div>

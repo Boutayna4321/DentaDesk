@@ -5,9 +5,11 @@ use App\Http\Controllers\Dashboard\AppointmentController;
 use App\Http\Controllers\Dashboard\AssistantLogController;
 use App\Http\Controllers\Dashboard\LoginController;
 use App\Http\Controllers\Dashboard\PatientController;
+use App\Http\Controllers\Dashboard\PulseController;
 use App\Http\Controllers\Dashboard\RequestController;
 use App\Http\Controllers\Dashboard\SettingsController;
 use App\Http\Controllers\Dashboard\TodayController;
+use App\Http\Controllers\Dashboard\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -16,8 +18,9 @@ Route::middleware('guest')->group(function () {
 });
 Route::post('logout', [LoginController::class, 'destroy'])->middleware('auth')->name('logout');
 
-Route::middleware('auth')->prefix('dashboard')->name('dash.')->group(function () {
+Route::middleware(['auth', 'active'])->prefix('dashboard')->name('dash.')->group(function () {
     Route::get('/', TodayController::class)->name('today');
+    Route::get('pulse', PulseController::class)->name('pulse');
 
     Route::get('agenda', [AgendaController::class, 'index'])->name('agenda');
     Route::get('agenda/events', [AgendaController::class, 'events'])->name('agenda.events');
@@ -33,6 +36,7 @@ Route::middleware('auth')->prefix('dashboard')->name('dash.')->group(function ()
         ->whereIn('action', ['confirm', 'decline', 'accept', 'done', 'faq'])->name('requests.act');
 
     Route::get('patients', [PatientController::class, 'index'])->name('patients');
+    Route::post('patients', [PatientController::class, 'store'])->name('patients.store');
     Route::get('patients/search', [PatientController::class, 'search'])->name('patients.search');
     Route::get('patients/{patient}', [PatientController::class, 'show'])->name('patients.show');
     Route::put('patients/{patient}', [PatientController::class, 'update'])->name('patients.update');
@@ -40,6 +44,14 @@ Route::middleware('auth')->prefix('dashboard')->name('dash.')->group(function ()
 
     Route::get('assistant', [AssistantLogController::class, 'index'])->name('assistant');
     Route::post('assistant/messages/{message}/intent', [AssistantLogController::class, 'correct'])->name('assistant.correct');
+
+    Route::middleware('can:admin')->group(function () {
+        Route::get('equipe', [UserController::class, 'index'])->name('users');
+        Route::post('equipe', [UserController::class, 'store'])->name('users.store');
+        Route::put('equipe/{user}', [UserController::class, 'update'])->name('users.update');
+        Route::patch('equipe/{user}/actif', [UserController::class, 'toggle'])->name('users.toggle');
+        Route::delete('equipe/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    });
 
     Route::get('cabinet', [SettingsController::class, 'index'])->name('settings');
     Route::put('cabinet/hours', [SettingsController::class, 'hours'])->name('settings.hours');

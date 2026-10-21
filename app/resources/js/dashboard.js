@@ -15,21 +15,88 @@ async function send(url, method, body) {
     return data;
 }
 
-// ── Odontogram: click cycles healthy → to treat → treated → missing ──
-const CYCLE = ['', 'to_treat', 'treated', 'missing'];
-document.querySelectorAll('[data-odontogram]').forEach((odo) => {
-    odo.addEventListener('click', async (e) => {
-        const tooth = e.target.closest('.tooth');
-        if (!tooth || tooth.disabled) return;
-        const before = tooth.dataset.state || '';
-        const next = CYCLE[(CYCLE.indexOf(before) + 1) % CYCLE.length];
-        tooth.dataset.state = next; // optimistic
+// ── Toasts: flash messages fade out on their own ──────────────────
+const toasts = document.querySelector('[data-toasts]');
+export function toast(message, kind = 'ok', href = null) {
+    const node = Object.assign(document.createElement('div'), { className: `toast-msg ${kind}`, textContent: message });
+    if (href) node.onclick = () => { location.href = href; };
+    toasts.append(node);
+    fade(node);
+}
+function fade(node) {
+    setTimeout(() => { node.classList.add('out'); setTimeout(() => node.remove(), 300); }, node.classList.contains('err') ? 7000 : 4000);
+}
+toasts?.querySelectorAll('.toast-msg').forEach(fade);
+
+// ── Pulse: new requests (and messages) show up without a reload ─────
+if (toasts?.dataset.pulse) {
+    const badges = () => Object.fromEntries([...document.querySelectorAll('[data-badge]')].map((b) => [b.dataset.badge, b]));
+    let last = null;
+    const tick = async () => {
         try {
-            await send(odo.dataset.odontogram, 'POST', { tooth: Number(tooth.dataset.tooth), state: next || null });
-        } catch {
-            tooth.dataset.state = before;
-        }
+            const p = await send(toasts.dataset.pulse, 'GET');
+            for (const [key, node] of Object.entries(badges())) {
+                const n = p.badges[key] ?? 0;
+                node.textContent = n;
+                node.hidden = !n;
+            }
+            if (last && p.badges['dash.requests'] > last['dash.requests']) toast('Nouvelle demande de l’assistant', 'info', '/dashboard/demandes');
+            if (last && (p.badges['dash.messages'] ?? 0) > (last['dash.messages'] ?? 0)) toast('Nouveau message', 'info');
+            const total = Object.values(p.badges).reduce((a, b) => a + b, 0);
+            document.title = document.title.replace(/^\(\d+\) /, '') ;
+            if (total) document.title = `(${total}) ${document.title}`;
+            last = p.badges;
+        } catch { /* offline: try again next tick */ }
+    };
+    tick();
+    setInterval(tick, 15000);
+}
+
+// ── Destructive actions ask first ───────────────────────────────────
+document.addEventListener('submit', (e) => {
+    const msg = e.target.dataset.confirm;
+    if (msg && !window.confirm(msg)) e.preventDefault();
+});
+
+// ── Odontogram: click a tooth, pick its state, add a note ──────────
+const STATES = [['', 'Saine'], ['to_treat', 'À traiter'], ['treated', 'Soignée'], ['missing', 'Absente']];
+document.querySelectorAll('[data-odontogram]').forEach((odo) => {
+    const pop = Object.assign(document.createElement('div'), { className: 'tooth-pop' });
+    pop.hidden = true;
+    odo.append(pop);
+    let tooth = null;
+
+    odo.addEventListener('click', (e) => {
+        const t = e.target.closest('.tooth');
+        if (!t || t.disabled) return;
+        tooth = t;
+        pop.innerHTML = `<b>Dent ${t.dataset.tooth}</b><div class="states"></div><input class="form-control form-control-sm" placeholder="Note (ex : composite 2024)" maxlength="200"><button class="btn btn-primary btn-sm">Enregistrer</button>`;
+        const states = pop.querySelector('.states');
+        let chosen = t.dataset.state || '';
+        STATES.forEach(([value, label]) => {
+            const b = Object.assign(document.createElement('button'), { type: 'button', className: `st ${value === chosen ? 'on' : ''}`, textContent: label });
+            b.dataset.value = value;
+            b.onclick = () => { chosen = value; states.querySelectorAll('.st').forEach((x) => x.classList.toggle('on', x === b)); };
+            states.append(b);
+        });
+        pop.querySelector('input').value = t.dataset.note || '';
+        pop.querySelector('.btn').onclick = async () => {
+            const note = pop.querySelector('input').value.trim();
+            try {
+                await send(odo.dataset.odontogram, 'POST', { tooth: Number(tooth.dataset.tooth), state: chosen || null, note: note || null });
+                tooth.dataset.state = chosen;
+                tooth.dataset.note = note;
+                tooth.title = `${tooth.dataset.tooth}${note ? ' — ' + note : ''}`;
+                pop.hidden = true;
+            } catch (err) { toast(err.message, 'err'); }
+        };
+        const box = odo.getBoundingClientRect(), r = t.getBoundingClientRect();
+        pop.hidden = false;
+        pop.style.left = `${Math.min(Math.max(r.left - box.left - 80, 0), box.width - pop.offsetWidth)}px`;
+        pop.style.top = `${r.bottom - box.top + 6}px`;
+        pop.querySelector('input').focus();
     });
+    document.addEventListener('click', (e) => { if (!odo.contains(e.target)) pop.hidden = true; });
 });
 
 // ── Agenda ──────────────────────────────────────────────────────────
@@ -71,6 +138,14 @@ if (calendarEl) (async () => {
             html: `<div class="fw-bold text-truncate">${arg.event.title}</div><div class="small text-truncate">${arg.timeText} · ${arg.event.extendedProps.service ?? ''}</div>`,
         }),
         eventDrop: async (info) => {
+            const day = info.event.start.getDay();
+            const hm = (d) => d.toTimeString().slice(0, 5);
+            const inside = JSON.parse(calendarEl.dataset.business).some((b) => b.daysOfWeek.includes(day)
+                && hm(info.event.start) >= b.startTime && hm(info.event.end) <= b.endTime);
+            if (!inside && !window.confirm('Ce créneau est en dehors des horaires d’ouverture. Déplacer quand même ?')) {
+                info.revert();
+                return;
+            }
             try {
                 await send(calendarEl.dataset.move.replace(':id', info.event.id), 'PATCH', { starts_at: info.event.startStr });
             } catch (err) {
@@ -151,8 +226,5 @@ if (calendarEl) (async () => {
 })();
 
 function alertBox(message) {
-    const div = Object.assign(document.createElement('div'), { className: 'alert alert-danger py-2 small fw-semibold position-fixed top-0 end-0 m-3 shadow', textContent: message });
-    div.style.zIndex = 2000;
-    document.body.append(div);
-    setTimeout(() => div.remove(), 4000);
+    toast(message, 'err');
 }

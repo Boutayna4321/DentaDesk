@@ -27,6 +27,23 @@ class PatientController extends Controller
         ]);
     }
 
+    public function store(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'first_name' => ['required', 'string', 'max:60'],
+            'last_name' => ['nullable', 'string', 'max:60'],
+            'phone' => ['required', 'string', 'max:20'],
+            'birth_date' => ['nullable', 'date', 'before:today'],
+            'coverage' => ['nullable', Rule::in(['cnss', 'cnops', 'mutuelle', 'aucune'])],
+        ]);
+        $data['phone'] = Patient::normalizePhone($data['phone']);
+        if ($existing = Patient::where('phone', $data['phone'])->first()) {
+            return redirect()->route('dash.patients.show', $existing)->with('error', 'Ce numéro a déjà un dossier : le voici.');
+        }
+
+        return redirect()->route('dash.patients.show', Patient::create($data))->with('ok', 'Dossier créé.');
+    }
+
     public function search(Request $request): JsonResponse
     {
         return response()->json($this->query((string) $request->query('q'))->limit(8)->get()

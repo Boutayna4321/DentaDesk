@@ -77,6 +77,8 @@ class BookingController extends Controller
             'service' => $service->name,
             'starts_at' => $appointment->starts_at->toIso8601String(),
             'label' => ucfirst($appointment->starts_at->locale('fr')->translatedFormat('l j F \à H:i')),
+            'duration' => $service->duration_minutes,
+            'address' => config('cabinet.address'),
             'whatsapp' => 'https://wa.me/'.config('cabinet.whatsapp').'?text='.rawurlencode(
                 "Bonjour, j'ai réservé {$service->name} le {$appointment->starts_at->locale('fr')->translatedFormat('l j F à H:i')} au nom de {$patient->full_name}."
             ),

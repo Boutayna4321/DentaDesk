@@ -31,13 +31,15 @@ function booking(root) {
     const form = $('[data-form]');
 
     const select = (box, btn) => {
-        box.querySelectorAll('.chip').forEach((c) => c.classList.remove('on'));
+        box.querySelectorAll('.chip').forEach((c) => { c.classList.remove('on'); c.setAttribute('aria-pressed', 'false'); });
         btn.classList.add('on');
+        btn.setAttribute('aria-pressed', 'true');
     };
+    const resetGo = () => { go.disabled = true; go.textContent = 'Choisissez une heure'; };
 
     async function loadDays() {
         state.date = state.time = null;
-        go.disabled = true;
+        resetGo();
         form.hidden = true;
         daysBox.innerHTML = '<span class="skeleton"></span>'.repeat(4);
         slotsBox.innerHTML = '<span class="text-mute small">Choisissez un jour</span>';
@@ -55,19 +57,28 @@ function booking(root) {
     async function loadSlots(date) {
         state.date = date;
         state.time = null;
-        go.disabled = true;
+        resetGo();
         slotsBox.innerHTML = '<span class="skeleton"></span>'.repeat(5);
         const { slots } = await api(`slots?service=${state.service}&date=${date}`);
         $('[data-free]').textContent = `· ${slots.length} libres`;
-        slotsBox.replaceChildren(...slots.slice(0, 12).map((t) => {
+        const chip = (t) => {
             const b = el('button', { type: 'button', className: 'chip free' }, t);
+            b.setAttribute('aria-pressed', 'false');
             b.onclick = () => {
                 select(slotsBox, b);
                 state.time = t;
                 go.disabled = false;
+                go.textContent = 'Continuer';
             };
             return b;
-        }));
+        };
+        const shown = slots.slice(0, 10).map(chip);
+        if (slots.length > 10) {
+            const more = el('button', { type: 'button', className: 'more' }, `+ ${slots.length - 10} autres`);
+            more.onclick = () => { more.replaceWith(...slots.slice(10).map(chip)); };
+            shown.push(more);
+        }
+        slotsBox.replaceChildren(...shown);
         gsap.from(slotsBox.children, { y: 6, opacity: 0, stagger: 0.025, duration: 0.25 });
     }
 
@@ -76,6 +87,13 @@ function booking(root) {
         const label = root.querySelector('[data-days] .on')?.firstChild.textContent;
         $('[data-summary]').textContent = `· ${label} ${state.time}`;
         form.querySelector('input').focus();
+    };
+
+    $('[data-again]').onclick = () => {
+        $('[data-done]').hidden = true;
+        root.querySelector('.row').hidden = false;
+        form.reset();
+        loadDays();
     };
 
     form.onsubmit = async (e) => {
@@ -96,6 +114,7 @@ function booking(root) {
             $('[data-done]').hidden = false;
             $('[data-done-title]').textContent = `C’est réservé : ${r.service}, ${r.label}.`;
             $('[data-whatsapp]').href = r.whatsapp;
+            $('[data-ics]').href = ics(r);
             gsap.from($('[data-done]'), { y: 10, opacity: 0, duration: 0.4 });
         } catch (err) {
             if (err.status === 409) {
@@ -122,6 +141,17 @@ function booking(root) {
     }));
 
     loadDays();
+}
+
+// A calendar file the patient can open on any phone.
+function ics(r) {
+    const start = new Date(r.starts_at);
+    const end = new Date(start.getTime() + r.duration * 60000);
+    const f = (d) => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+    const body = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//snan//rdv//FR', 'BEGIN:VEVENT', `UID:rdv-${r.id}@snan`,
+        `DTSTAMP:${f(new Date())}`, `DTSTART:${f(start)}`, `DTEND:${f(end)}`, `SUMMARY:${r.service} · cabinet snan.`,
+        `LOCATION:${r.address}`, 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+    return `data:text/calendar;charset=utf-8,${encodeURIComponent(body)}`;
 }
 
 // ── Assistant ───────────────────────────────────────────────────────
@@ -225,6 +255,11 @@ function motion() {
         y: 24, opacity: 0, duration: 0.6, ease: 'power3.out', scrollTrigger: { trigger: node, start: 'top 88%' },
     }));
 }
+
+document.querySelectorAll('[data-load-map]').forEach((b) => b.addEventListener('click', () => {
+    const slot = b.closest('[data-map]');
+    slot.replaceChildren(Object.assign(document.createElement('iframe'), { src: slot.dataset.map, title: 'Carte', loading: 'lazy' }));
+}));
 
 document.querySelectorAll('[data-booking]').forEach(booking);
 document.querySelectorAll('[data-assistant]').forEach(assistant);

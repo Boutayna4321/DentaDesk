@@ -60,7 +60,7 @@
     <div class="booking" data-booking>
         <div class="row g-0">
             <div class="col-lg-2 step">
-                <label class="cap" for="bk-service">Soin</label>
+                <label class="cap" for="bk-service"><i class="n">1</i>Soin</label>
                 <select class="form-select" id="bk-service" data-service>
                     @foreach ($services->where('bookable_online', true) as $s)
                         <option value="{{ $s->slug }}" @selected($s->slug === 'consultation')>{{ $s->name }}</option>
@@ -68,15 +68,15 @@
                 </select>
             </div>
             <div class="col-lg-5 step">
-                <label class="cap">Jour</label>
+                <label class="cap"><i class="n">2</i>Jour</label>
                 <div class="chips" data-days><span class="skeleton"></span><span class="skeleton"></span><span class="skeleton"></span></div>
             </div>
             <div class="col-lg step">
-                <label class="cap">Heure <span class="text-primary" data-free></span></label>
+                <label class="cap"><i class="n">3</i>Heure <span class="text-primary" data-free></span></label>
                 <div class="chips" data-slots><span class="text-mute small">Choisissez un jour</span></div>
             </div>
             <div class="col-lg-auto go">
-                <button class="btn btn-primary w-100" data-continue disabled>Continuer</button>
+                <button class="btn btn-primary w-100" data-continue disabled>Choisissez une heure</button>
             </div>
         </div>
         <form class="booking-form" data-form hidden novalidate>
@@ -91,7 +91,9 @@
         <div class="booking-done" data-done hidden>
             <div class="tick">✓</div>
             <div class="flex-grow-1"><b data-done-title></b><div class="small text-mute">Le cabinet vous confirme sur WhatsApp. Un empêchement&nbsp;? Écrivez à l’assistant.</div></div>
+            <a class="btn btn-outline-primary" data-ics download="rendez-vous-snan.ics"><x-icon name="calendar" size="16" class="me-1" />Ajouter à mon agenda</a>
             <a class="btn btn-outline-primary" data-whatsapp target="_blank" rel="noopener"><x-icon name="whatsapp" size="16" class="me-1" />Envoyer sur WhatsApp</a>
+            <button class="btn btn-link btn-sm" type="button" data-again>Réserver un autre rendez-vous</button>
         </div>
     </div>
 </section>
@@ -206,7 +208,11 @@
                     <a class="btn btn-outline-primary" href="tel:{{ str_replace(' ', '', $cabinet['phone']) }}"><x-icon name="phone" size="16" class="me-1" />{{ $cabinet['phone'] }}</a>
                 </div>
             </div>
-            <div class="col-lg-7"><iframe loading="lazy" title="Carte" src="https://maps.google.com/maps?q=Boulevard%20Al%20Massira%20Maarif%20Casablanca&z=15&output=embed"></iframe></div>
+            {{-- The map loads only on request: no Google cookies for visitors who never look at it. --}}
+            <div class="col-lg-7 map-slot" data-map="https://maps.google.com/maps?q=Boulevard%20Al%20Massira%20Maarif%20Casablanca&z=15&output=embed">
+                <img src="/img/room.jpg" alt="" class="map-cover">
+                <button type="button" class="btn btn-light shadow-sm" data-load-map><x-icon name="pin" size="16" class="me-1" />Afficher la carte <small class="d-block text-mute fw-normal">Google Maps</small></button>
+            </div>
         </div>
     </div>
 </section>

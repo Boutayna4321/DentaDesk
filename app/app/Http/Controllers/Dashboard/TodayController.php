@@ -31,8 +31,12 @@ class TodayController extends Controller
             ?? $appointments->firstWhere('status', 'arrived')
             ?? $appointments->first(fn ($a) => $a->starts_at->isFuture() && $a->status === 'confirmed');
 
+        $returning = Appointment::whereIn('patient_id', $appointments->pluck('patient_id'))
+            ->where('status', 'done')->where('starts_at', '<', $today)->distinct()->pluck('patient_id');
+
         return view('dashboard.today', [
             'appointments' => $appointments,
+            'returning' => $returning->flip(),
             'kpi' => [
                 'today' => $appointments->count(),
                 'confirmed' => $appointments->whereNotIn('status', ['pending'])->count(),

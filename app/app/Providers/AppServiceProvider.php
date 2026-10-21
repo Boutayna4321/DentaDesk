@@ -25,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
     {
         // Medical notes and the odontogram are for the dentist, not the front desk.
         Gate::define('medical', fn (User $user) => $user->isDentist());
+        // The dentist runs the practice: accounts, invoices, prices, settings.
+        Gate::define('admin', fn (User $user) => $user->isDentist());
 
         CarbonImmutable::setLocale('fr');
         Date::setLocale('fr');

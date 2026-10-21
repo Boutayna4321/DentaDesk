@@ -15,7 +15,7 @@
     $nav = [
         ['dash.today', 'Aujourd’hui', 'clock', null],
         ['dash.agenda', 'Agenda', 'calendar', null],
-        ['dash.requests', 'Demandes', 'chat', $open ?: null],
+        ['dash.requests', 'Demandes', 'chat', $open],
         ['dash.patients', 'Patients', 'child', null],
         ['dash.assistant', 'Assistant AI', 'sparkle', null],
     ];
@@ -24,21 +24,26 @@
     <aside class="side">
         <div class="brand"><x-icon name="tooth" size="22" stroke="#fff" />snan.</div>
         @foreach ($nav as [$route, $label, $icon, $badge])
-            <a class="item {{ request()->routeIs($route.'*') ? 'on' : '' }}" href="{{ route($route) }}"><x-icon :name="$icon" size="17" />{{ $label }}@if ($badge)<em>{{ $badge }}</em>@endif</a>
+            <a class="item {{ request()->routeIs($route.'*') ? 'on' : '' }}" href="{{ route($route) }}"><x-icon :name="$icon" size="17" />{{ $label }}@if ($badge !== null)<em data-badge="{{ $route }}" @if (! $badge) hidden @endif>{{ $badge }}</em>@endif</a>
         @endforeach
         <div class="sep">CABINET</div>
         <a class="item {{ request()->routeIs('dash.settings') ? 'on' : '' }}" href="{{ route('dash.settings') }}"><x-icon name="doc" size="17" />Horaires &amp; soins</a>
+        @can('admin')
+            <a class="item {{ request()->routeIs('dash.users*') ? 'on' : '' }}" href="{{ route('dash.users') }}"><x-icon name="child" size="17" />Équipe</a>
+        @endcan
         <a class="item" href="{{ route('home') }}" target="_blank"><x-icon name="pin" size="17" />Voir le site</a>
         <div class="me">
-            <img src="/img/doctor.jpg" alt="">
-            <div><b>{{ auth()->user()->name }}</b>{{ auth()->user()->isDentist() ? 'Dentiste' : 'Secrétariat' }}</div>
+            <span class="avatar">{{ auth()->user()->initials }}</span>
+            <div><b>{{ auth()->user()->name }}</b>{{ auth()->user()->role_label }}</div>
             <form method="post" action="{{ route('logout') }}">@csrf<button>Sortir</button></form>
         </div>
     </aside>
     <main class="main">
-        @if (session('ok'))<div class="alert alert-success py-2 small fw-semibold">{{ session('ok') }}</div>@endif
-        @if (session('error'))<div class="alert alert-danger py-2 small fw-semibold">{{ session('error') }}</div>@endif
-        @if ($errors->any())<div class="alert alert-danger py-2 small">{{ $errors->first() }}</div>@endif
+        <div class="toasts" data-toasts data-pulse="{{ route('dash.pulse') }}">
+            @if (session('ok'))<div class="toast-msg ok" role="status">{{ session('ok') }}</div>@endif
+            @if (session('error'))<div class="toast-msg err" role="alert">{{ session('error') }}</div>@endif
+            @if ($errors->any())<div class="toast-msg err" role="alert">{{ $errors->first() }}</div>@endif
+        </div>
         @yield('content')
     </main>
 </div>
