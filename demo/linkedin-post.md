@@ -1,6 +1,7 @@
 # Post LinkedIn · snan.
 
-Vidéo : `demo/out/snan-demo-fr.mp4` (ou `-en`), 4:5, sans son, sous-titrée.
+Vidéo LinkedIn : `demo/out/snan-demo-fr-linkedin.mp4` (16:9) + musique « Technology Corporate » (The_Mountain, Pixabay), export final dans `exports/`.
+Vidéo Instagram : `demo/out/snan-demo-fr.mp4` (4:5, sans son, musique ajoutée dans Instagram).
 Publier la vidéo directement sur LinkedIn (pas un lien YouTube) : elle se lance seule dans le fil.
 Le lien vers le code ou la démo va dans le premier commentaire, pas dans le post.
 
@@ -8,29 +9,41 @@ Le lien vers le code ou la démo va dans le premier commentaire, pas dans le pos
 
 ## Version française
 
-Un patient écrit « 3andi wjee3 f dersi, kayn chi blassa ghedda ? ».
-10 secondes plus tard, son rendez-vous est dans l'agenda du cabinet.
+Un patient écrit à minuit : « 3andi wjee3 f dersi, kayn chi blassa ghedda ? ».
+Le lendemain matin, son rendez-vous est déjà dans l'agenda du cabinet.
 
-J'ai conçu et développé snan., le logiciel complet d'un cabinet dentaire à Casablanca (projet de démonstration) :
+C'est snan., le logiciel d'un cabinet dentaire à Casablanca que j'ai conçu et développé de A à Z (projet de démonstration). La vidéo suit un patient, Youssef, pendant une journée au cabinet.
 
-→ un site qui réserve sur les vrais créneaux, sans double réservation possible
-→ un assistant qui comprend la darija, le français, l'arabe et l'anglais
-→ le dashboard de la dentiste : journée, agenda, dossiers, schéma dentaire en forme de bouche
-→ factures et devis numérotés, imprimés et encaissés par la secrétaire
-→ des statistiques qui se lisent en 4 phrases
+Côté patient
+→ Un site qui réserve sur les vrais créneaux libres. Deux personnes ne peuvent jamais prendre la même heure, même si elles cliquent à la même seconde.
+→ Un assistant qui comprend la darija, le français, l'arabe et l'anglais, et qui répond dans la langue du patient.
 
-Ce dont je suis le plus fière : l'IA.
-Pas d'API externe. J'ai construit le jeu de données, entraîné le modèle et mesuré ses erreurs sur 126 phrases écrites à la main : 84 % de bonnes réponses.
-Quand il hésite, il pose la question. Quand il ne sait pas, il transmet au cabinet au lieu d'inventer.
-Et quand la dentiste ne lit pas la darija, chaque message est expliqué en français ou en anglais.
+Côté secrétariat
+→ La journée sur un seul écran : qui est au fauteuil, qui attend, ce que l'assistant a réservé pendant la nuit.
+→ Chaque demande écrite en darija est expliquée en français ou en anglais, avec un petit glossaire des mots. Un clic pour confirmer.
+→ Un agenda de la semaine en glisser-déposer, avec le statut de chaque rendez-vous.
 
-Stack : Laravel 13, MySQL, Python (scikit-learn, FastAPI), Bootstrap, Docker. 128 tests automatisés.
+Côté dentiste
+→ Le dossier d'un patient en deux secondes avec la recherche (Ctrl K).
+→ Un schéma dentaire dessiné comme une vraie bouche : 5 faces par dent, carie, couronne, implant, dent dévitalisée, et l'historique de chaque modification. Sur téléphone, une arcade à la fois et des dents à la taille du doigt.
+→ Des factures et des devis qu'elle rédige elle-même à partir de ses tarifs. Numérotés sans trou, verrouillés une fois validés, montant écrit en toutes lettres. La secrétaire imprime et encaisse.
+→ Des statistiques qui se lisent : 4 phrases à retenir, le remplissage heure par heure, ce qui rapporte vraiment, ce qui reste à encaisser.
+
+Côté équipe
+→ Une messagerie interne dentiste ↔ secrétariat.
+→ Des comptes avec des droits différents, qu'on peut activer, désactiver ou supprimer, et un journal de ce que chacun a fait.
+
+La partie dont je suis le plus fière, c'est l'IA.
+Pas d'API externe : les données des patients restent au cabinet. J'ai construit le jeu de données, entraîné le modèle et mesuré ses erreurs sur 126 phrases écrites à la main. Résultat : 84 % de bonnes réponses.
+Quand il hésite, il pose une question. Quand il ne sait pas, il passe la main au cabinet au lieu d'inventer.
+
+Côté technique : Laravel 13, PHP 8.4, MySQL 8, Python (scikit-learn, FastAPI), JavaScript, Bootstrap 5, Docker. 128 tests automatisés.
 
 Master en Génie logiciel & Intelligence artificielle : ce projet, c'est ce que j'ai appris, mis au service d'un vrai problème.
 
-Qu'est-ce que vous ajouteriez ?
+Si vous travaillez dans la santé ou si vous développez ce genre d'outil, qu'est-ce que vous ajouteriez ?
 
-#Laravel #MachineLearning #NLP #Darija #FullStack
+#Laravel #PHP #MySQL #Python #ScikitLearn #FastAPI #MachineLearning #NLP #IntelligenceArtificielle #JavaScript #Bootstrap #Docker #FullStack #GenieLogiciel #Darija
 
 ---
 
