@@ -510,7 +510,7 @@ class Dialogue
 
     private function hoursText(): string
     {
-        return OpeningHours::summary($this->practitioner());
+        return OpeningHours::summary($this->practitioner(), $this->lang);
     }
 
     private function lastPatientMessage(): string

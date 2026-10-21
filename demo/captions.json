@@ -14,7 +14,7 @@
     "team": { "title": "L’équipe se parle\n*dans le logiciel*", "sub": "Messagerie dentiste ↔ secrétariat, recherche globale, comptes et droits." },
     "ai": { "title": "Un modèle qui\n*sait quand il doute*", "sub": "84 % juste sur des phrases écrites à la main. S’il hésite, il demande ; s’il ne sait pas, il passe la main." },
     "stack": { "title": "Ce qu’il y a\n*dessous*", "sub": "", "items": ["Laravel 13 · PHP 8.4 · MySQL 8", "Python · scikit-learn · FastAPI", "Bootstrap 5 · JavaScript · SVG", "Docker · 128 tests automatisés"] },
-    "end": { "title": "Boutayna Metarfi", "sub": "Master Génie logiciel & Intelligence artificielle", "cta": "Vos retours en commentaire : qu’est-ce que vous ajouteriez ?" }
+    "end": { "title": "Boutayna Metarfi", "sub": "Master Ingénierie logicielle et Intelligence artificielle", "cta": "Vos retours en commentaire : qu’est-ce que vous ajouteriez ?" }
   },
   "en": {
     "series": "PROJECT",

@@ -166,6 +166,15 @@ class DialogueTest extends TestCase
         $this->assertSame('Le cabinet est ouvert : lundi–vendredi 09:00–13:00, 14:30–19:00 · samedi 09:00–13:00.', $r['text']);
     }
 
+    public function test_hours_name_the_days_in_the_patients_language(): void
+    {
+        $this->nlu['Are you open on Saturday?'] = $this->parsed('horaires', 0.95);
+        $this->nlu['ما هي أوقات العمل؟'] = $this->parsed('horaires', 0.95);
+
+        $this->assertStringContainsString('Monday–Friday 09:00–13:00', $this->say('Are you open on Saturday?')['text']);
+        $this->assertStringContainsString('الاثنين–الجمعة', $this->say('ما هي أوقات العمل؟')['text']);
+    }
+
     public function test_when_the_nlu_is_down_the_patient_gets_the_phone_number(): void
     {
         $this->nluDown = true;

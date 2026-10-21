@@ -95,7 +95,7 @@ const LANG = q.get('lang') || 'fr';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const $ = (id) => document.getElementById(id);
 const frames = { desk: $('desk'), mob: $('mob') };
-const TOTAL = 104; // seconds, for the progress bar
+const TOTAL = 128; // seconds, for the progress bar
 let C;
 
 const hl = (t) => t.replace(/\*(.+?)\*/g, '<span class="hl">$1</span>').replace(/\n/g, '<br>');
@@ -207,6 +207,14 @@ async function bookingScene() {
   await sleep(600);
   await click('mob', '.assistant-fab');
   await sleep(400);
+  // Three other patients first, one language each: the reply follows the language.
+  for (const [msg, speed] of [['Est-ce que vous acceptez la CNSS ?', 34], ["I'd like a cleaning appointment next week", 30], ['ما هي أوقات العمل؟', 55]]) {
+    const n = doc('mob').querySelectorAll('.msg.bot').length;
+    await type('mob', '[data-chat-form] input', msg, speed);
+    submitChat(); hideCursor();
+    for (let t = 0; t < 6000 && doc('mob').querySelectorAll('.msg.bot').length === n; t += 100) await sleep(100);
+    await sleep(1500);
+  }
   await type('mob', '[data-chat-form] input', '3andi wjee3 f dersi mn lbare7, kayn chi blassa ghedda f sba7?', 30);
   submitChat(); hideCursor();
   await waitFor('mob', '.quick .chip'); await sleep(1000);

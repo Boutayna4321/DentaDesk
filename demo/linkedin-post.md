@@ -9,41 +9,42 @@ Le lien vers le code ou la démo va dans le premier commentaire, pas dans le pos
 
 ## Version française
 
-Un patient écrit à minuit : « 3andi wjee3 f dersi, kayn chi blassa ghedda ? ».
-Le lendemain matin, son rendez-vous est déjà dans l'agenda du cabinet.
+Je vous présente snan., une plateforme complète pour un cabinet dentaire, que j'ai conçue et développée de A à Z (projet de démonstration, cabinet fictif à Casablanca).
 
-C'est snan., le logiciel d'un cabinet dentaire à Casablanca que j'ai conçu et développé de A à Z (projet de démonstration). La vidéo suit un patient, Youssef, pendant une journée au cabinet.
+L'objectif : qu'un cabinet gère tout au même endroit, de la prise de rendez-vous jusqu'à la facture, et que les patients puissent réserver à n'importe quelle heure, dans la langue qu'ils parlent.
+
+La vidéo suit une journée au cabinet.
 
 Côté patient
 → Un site qui réserve sur les vrais créneaux libres. Deux personnes ne peuvent jamais prendre la même heure, même si elles cliquent à la même seconde.
-→ Un assistant qui comprend la darija, le français, l'arabe et l'anglais, et qui répond dans la langue du patient.
+→ Un assistant IA qui répond dans la langue du patient. Le patient écrit en darija, l'assistant répond en darija. Il écrit en français, en arabe ou en anglais, l'assistant suit. Il peut répondre aux questions (horaires, CNSS…) et prendre le rendez-vous lui-même.
 
 Côté secrétariat
 → La journée sur un seul écran : qui est au fauteuil, qui attend, ce que l'assistant a réservé pendant la nuit.
-→ Chaque demande écrite en darija est expliquée en français ou en anglais, avec un petit glossaire des mots. Un clic pour confirmer.
+→ Chaque demande est expliquée en français ou en anglais, avec un petit glossaire des mots en darija. Un clic pour confirmer.
 → Un agenda de la semaine en glisser-déposer, avec le statut de chaque rendez-vous.
 
 Côté dentiste
 → Le dossier d'un patient en deux secondes avec la recherche (Ctrl K).
 → Un schéma dentaire dessiné comme une vraie bouche : 5 faces par dent, carie, couronne, implant, dent dévitalisée, et l'historique de chaque modification. Sur téléphone, une arcade à la fois et des dents à la taille du doigt.
 → Des factures et des devis qu'elle rédige elle-même à partir de ses tarifs. Numérotés sans trou, verrouillés une fois validés, montant écrit en toutes lettres. La secrétaire imprime et encaisse.
-→ Des statistiques qui se lisent : 4 phrases à retenir, le remplissage heure par heure, ce qui rapporte vraiment, ce qui reste à encaisser.
+→ Des statistiques claires : 4 phrases à retenir, le remplissage heure par heure, ce qui rapporte vraiment, ce qui reste à encaisser.
 
 Côté équipe
 → Une messagerie interne dentiste ↔ secrétariat.
 → Des comptes avec des droits différents, qu'on peut activer, désactiver ou supprimer, et un journal de ce que chacun a fait.
 
 La partie dont je suis le plus fière, c'est l'IA.
-Pas d'API externe : les données des patients restent au cabinet. J'ai construit le jeu de données, entraîné le modèle et mesuré ses erreurs sur 126 phrases écrites à la main. Résultat : 84 % de bonnes réponses.
+Pas d'API externe : les données des patients restent au cabinet. J'ai construit le jeu de données en 4 langues, entraîné le modèle et mesuré ses erreurs sur 126 phrases écrites à la main : 84 % de bonnes réponses.
 Quand il hésite, il pose une question. Quand il ne sait pas, il passe la main au cabinet au lieu d'inventer.
 
-Côté technique : Laravel 13, PHP 8.4, MySQL 8, Python (scikit-learn, FastAPI), JavaScript, Bootstrap 5, Docker. 128 tests automatisés.
+Côté technique : Laravel 13, PHP 8.4, MySQL 8, Python (scikit-learn, FastAPI), JavaScript, Bootstrap 5, Docker. 129 tests automatisés.
 
-Master en Génie logiciel & Intelligence artificielle : ce projet, c'est ce que j'ai appris, mis au service d'un vrai problème.
+Master Ingénierie logicielle et Intelligence artificielle : ce projet, c'est ce que j'ai appris, mis au service d'un vrai problème.
 
 Si vous travaillez dans la santé ou si vous développez ce genre d'outil, qu'est-ce que vous ajouteriez ?
 
-#Laravel #PHP #MySQL #Python #ScikitLearn #FastAPI #MachineLearning #NLP #IntelligenceArtificielle #JavaScript #Bootstrap #Docker #FullStack #GenieLogiciel #Darija
+#Laravel #PHP #MySQL #Python #ScikitLearn #FastAPI #MachineLearning #NLP #IntelligenceArtificielle #JavaScript #Bootstrap #Docker #FullStack #IngenierieLogicielle #Darija
 
 ---
 
@@ -65,9 +66,9 @@ No external API. I built the dataset, trained the model and measured its mistake
 When it hesitates, it asks. When it doesn't know, it hands the message to the practice instead of making something up.
 And when the dentist doesn't read Darija, every message is explained in French or English.
 
-Stack: Laravel 13, MySQL, Python (scikit-learn, FastAPI), Bootstrap, Docker. 128 automated tests.
+Stack: Laravel 13, MySQL, Python (scikit-learn, FastAPI), Bootstrap, Docker. 129 automated tests.
 
-Master's in Software Engineering & AI: this project is what I learned, put to work on a real problem.
+Master's in Software Engineering and Artificial Intelligence: this project is what I learned, put to work on a real problem.
 
 What would you add?
 

@@ -6,14 +6,19 @@ use App\Models\Practitioner;
 
 class OpeningHours
 {
-    private const DAYS = [1 => 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
+    private const DAYS = [
+        'fr' => [1 => 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'],
+        'da' => [1 => 'tnin', 'tlat', 'larb3', 'lkhmis', 'jem3a', 'sebt', 'l7ed'],
+        'ar' => [1 => 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت', 'الأحد'],
+        'en' => [1 => 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    ];
 
     /**
      * Rows ready to print: consecutive days with the same hours are merged.
      *
      * @return list<array{days:string,hours:string}>
      */
-    public static function rows(Practitioner $practitioner): array
+    public static function rows(Practitioner $practitioner, string $lang = 'fr'): array
     {
         $byDay = $practitioner->workingHours()->orderBy('weekday')->orderBy('opens_at')->get()
             ->groupBy('weekday')
@@ -29,15 +34,17 @@ class OpeningHours
             }
         }
 
+        $names = self::DAYS[$lang] ?? self::DAYS['fr'];
+
         return array_map(fn ($r) => [
-            'days' => $r['from'] === $r['to'] ? self::DAYS[$r['from']] : self::DAYS[$r['from']].'–'.self::DAYS[$r['to']],
+            'days' => $r['from'] === $r['to'] ? $names[$r['from']] : $names[$r['from']].'–'.$names[$r['to']],
             'hours' => $r['hours'],
         ], $runs);
     }
 
     /** "lundi–vendredi 09:00–13:00, 14:30–19:00 · samedi 09:00–13:00" */
-    public static function summary(Practitioner $practitioner): string
+    public static function summary(Practitioner $practitioner, string $lang = 'fr'): string
     {
-        return collect(self::rows($practitioner))->map(fn ($r) => $r['days'].' '.$r['hours'])->implode(' · ');
+        return collect(self::rows($practitioner, $lang))->map(fn ($r) => $r['days'].' '.$r['hours'])->implode(' · ');
     }
 }

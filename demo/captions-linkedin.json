@@ -6,12 +6,12 @@
       "sub": "Une journée au cabinet, en suivant un patient : Youssef."
     },
     "s1": {
-      "chip": "23 h 40 · Youssef a mal",
+      "chip": "23 h 40 · Les patients écrivent",
       "step": "1 · LA RÉSERVATION",
-      "title": "Il écrit en darija.\nÀ minuit.",
+      "title": "Chaque patient écrit\ndans sa langue.",
       "points": [
-        "Assistant IA entraîné par moi, sans API externe",
-        "Comprend la darija, le français, l’arabe et l’anglais",
+        "L’assistant répond dans la langue du patient : darija, français, arabe ou anglais",
+        "Modèle IA entraîné par moi, sans API externe",
         "Ne propose que des créneaux vraiment libres"
       ]
     },
@@ -74,7 +74,7 @@
       "title": "Ce qui fait la différence",
       "points": [
         [
-          "IA darija, sans API externe",
+          "IA en 4 langues, sans API externe",
           "Les données des patients restent au cabinet"
         ],
         [
@@ -90,11 +90,11 @@
           "Numérotées sans trou, verrouillées, en lettres"
         ]
       ],
-      "stack": "Laravel 13 · MySQL · Python (scikit-learn, FastAPI) · Bootstrap · Docker · 128 tests"
+      "stack": "Laravel 13 · MySQL · Python (scikit-learn, FastAPI) · Bootstrap · Docker · 129 tests"
     },
     "end": {
       "title": "Boutayna Metarfi",
-      "sub": "Master Génie logiciel & Intelligence artificielle",
+      "sub": "Master Ingénierie logicielle et Intelligence artificielle",
       "cta": "Qu’est-ce que vous ajouteriez ? Dites-le moi en commentaire."
     }
   },
@@ -105,12 +105,12 @@
       "sub": "One day at the practice, following one patient: Youssef."
     },
     "s1": {
-      "chip": "11:40 pm · Youssef is in pain",
+      "chip": "11:40 pm · Patients write in",
       "step": "1 · BOOKING",
-      "title": "He writes in Darija.\nAt midnight.",
+      "title": "Every patient writes\nin their own language.",
       "points": [
-        "An AI assistant I trained myself, no external API",
-        "Understands Darija, French, Arabic and English",
+        "The assistant answers in the patient’s language: Darija, French, Arabic or English",
+        "An AI model I trained myself, no external API",
         "Only offers slots that are really free"
       ]
     },
@@ -173,7 +173,7 @@
       "title": "What makes it different",
       "points": [
         [
-          "Darija AI, no external API",
+          "AI in 4 languages, no external API",
           "Patient data stays at the practice"
         ],
         [
@@ -189,11 +189,11 @@
           "Gapless numbers, locked, amount in words"
         ]
       ],
-      "stack": "Laravel 13 · MySQL · Python (scikit-learn, FastAPI) · Bootstrap · Docker · 128 tests"
+      "stack": "Laravel 13 · MySQL · Python (scikit-learn, FastAPI) · Bootstrap · Docker · 129 tests"
     },
     "end": {
       "title": "Boutayna Metarfi",
-      "sub": "Master’s in Software Engineering & Artificial Intelligence",
+      "sub": "Master’s in Software Engineering and Artificial Intelligence",
       "cta": "What would you add? Tell me in the comments."
     }
   }
