@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 
-from snan_nlu.api import app
+from dentadesk_nlu.api import app
 
 client = TestClient(app)
 

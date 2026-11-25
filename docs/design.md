@@ -1,4 +1,4 @@
-# snan. — cabinet dentaire : site, réservation, dashboard, assistant
+# DentaDesk — cabinet dentaire : site, réservation, dashboard, assistant
 
 Projet #05 de la série DESIGN → CODE. But : montrer un vrai projet full-stack + IA
 (master génie logiciel & IA), pas seulement une landing page.

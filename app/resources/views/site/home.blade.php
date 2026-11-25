@@ -12,7 +12,7 @@
     <div class="container">
         <a class="navbar-brand" href="{{ route('home') }}">
             <x-icon name="tooth" size="30" stroke="#1f56d6" />
-            <span>snan.<small>CABINET DENTAIRE</small></span>
+            <span>DentaDesk<small>CABINET DENTAIRE</small></span>
         </a>
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-label="Menu"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="nav">
@@ -91,7 +91,7 @@
         <div class="booking-done" data-done hidden>
             <div class="tick">✓</div>
             <div class="flex-grow-1"><b data-done-title></b><div class="small text-mute">Le cabinet vous confirme sur WhatsApp. Un empêchement&nbsp;? Écrivez à l’assistant.</div></div>
-            <a class="btn btn-outline-primary" data-ics download="rendez-vous-snan.ics"><x-icon name="calendar" size="16" class="me-1" />Ajouter à mon agenda</a>
+            <a class="btn btn-outline-primary" data-ics download="rendez-vous-dentadesk.ics"><x-icon name="calendar" size="16" class="me-1" />Ajouter à mon agenda</a>
             <a class="btn btn-outline-primary" data-whatsapp target="_blank" rel="noopener"><x-icon name="whatsapp" size="16" class="me-1" />Envoyer sur WhatsApp</a>
             <button class="btn btn-link btn-sm" type="button" data-again>Réserver un autre rendez-vous</button>
         </div>
@@ -219,7 +219,7 @@
 
 <footer class="site">
     <div class="container d-flex flex-wrap justify-content-between gap-3">
-        <div><b>snan.</b> · cabinet dentaire du {{ $cabinet['doctor'] }}<br>{{ $cabinet['address'] }}</div>
+        <div><b>DentaDesk</b> · cabinet dentaire du {{ $cabinet['doctor'] }}<br>{{ $cabinet['address'] }}</div>
         <div>Projet de démonstration conçu et développé par <a href="https://instagram.com/boutayna_metarfi" target="_blank" rel="noopener">@boutayna_metarfi</a></div>
     </div>
 </footer>
@@ -232,7 +232,7 @@
 <div class="assistant" data-assistant hidden role="dialog" aria-label="Assistant du cabinet">
     <div class="hd">
         <span class="live"></span>
-        <div><b>Assistant snan.</b><small>Répond tout de suite · darija · FR · عربي · EN</small></div>
+        <div><b>Assistant DentaDesk</b><small>Répond tout de suite · darija · FR · عربي · EN</small></div>
         <button class="btn-close btn-close-white" data-close-assistant aria-label="Fermer"></button>
     </div>
     <div class="log" data-log aria-live="polite"></div>

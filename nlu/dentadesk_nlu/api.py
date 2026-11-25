@@ -11,7 +11,7 @@ from .entities import extract
 from .glossary import gloss
 from .model import load
 
-app = FastAPI(title="snan. NLU", version="1.0")
+app = FastAPI(title="DentaDesk NLU", version="1.0")
 
 
 class ParseIn(BaseModel):

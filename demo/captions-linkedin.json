@@ -1,7 +1,7 @@
 {
   "fr": {
     "title": {
-      "kicker": "PROJET · snan.",
+      "kicker": "PROJET · DentaDesk",
       "title": "Le logiciel d’un cabinet dentaire,\nde la réservation à la facture.",
       "sub": "Une journée au cabinet, en suivant un patient : Youssef."
     },
@@ -100,7 +100,7 @@
   },
   "en": {
     "title": {
-      "kicker": "PROJECT · snan.",
+      "kicker": "PROJECT · DentaDesk",
       "title": "Software for a dental practice,\nfrom booking to invoice.",
       "sub": "One day at the practice, following one patient: Youssef."
     },

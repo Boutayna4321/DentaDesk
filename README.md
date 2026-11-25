@@ -1,4 +1,4 @@
-# snan. — cabinet dentaire : site, réservation, dashboard et assistant IA
+# DentaDesk — cabinet dentaire : site, réservation, dashboard et assistant IA
 
 Un projet complet pour un cabinet dentaire à Casablanca : site vitrine, réservation en
 ligne sur de vrais créneaux, dashboard pour la dentiste et la secrétaire, et un assistant
@@ -7,7 +7,7 @@ qui comprend la **darija** (en lettres latines ou arabes), le français, l'arabe
 L'assistant tourne sur **un modèle entraîné par nous**, hébergé avec l'application.
 Aucune donnée patient n'est envoyée à une API externe.
 
-![snan.](app/public/img/og.png)
+![DentaDesk](app/public/img/og.png)
 
 > Projet de démonstration : le cabinet, la dentiste et les patients sont fictifs.
 > Vidéo de démo (2 min) : [post LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7518725908128694272/).
@@ -34,8 +34,8 @@ cd app && npm install && npm run build
 
 - Site : http://localhost:8000
 - Dashboard : http://localhost:8000/login
-  - `dentiste@snan.test` / `snan2026` (tout voir, schéma dentaire, notes)
-  - `secretaire@snan.test` / `snan2026` (accueil : pas de notes médicales)
+  - `dentiste@dentadesk.test` / `dentadesk2026` (tout voir, schéma dentaire, notes)
+  - `secretaire@dentadesk.test` / `dentadesk2026` (accueil : pas de notes médicales)
 - Santé du modèle : http://localhost:8001/health
 
 Au premier démarrage, le service `nlu` construit le dataset et entraîne le modèle (une
@@ -126,7 +126,7 @@ l'autre sens, anglais → darija). Sous chaque message, le dashboard affiche don
   soin), en français ou en anglais au choix : « The patient reports pain and wants to be
   seen as soon as possible, for Thursday 22 October in the morning. » ;
 - un glossaire des mots darija reconnus (`wjee3` douleur / pain, `dersi` ma molaire / my
-  molar, `mn lbare7` depuis hier / since yesterday…), 60 entrées dans `nlu/snan_nlu/glossary.py`.
+  molar, `mn lbare7` depuis hier / since yesterday…), 60 entrées dans `nlu/dentadesk_nlu/glossary.py`.
 
 Ce n'est pas une traduction et le dashboard ne le présente pas comme telle : rien n'est
 inventé, et le message d'origine reste affiché au-dessus.

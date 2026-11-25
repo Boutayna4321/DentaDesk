@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="robots" content="noindex">
-    <title>@yield('title') · snan. cabinet</title>
+    <title>@yield('title') · DentaDesk cabinet</title>
     {{ Vite::fonts() }}
     @vite(['resources/scss/dashboard.scss', 'resources/js/dashboard.js'])
 </head>
@@ -29,7 +29,7 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         <em data-burger-dot @if (! ($open || ($unreadTop = \App\Models\InternalMessage::where('recipient_id', auth()->id())->whereNull('read_at')->count()))) hidden @endif></em>
     </button>
-    <b>snan.</b>
+    <b>DentaDesk</b>
     <span class="where">@yield('title')</span>
     <button class="burger search-btn" type="button" data-open-search aria-label="Rechercher">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
@@ -37,7 +37,7 @@
 </header>
 <div class="shell">
     <aside class="side offcanvas-lg offcanvas-start" id="sidenav" tabindex="-1" aria-label="Menu">
-        <div class="brand"><span class="d-flex align-items-center gap-2"><x-icon name="tooth" size="22" stroke="#fff" />snan.</span>
+        <div class="brand"><span class="d-flex align-items-center gap-2"><x-icon name="tooth" size="22" stroke="#fff" />DentaDesk</span>
             <button class="side-close" type="button" data-bs-dismiss="offcanvas" data-bs-target="#sidenav" aria-label="Fermer le menu">✕</button></div>
         <button class="side-search" type="button" data-open-search>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>

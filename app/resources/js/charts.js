@@ -1,4 +1,4 @@
-// Small hand-made SVG charts for the statistics page. One hue for magnitude (snan blue),
+// Small hand-made SVG charts for the statistics page. One hue for magnitude (DentaDesk blue),
 // a validated four-colour set for categories, thin marks, hairline grid, a tooltip on
 // every mark. Charts redraw on resize so they stay crisp at any width.
 

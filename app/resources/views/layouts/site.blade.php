@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'snan. · Cabinet dentaire à Maârif, Casablanca')</title>
+    <title>@yield('title', 'DentaDesk · Cabinet dentaire à Maârif, Casablanca')</title>
     <meta name="description" content="Cabinet dentaire du {{ config('cabinet.doctor') }} à Maârif, Casablanca. Réservez votre rendez-vous en ligne ou écrivez à notre assistant en darija, français ou arabe.">
     <meta name="theme-color" content="#0c2350">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="snan. · Cabinet dentaire à Maârif, Casablanca">
+    <meta property="og:title" content="DentaDesk · Cabinet dentaire à Maârif, Casablanca">
     <meta property="og:description" content="Réservez en ligne sur de vrais créneaux, ou écrivez à l’assistant en darija, français, arabe ou anglais.">
     <meta property="og:image" content="{{ url('/img/og.png') }}">
     <meta property="og:image:width" content="1200">

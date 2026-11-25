@@ -148,8 +148,8 @@ function ics(r) {
     const start = new Date(r.starts_at);
     const end = new Date(start.getTime() + r.duration * 60000);
     const f = (d) => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
-    const body = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//snan//rdv//FR', 'BEGIN:VEVENT', `UID:rdv-${r.id}@snan`,
-        `DTSTAMP:${f(new Date())}`, `DTSTART:${f(start)}`, `DTEND:${f(end)}`, `SUMMARY:${r.service} · cabinet snan.`,
+    const body = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//dentadesk//rdv//FR', 'BEGIN:VEVENT', `UID:rdv-${r.id}@dentadesk`,
+        `DTSTAMP:${f(new Date())}`, `DTSTART:${f(start)}`, `DTEND:${f(end)}`, `SUMMARY:${r.service} · cabinet DentaDesk`,
         `LOCATION:${r.address}`, 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
     return `data:text/calendar;charset=utf-8,${encodeURIComponent(body)}`;
 }
@@ -161,7 +161,7 @@ function assistant(panel) {
     const input = form.querySelector('input');
     const fab = document.querySelector('.assistant-fab');
     let token = null;
-    try { token = localStorage.getItem('snan.token'); } catch { /* private mode */ }
+    try { token = localStorage.getItem('dentadesk.token'); } catch { /* private mode */ }
     let busy = false;
 
     const scroll = () => log.scrollTo({ top: log.scrollHeight, behavior: 'smooth' });
@@ -200,7 +200,7 @@ function assistant(panel) {
         try {
             const r = await api('assistant', { method: 'POST', body: { message, value, token } });
             token = r.token;
-            try { localStorage.setItem('snan.token', token); } catch { /* ignore */ }
+            try { localStorage.setItem('dentadesk.token', token); } catch { /* ignore */ }
             await new Promise((ok) => setTimeout(ok, 350));
             typing.remove();
             bubble(r.text, 'bot');

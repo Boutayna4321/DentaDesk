@@ -2,7 +2,7 @@
   "fr": {
     "series": "PROJET",
     "chapters": ["Site", "Assistant", "Aujourd’hui", "Demandes", "Agenda", "Dents", "Factures", "Stats", "Équipe", "IA", "Stack"],
-    "hook": { "title": "Un patient écrit *en darija*.\n10 secondes après, il est *dans l’agenda*.", "sub": "snan. — le logiciel complet d’un cabinet dentaire, conçu et développé par moi." },
+    "hook": { "title": "Un patient écrit *en darija*.\n10 secondes après, il est *dans l’agenda*.", "sub": "DentaDesk — le logiciel complet d’un cabinet dentaire, conçu et développé par moi." },
     "site": { "title": "Un site qui réserve\nsur les *vrais créneaux*", "sub": "Soin → jour → heure. Deux patients ne peuvent jamais prendre le même créneau." },
     "assistant": { "title": "Un assistant IA\nqui comprend *la darija*", "sub": "Modèle entraîné par moi, sans API externe : les données des patients restent au cabinet." },
     "today": { "title": "La journée du cabinet\nen *un seul écran*", "sub": "Qui est au fauteuil, qui attend, et ce que l’assistant a réservé cette nuit." },
@@ -19,7 +19,7 @@
   "en": {
     "series": "PROJECT",
     "chapters": ["Site", "Assistant", "Today", "Requests", "Calendar", "Teeth", "Invoices", "Stats", "Team", "AI", "Stack"],
-    "hook": { "title": "A patient writes *in Darija*.\n10 seconds later, they’re *booked*.", "sub": "snan. — complete software for a dental practice, designed and built by me." },
+    "hook": { "title": "A patient writes *in Darija*.\n10 seconds later, they’re *booked*.", "sub": "DentaDesk — complete software for a dental practice, designed and built by me." },
     "site": { "title": "A website that books\n*real time slots*", "sub": "Care → day → time. Two patients can never take the same slot." },
     "assistant": { "title": "An AI assistant\nthat speaks *Darija*", "sub": "A model I trained myself. No external API: patient data stays at the practice." },
     "today": { "title": "The whole day\non *one screen*", "sub": "Who is in the chair, who is waiting, and what the assistant booked overnight." },

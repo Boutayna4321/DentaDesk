@@ -1,6 +1,6 @@
 // Records demo/stage.html (driving the real app) into a 1080×1350 MP4 for LinkedIn.
-//   node demo/render-demo.mjs fr            -> demo/out/snan-demo-fr.mp4          (4:5, Instagram)
-//   node demo/render-demo.mjs fr linkedin   -> demo/out/snan-demo-fr-linkedin.mp4 (16:9, LinkedIn)
+//   node demo/render-demo.mjs fr            -> demo/out/dentadesk-demo-fr.mp4          (4:5, Instagram)
+//   node demo/render-demo.mjs fr linkedin   -> demo/out/dentadesk-demo-fr-linkedin.mp4 (16:9, LinkedIn)
 // Needs the app running on localhost:8000 with fresh demo data (php artisan migrate:fresh --seed).
 import { spawn, spawnSync, execFileSync } from 'node:child_process';
 import { writeFile, mkdir, mkdtemp, rm, cp } from 'node:fs/promises';
@@ -79,14 +79,14 @@ for (let i = 0; i < kept.length; i++) {
 list += `file '${join(dir, String(kept.length - 1).padStart(5, '0') + '.jpg')}'\n`;
 await writeFile(join(dir, 'list.txt'), list);
 await mkdir(join(HERE, 'out'), { recursive: true });
-const mp4 = join(HERE, 'out', `snan-demo-${lang}${V.suffix}.mp4`);
+const mp4 = join(HERE, 'out', `dentadesk-demo-${lang}${V.suffix}.mp4`);
 const r = spawnSync(FFMPEG, ['-y', '-loglevel', 'error', '-f', 'concat', '-safe', '0', '-i', join(dir, 'list.txt'),
   '-f', 'lavfi', '-i', 'anullsrc=channel_layout=stereo:sample_rate=44100',
   '-vf', `fps=30,scale=${V.outW}:${V.outH}:flags=lanczos,format=yuv420p`, '-c:v', 'libx264', '-preset', 'slow', '-crf', '18', '-profile:v', 'high',
   '-c:a', 'aac', '-b:a', '128k', '-shortest', '-movflags', '+faststart', mp4], { stdio: 'inherit' });
 // A cover frame from the hook, once the reply is on screen.
 const cover = kept[Math.min(kept.length - 1, Math.round(kept.length * 0.075))];
-await writeFile(join(HERE, 'out', `snan-demo-${lang}${V.suffix}-cover.jpg`), Buffer.from(cover.data, 'base64'));
+await writeFile(join(HERE, 'out', `dentadesk-demo-${lang}${V.suffix}-cover.jpg`), Buffer.from(cover.data, 'base64'));
 await rm(dir, { recursive: true, force: true });
 await rm(pub, { recursive: true, force: true });
 ws.close();

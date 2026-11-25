@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=1280">
-<title>snan. LinkedIn demo stage</title>
+<title>DentaDesk LinkedIn demo stage</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
@@ -80,7 +80,7 @@
       <div class="side"><div class="kicker"></div><div class="big"></div><ul class="points"></ul></div>
     </div>
     <div class="panel recap" id="p-recap"><div class="kicker">RECAP</div><div class="big"></div><div class="cards"></div><div class="stack"></div></div>
-    <div class="panel endcard" id="p-end"><div class="kicker">snan.</div><div class="big"></div><div class="lead"></div><div class="cta"></div></div>
+    <div class="panel endcard" id="p-end"><div class="kicker">DentaDesk</div><div class="big"></div><div class="lead"></div><div class="cta"></div></div>
   </div>
 
   <svg class="cursor" id="cursor" viewBox="0 0 24 24"><path d="M4 2 L4 19 L8.5 14.8 L11.6 21.5 L14.4 20.2 L11.3 13.6 L17.5 13.6 Z" fill="#fff" stroke="#0e0e0e" stroke-width="1.4" stroke-linejoin="round"/></svg>
@@ -392,12 +392,12 @@ async function endScene() {
   document.documentElement.lang = LANG;
   // Pre-roll (not recorded): log in, open the patient site on the phone.
   await go('desk', '/login');
-  doc('desk').querySelector('#email').value = 'dentiste@snan.test';
-  doc('desk').querySelector('#password').value = 'snan2026';
+  doc('desk').querySelector('#email').value = 'dentiste@dentadesk.test';
+  doc('desk').querySelector('#password').value = 'dentadesk2026';
   await new Promise((r) => { frames.desk.onload = r; doc('desk').querySelector('form').submit(); });
   try { localStorage.clear(); } catch {}
   await go('mob', '/');
-  try { win('mob').localStorage.removeItem('snan.token'); } catch {}
+  try { win('mob').localStorage.removeItem('dentadesk.token'); } catch {}
   await go('desk', '/dashboard');
   document.querySelectorAll('.panel').forEach((p) => { p.style.display = 'none'; });
   $('dark').style.opacity = 1; // the video opens on the dark title, never on a half-loaded page

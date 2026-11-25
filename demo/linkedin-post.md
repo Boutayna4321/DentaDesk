@@ -1,7 +1,7 @@
-# Post LinkedIn · snan.
+# Post LinkedIn · DentaDesk
 
-Vidéo LinkedIn : `demo/out/snan-demo-fr-linkedin.mp4` (16:9) + musique « Technology Corporate » (The_Mountain, Pixabay), export final dans `exports/`.
-Vidéo Instagram : `demo/out/snan-demo-fr.mp4` (4:5, sans son, musique ajoutée dans Instagram).
+Vidéo LinkedIn : `demo/out/dentadesk-demo-fr-linkedin.mp4` (16:9) + musique « Technology Corporate » (The_Mountain, Pixabay), export final dans `exports/`.
+Vidéo Instagram : `demo/out/dentadesk-demo-fr.mp4` (4:5, sans son, musique ajoutée dans Instagram).
 Publier la vidéo directement sur LinkedIn (pas un lien YouTube) : elle se lance seule dans le fil.
 Le lien vers le code ou la démo va dans le premier commentaire, pas dans le post.
 
@@ -9,7 +9,7 @@ Le lien vers le code ou la démo va dans le premier commentaire, pas dans le pos
 
 ## Version française
 
-Je vous présente snan., une plateforme complète pour un cabinet dentaire, que j'ai conçue et développée de A à Z (projet de démonstration, cabinet fictif à Casablanca).
+Je vous présente DentaDesk, une plateforme complète pour un cabinet dentaire, que j'ai conçue et développée de A à Z (projet de démonstration, cabinet fictif à Casablanca).
 
 L'objectif : qu'un cabinet gère tout au même endroit, de la prise de rendez-vous jusqu'à la facture, et que les patients puissent réserver à n'importe quelle heure, dans la langue qu'ils parlent.
 
@@ -53,7 +53,7 @@ Si vous travaillez dans la santé ou si vous développez ce genre d'outil, qu'es
 A patient types "3andi wjee3 f dersi, kayn chi blassa ghedda?" (Moroccan Darija for "my tooth hurts, any slot tomorrow?").
 10 seconds later, the appointment is in the practice's calendar.
 
-I designed and built snan., complete software for a dental practice in Casablanca (demo project):
+I designed and built DentaDesk, complete software for a dental practice in Casablanca (demo project):
 
 → a website that books real time slots, with no double booking possible
 → an assistant that understands Darija, French, Arabic and English

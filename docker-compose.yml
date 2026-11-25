@@ -1,8 +1,8 @@
-name: snan
+name: dentadesk
 
 services:
   app:
-    image: snan-php
+    image: dentadesk-php
     build:
       context: docker/php
       args: { UID: "${UID:-1000}", GID: "${GID:-1000}" }
@@ -19,20 +19,20 @@ services:
   mysql:
     image: mysql:8.0
     environment:
-      MYSQL_DATABASE: snan
-      MYSQL_USER: snan
-      MYSQL_PASSWORD: snan
+      MYSQL_DATABASE: dentadesk
+      MYSQL_USER: dentadesk
+      MYSQL_PASSWORD: dentadesk
       MYSQL_ROOT_PASSWORD: root
     ports: [ "3307:3306" ]
     volumes: [ "mysql:/var/lib/mysql", "./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro" ]
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-usnan", "-psnan" ]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-udentadesk", "-pdentadesk" ]
       interval: 5s
       retries: 20
 
   nlu:
     build: ./nlu
-    image: snan-nlu
+    image: dentadesk-nlu
     volumes: [ "./nlu:/srv/nlu" ]
     ports: [ "8001:8001" ]
 

@@ -30,7 +30,7 @@
     @endif
     @if ($r->status === 'open')
         @php
-            $wa = $r->patient ? 'https://wa.me/212'.substr($r->patient->phone, 1).'?text='.rawurlencode('Bonjour '.$r->patient->first_name.', ici le cabinet snan. ') : null;
+            $wa = $r->patient ? 'https://wa.me/212'.substr($r->patient->phone, 1).'?text='.rawurlencode('Bonjour '.$r->patient->first_name.', ici le cabinet DentaDesk ') : null;
         @endphp
         <div class="act">
             @switch($r->type)

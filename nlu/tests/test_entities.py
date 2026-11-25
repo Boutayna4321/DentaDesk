@@ -2,7 +2,7 @@ from datetime import date
 
 import pytest
 
-from snan_nlu.entities import extract
+from dentadesk_nlu.entities import extract
 
 WED = date(2026, 10, 21)  # a Wednesday
 

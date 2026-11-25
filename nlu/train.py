@@ -26,7 +26,7 @@ from sklearn.model_selection import GroupKFold, cross_val_predict
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, f1_score
 from sklearn.pipeline import FeatureUnion, Pipeline
 
-from snan_nlu.normalize import normalize
+from dentadesk_nlu.normalize import normalize
 
 ROOT = Path(__file__).resolve().parent
 DATA, MODELS, REPORTS = ROOT / "data", ROOT / "models", ROOT / "reports"

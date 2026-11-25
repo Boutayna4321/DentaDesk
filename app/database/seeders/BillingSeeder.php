@@ -34,7 +34,7 @@ class BillingSeeder extends Seeder
             'address' => config('cabinet.address').', 2e étage',
             // Fictitious identifiers for the demo.
             'inpe' => '000000000', 'ice' => '000000000000000', 'if' => '00000000', 'patente' => '00000000', 'cnom' => '0000',
-            'footer' => 'Cabinet de démonstration · projet snan.',
+            'footer' => 'Cabinet de démonstration · projet DentaDesk',
             'quote_note' => 'Devis valable 3 mois. Pour une prise en charge, joignez-le à votre demande auprès de votre organisme.',
         ]);
 
