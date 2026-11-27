@@ -54,9 +54,9 @@ def classifier() -> LogisticRegression:
 
 
 CANDIDATES = {
-    "mots (1-2)": lambda: Pipeline([("features", words()), ("clf", classifier())]),
-    "caractères (2-5)": lambda: Pipeline([("features", chars()), ("clf", classifier())]),
-    "mots + caractères": lambda: Pipeline([
+    "words (1-2)": lambda: Pipeline([("features", words()), ("clf", classifier())]),
+    "characters (2-5)": lambda: Pipeline([("features", chars()), ("clf", classifier())]),
+    "words + characters": lambda: Pipeline([
         ("features", FeatureUnion([("word", words()), ("char", chars())])),
         ("clf", classifier()),
     ]),
@@ -78,7 +78,7 @@ def pick_thresholds(proba: np.ndarray, classes: np.ndarray, labels: list[str]) -
 def confusion_table(labels: list[str], y_true: list[str], y_pred: list[str]) -> str:
     m = confusion_matrix(y_true, y_pred, labels=labels)
     short = [lbl[:6] for lbl in labels]
-    lines = ["| vrai \\ prédit | " + " | ".join(short) + " |", "|---|" + "---|" * len(labels)]
+    lines = ["| true \\ predicted | " + " | ".join(short) + " |", "|---|" + "---|" * len(labels)]
     for lbl, row in zip(labels, m):
         lines.append(f"| **{lbl}** | " + " | ".join(str(v) if v else "·" for v in row) + " |")
     return "\n".join(lines)
@@ -127,43 +127,43 @@ def main() -> None:
 
     errors = [(t, y, p, c) for t, y, p, c in zip(x_test, y_test, y_pred, conf) if y != p]
     report = [
-        f"# Modèle d'intention · version {version}",
+        f"# Intent model · version {version}",
         "",
-        f"Données : {len(x)} phrases d'entraînement (gabarits + variantes d'orthographe), validation croisée "
-        f"5 plis groupés par gabarit, **{len(x_test)} phrases de test écrites à la main**, jamais vues pendant "
-        "l'entraînement ni utilisées pour régler quoi que ce soit.",
+        f"Data: {len(x)} training sentences (templates + spelling variants), 5-fold cross-validation "
+        f"grouped by template, **{len(x_test)} hand-written test sentences**, never seen during "
+        "training nor used to tune anything.",
         "",
-        "## Comparaison des représentations",
+        "## Feature comparison",
         "",
-        "| représentation | F1 macro validation croisée | F1 macro test |",
+        "| features | macro F1 cross-validation | macro F1 test |",
         "|---|---|---|",
         *[f"| {n}{' ✔' if n == best_name else ''} | {v:.3f} | {t:.3f} |" for n, v, t in comparison],
         "",
-        f"Retenu : **{best_name}**, régression logistique (C=8, classes équilibrées).",
+        f"Kept: **{best_name}**, logistic regression (C=8, balanced classes).",
         "",
-        "## Résultat sur le test écrit à la main",
+        "## Result on the hand-written test set",
         "",
-        f"- Exactitude : **{acc:.1%}**  ·  F1 macro : **{macro:.3f}**",
+        f"- Accuracy: **{acc:.1%}**  ·  macro F1: **{macro:.3f}**",
         "",
-        "Seuils choisis sur la validation croisée, puis appliqués au test :",
+        "Thresholds chosen on cross-validation, then applied to the test set:",
         "",
-        "| niveau | confiance | part du test | ce que fait l'assistant | justesse |",
+        "| tier | confidence | share of test | what the assistant does | accuracy |",
         "|---|---|---|---|---|",
-        f"| agit seul | ≥ {act} | {tier_act.mean():.0%} | répond / réserve | intention juste {right[tier_act].mean() if tier_act.any() else 0:.0%} |",
-        f"| demande confirmation | {clarify} – {act} | {tier_clarify.mean():.0%} | propose 3 boutons | bonne réponse parmi les 3 : {in_top3[tier_clarify].mean() if tier_clarify.any() else 0:.0%} |",
-        f"| passe la main | < {clarify} | {tier_handover.mean():.0%} | crée une demande pour le cabinet | — |",
+        f"| acts alone | ≥ {act} | {tier_act.mean():.0%} | answers / books | correct intent {right[tier_act].mean() if tier_act.any() else 0:.0%} |",
+        f"| asks to confirm | {clarify} – {act} | {tier_clarify.mean():.0%} | offers 3 buttons | right answer among the 3: {in_top3[tier_clarify].mean() if tier_clarify.any() else 0:.0%} |",
+        f"| hands over | < {clarify} | {tier_handover.mean():.0%} | creates a request for the practice | — |",
         "",
         "```",
         classification_report(y_test, y_pred, labels=labels, zero_division=0),
         "```",
         "",
-        "## Matrice de confusion",
+        "## Confusion matrix",
         "",
         confusion_table(labels, y_test, y_pred),
         "",
-        "## Erreurs restantes",
+        "## Remaining errors",
         "",
-        "| message | attendu | prédit | confiance |",
+        "| message | expected | predicted | confidence |",
         "|---|---|---|---|",
         *[f"| {t} | {y} | {p} | {c:.2f} |" for t, y, p, c in errors],
         "",

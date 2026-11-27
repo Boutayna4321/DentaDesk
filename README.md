@@ -1,166 +1,168 @@
-# DentaDesk — cabinet dentaire : site, réservation, dashboard et assistant IA
+# DentaDesk — dental practice: website, booking, dashboard and AI assistant
 
-Un projet complet pour un cabinet dentaire à Casablanca : site vitrine, réservation en
-ligne sur de vrais créneaux, dashboard pour la dentiste et la secrétaire, et un assistant
-qui comprend la **darija** (en lettres latines ou arabes), le français, l'arabe et l'anglais.
+**English** · [Français](README.fr.md)
 
-L'assistant tourne sur **un modèle entraîné par nous**, hébergé avec l'application.
-Aucune donnée patient n'est envoyée à une API externe.
+A complete project for a dental practice in Casablanca: a public website, online booking
+on real time slots, a dashboard for the dentist and the front desk, and an assistant that
+understands **Darija** (Moroccan Arabic, in Latin or Arabic script), French, Arabic and English.
+
+The assistant runs on **a model we trained ourselves**, hosted with the application.
+No patient data is sent to an external API.
 
 ![DentaDesk](app/public/img/og.png)
 
-> Projet de démonstration : le cabinet, la dentiste et les patients sont fictifs.
-> Vidéo de démo (2 min) : [post LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7518725908128694272/).
-> Conçu et développé par Boutayna Metarfi, Master Ingénierie logicielle et Intelligence artificielle.
+> Demo project: the practice, the dentist and the patients are fictional.
+> Demo video (2 min): [LinkedIn post](https://www.linkedin.com/feed/update/urn:li:activity:7518725908128694272/).
+> Designed and built by Boutayna Metarfi, Master's in Software Engineering and Artificial Intelligence.
 
 ```
-navigateur ──► Laravel 13 (Blade, Bootstrap 5.3, JS, FullCalendar, GSAP)
-                 │  moteur de créneaux · dialogue · auth · API JSON
-                 ├──► MySQL 8
-                 └──► nlu (Python 3.12, FastAPI, scikit-learn)  /parse  /faq  /interpret
+browser ──► Laravel 13 (Blade, Bootstrap 5.3, JS, FullCalendar, GSAP)
+              │  slot engine · dialogue · auth · JSON API
+              ├──► MySQL 8
+              └──► nlu (Python 3.12, FastAPI, scikit-learn)  /parse  /faq  /interpret
 ```
 
-## Lancer le projet
+## Running it
 
-Il faut seulement Docker (et Node 20+ pour reconstruire le front).
+All you need is Docker (and Node 20+ to rebuild the front end).
 
 ```bash
 docker compose up -d                       # app :8000, nlu :8001, mysql :3307
-docker compose exec app composer install   # première fois
+docker compose exec app composer install   # first time only
 docker compose exec app php artisan key:generate
 docker compose exec app php artisan migrate --seed
 cd app && npm install && npm run build
 ```
 
-- Site : http://localhost:8000
-- Dashboard : http://localhost:8000/login
-  - `dentiste@dentadesk.test` / `dentadesk2026` (tout voir, schéma dentaire, notes)
-  - `secretaire@dentadesk.test` / `dentadesk2026` (accueil : pas de notes médicales)
-- Santé du modèle : http://localhost:8001/health
+- Website: http://localhost:8000
+- Dashboard: http://localhost:8000/login
+  - `dentiste@dentadesk.test` / `dentadesk2026` (dentist: sees everything, dental chart, notes)
+  - `secretaire@dentadesk.test` / `dentadesk2026` (front desk: no medical notes)
+- Model health: http://localhost:8001/health
 
-Au premier démarrage, le service `nlu` construit le dataset et entraîne le modèle (une
-vingtaine de secondes sur un CPU de portable).
+On first start, the `nlu` service builds the dataset and trains the model (about twenty
+seconds on a laptop CPU).
 
-Les données de démo sont générées autour du moment où le seeder tourne : le dashboard
-s'ouvre toujours sur une vraie journée (patients terminés, un au fauteuil, la suite).
+Demo data is generated around the moment the seeder runs, so the dashboard always opens
+on a realistic day (patients done, one in the chair, the rest still to come).
 
-## Ce qu'il y a dedans
+## What's inside
 
-**Site** — hero, barre de réservation (soin → jour → heure → nom + téléphone), soins,
-le cabinet, avis, FAQ (lue depuis la base), accès et horaires (lus depuis la base),
-assistant en bas à droite. Aucun prix affiché : le devis se fait après l'examen.
+**Website** — hero, booking bar (treatment → day → time → name + phone), treatments,
+the practice, reviews, FAQ (read from the database), location and opening hours (read from
+the database), assistant in the bottom-right corner. No prices shown: quotes come after
+the examination.
 
-**Moteur de créneaux** (`app/app/Booking`) — horaires du jour, moins les pauses, les
-congés et les rendez-vous, sur une grille de 15 min, pour la durée du soin. La
-réservation verrouille la ligne du praticien (`SELECT … FOR UPDATE`) et revérifie ; un
-index unique sur une colonne générée (`slot_lock`, NULL quand le RDV est annulé) est le
-dernier filet contre le double booking.
+**Slot engine** (`app/app/Booking`) — the day's opening hours, minus breaks, days off and
+existing appointments, on a 15-minute grid, for the length of the treatment. Booking locks
+the practitioner's row (`SELECT … FOR UPDATE`) and checks again; a unique index on a
+generated column (`slot_lock`, NULL when the appointment is cancelled) is the last safety
+net against double booking.
 
-**Assistant** (`app/app/Assistant`) — une machine à états. Le modèle dit ce que le patient
-veut ; Laravel décide quoi faire. Les heures proposées et les réponses viennent toujours
-de la base, jamais du modèle. Il répond dans le registre du patient (darija latine,
-arabe, français, anglais).
+**Assistant** (`app/app/Assistant`) — a state machine. The model says what the patient
+wants; Laravel decides what to do. Proposed times and answers always come from the
+database, never from the model. It replies in the patient's own register (Latin-script
+Darija, Arabic, French, English).
 
-**Factures & devis** — la dentiste écrit le contenu (actes de son catalogue de tarifs, dent,
-cotation, observations ou plan de traitement), enregistre un brouillon, puis valide : le
-document reçoit le numéro suivant de l'année sans trou (F-2026-0042, D-2026-0007), se
-verrouille, et garde l'en-tête du jour de sa validation. La secrétaire imprime (A4 ou A5,
-« Enregistrer en PDF » depuis le navigateur) et encaisse (espèces, carte, chèque,
-virement, paiements partiels). Un document validé ne se supprime pas, il s'annule avec un
-motif. Un devis accepté devient une facture en un clic. Montant en toutes lettres :
-« Arrêtée la présente facture à la somme de : mille deux cents dirhams ». En-tête et pied
-de page configurables (logo, INPE, ICE, IF, patente, RIB, mentions, couleur). Les feuilles
-de soins CNSS / CNOPS restent sur papier, remplies à la main.
+**Invoices & quotes** — the dentist writes the content (procedures from her price list,
+tooth, coding, notes or treatment plan), saves a draft, then validates it: the document
+gets the next gapless number of the year (F-2026-0042, D-2026-0007), is locked, and keeps
+the letterhead as it was on the day it was validated. The front desk prints it (A4 or A5,
+"Save as PDF" from the browser) and takes payment (cash, card, cheque, bank transfer,
+partial payments). A validated document cannot be deleted, only cancelled with a reason.
+An accepted quote becomes an invoice in one click. The amount is written out in French
+words, as Moroccan invoices require ("Arrêtée la présente facture à la somme de : mille
+deux cents dirhams"). Configurable header and footer (logo, INPE, ICE, IF, patente, RIB,
+legal notes, colour). CNSS / CNOPS claim forms stay on paper, filled in by hand.
 
-**Statistiques** (dentiste) — encaissé et facturé, reste à encaisser, panier moyen, taux
-de remplissage (temps réservé / temps d'ouverture) et par jour, taux d'absence, nouveaux
-patients, délai moyen avant rendez-vous, conversion de l'assistant, provenance des
-rendez-vous, soins les plus demandés, encaissé par semaine.
+**Statistics** (dentist) — collected and billed revenue, outstanding balance, average
+ticket, occupancy rate (booked time / opening time) overall and per day, no-show rate,
+new patients, average lead time before an appointment, assistant conversion, where
+bookings come from, most requested treatments, revenue collected per week.
 
-**Équipe** (dentiste) — créer, modifier, désactiver, réactiver ; supprimer seulement un
-compte sans historique (sinon on désactive). Un compte désactivé est déconnecté tout de
-suite. Journal des actions sensibles.
+**Team** (dentist) — create, edit, deactivate, reactivate; an account can only be deleted
+if it has no history (otherwise it is deactivated). A deactivated account is logged out
+immediately. Log of sensitive actions.
 
-**Messages** — messagerie interne dentiste ↔ secrétariat, avec le patient concerné en
-lien, messages rapides, lu / non lu, badge mis à jour tout seul.
+**Messages** — internal messaging between the dentist and the front desk, with a link to
+the patient concerned, quick replies, read / unread, live-updating badge.
 
-**Dashboard** — Aujourd'hui (programme, statuts, demandes, patient au fauteuil + schéma
-dentaire), explication de chaque message patient en français ou en anglais (voir plus bas), Agenda (glisser-déposer, création, fermetures), Demandes (confirmer, refuser,
-accepter un déplacement, transformer une question en FAQ), Patients, Assistant AI
-(santé du modèle, intentions, corrections), Horaires & soins.
+**Dashboard** — Today (schedule, statuses, requests, patient in the chair + dental chart),
+an explanation of each patient message in French or English (see below), Calendar
+(drag and drop, create, closures), Requests (confirm, decline, accept a reschedule, turn a
+question into an FAQ entry), Patients, AI Assistant (model health, intents, corrections),
+Hours & treatments.
 
-## L'IA, en détail
+## The AI in detail
 
-| Brique | Méthode | Pourquoi |
+| Component | Method | Why |
 |---|---|---|
-| Intention (12 classes) | TF-IDF n-grammes de caractères 2–5 + régression logistique | la darija s'écrit de dix façons : `3andi`, `andi`, `عندي` partagent leurs n-grammes |
-| Entités | règles + lexique (`ghedda`, `nhar jem3a`, `f l3chiya`, `m3a jouj w nos`, `wjee3`…) | une date réservée ne doit jamais être une supposition |
-| FAQ | similarité cosinus sur la FAQ validée du cabinet, seuil 0,45 | domaine médical : pas de génération libre |
-| Décision | trois niveaux de confiance | le modèle sait quand il doute |
+| Intent (12 classes) | TF-IDF character 2–5-grams + logistic regression | Darija is written ten different ways: `3andi`, `andi`, `عندي` share their n-grams |
+| Entities | rules + lexicon (`ghedda`, `nhar jem3a`, `f l3chiya`, `m3a jouj w nos`, `wjee3`…) | a booked date must never be a guess |
+| FAQ | cosine similarity over the practice's approved FAQ, threshold 0.45 | medical domain: no free-form generation |
+| Decision | three confidence tiers | the model knows when it is unsure |
 
-Résultats sur **126 phrases de test écrites à la main** (dont 21 en anglais), jamais vues à l'entraînement
-(`nlu/reports/metrics.md`) :
+Results on **126 hand-written test sentences** (21 of them in English), never seen during
+training (`nlu/reports/metrics.md`):
 
-| représentation | F1 validation croisée (5 plis groupés par gabarit) | F1 test |
+| features | F1 cross-validation (5 folds grouped by template) | F1 test |
 |---|---|---|
-| mots 1–2 | 0,584 | 0,789 |
-| **caractères 2–5** | **0,665** | **0,844** |
-| mots + caractères | 0,646 | 0,841 |
+| words 1–2 | 0.584 | 0.789 |
+| **characters 2–5** | **0.665** | **0.844** |
+| words + characters | 0.646 | 0.841 |
 
-| niveau | confiance | part du test | ce que fait l'assistant | justesse |
+| tier | confidence | share of test | what the assistant does | accuracy |
 |---|---|---|---|---|
-| agit seul | ≥ 0,76 | 52 % | répond / réserve | 98 % |
-| demande confirmation | 0,36 – 0,76 | 37 % | propose 3 boutons | bonne réponse parmi les 3 : 96 % |
-| passe la main | < 0,36 | 10 % | crée une demande pour le cabinet | — |
+| acts alone | ≥ 0.76 | 52 % | answers / books | 98 % |
+| asks to confirm | 0.36 – 0.76 | 37 % | offers 3 buttons | right answer among the 3: 96 % |
+| hands over | < 0.36 | 10 % | creates a request for the practice | — |
 
-Exactitude globale 84,1 %. Avant l'ajout de l'anglais : 86,7 % sur les 105 phrases
-d'origine, et 70 % des messages traités seuls. L'anglais (15/21 justes) a rendu le modèle
-plus prudent : il demande confirmation plus souvent plutôt que de se tromper.
+Overall accuracy 84.1 %. Before English was added: 86.7 % on the original 105 sentences,
+with 70 % of messages handled alone. English (15/21 correct) made the model more careful:
+it asks for confirmation more often instead of getting it wrong.
 
-**Expliquer la darija à la dentiste.** Un médecin venu d'ailleurs ne lit pas forcément
-« 3andi wjee3 f dersi mn lbare7 ». Aucun modèle libre ne traduit bien la darija en
-lettres latines vers le français ou l'anglais (les modèles Terjman d'AtlasIA vont dans
-l'autre sens, anglais → darija). Sous chaque message, le dashboard affiche donc :
+**Explaining Darija to the dentist.** A doctor from elsewhere will not necessarily read
+"3andi wjee3 f dersi mn lbare7". No open model translates Latin-script Darija into French
+or English well (AtlasIA's Terjman models go the other way, English → Darija). So under
+each message, the dashboard shows:
 
-- une phrase construite à partir de ce que le modèle a compris (intention, jour, moment,
-  soin), en français ou en anglais au choix : « The patient reports pain and wants to be
-  seen as soon as possible, for Thursday 22 October in the morning. » ;
-- un glossaire des mots darija reconnus (`wjee3` douleur / pain, `dersi` ma molaire / my
-  molar, `mn lbare7` depuis hier / since yesterday…), 60 entrées dans `nlu/dentadesk_nlu/glossary.py`.
+- a sentence built from what the model understood (intent, day, time of day, treatment),
+  in French or English: "The patient reports pain and wants to be seen as soon as
+  possible, for Thursday 22 October in the morning.";
+- a glossary of the Darija words it recognised (`wjee3` pain, `dersi` my molar,
+  `mn lbare7` since yesterday…), 60 entries in `nlu/dentadesk_nlu/glossary.py`.
 
-Ce n'est pas une traduction et le dashboard ne le présente pas comme telle : rien n'est
-inventé, et le message d'origine reste affiché au-dessus.
+This is not a translation and the dashboard does not present it as one: nothing is
+invented, and the original message stays displayed above it.
 
-**Boucle d'amélioration.** Dans *Assistant AI*, l'équipe corrige une intention mal
-comprise. Ensuite :
+**Improvement loop.** In *AI Assistant*, the team corrects a misunderstood intent. Then:
 
 ```bash
 docker compose exec app php artisan nlu:export      # corrections -> nlu/data/corrections.jsonl
 docker compose exec nlu sh -c "python data/build_dataset.py && python -W ignore train.py"
-docker compose restart nlu                            # charge la nouvelle version
+docker compose restart nlu                            # loads the new version
 ```
 
-Une expérience ratée, gardée volontairement : ajouter les variantes de la FAQ comme
-exemples `question_faq` a fait baisser le test de 0,867 à 0,857 (« kayn parking ? » est
-une question de FAQ mais une intention `adresse`). Seules les corrections humaines sont
-exportées.
+A failed experiment, kept on purpose: adding the FAQ variants as `question_faq` examples
+lowered the test score from 0.867 to 0.857 ("kayn parking?" is an FAQ question but an
+`adresse` intent). Only human corrections are exported.
 
 ## Tests
 
 ```bash
-docker compose exec app php artisan test                 # 65 tests : créneaux, dialogue, factures, équipe, stats, messages
-docker compose exec nlu python -W ignore -m pytest -q    # 56 tests : entités (4 langues), API, FAQ, glossaire
+docker compose exec app php artisan test                 # 65 tests: slots, dialogue, invoices, team, stats, messages
+docker compose exec nlu python -W ignore -m pytest -q    # 56 tests: entities (4 languages), API, FAQ, glossary
 ```
 
-## Choix et limites
+## Choices and limits
 
-- Un seul praticien actif ; le schéma en accepte plusieurs.
-- WhatsApp : liens `wa.me` pré-remplis. Les rappels automatiques (API Meta) sont prévus en v2.
-- `php artisan serve` sert l'app en développement ; en production, mettre PHP-FPM + Nginx
-  derrière un VPS (le service Python demande plus qu'un hébergement mutualisé).
-- Photos : Unsplash (licence libre), sources dans `app/public/img/SOURCES.json`.
+- One active practitioner; the schema supports several.
+- WhatsApp: pre-filled `wa.me` links. Automatic reminders (Meta API) are planned for v2.
+- `php artisan serve` serves the app in development; in production, use PHP-FPM + Nginx
+  on a VPS (the Python service needs more than shared hosting).
+- Photos: Unsplash (free licence), sources in `app/public/img/SOURCES.json`.
 
 ---
 
-Conçu et développé par [@boutayna_metarfi](https://instagram.com/boutayna_metarfi).
-Projet de démonstration : le cabinet, la dentiste et les patients sont fictifs.
+Designed and built by [@boutayna_metarfi](https://instagram.com/boutayna_metarfi).
+Demo project: the practice, the dentist and the patients are fictional.

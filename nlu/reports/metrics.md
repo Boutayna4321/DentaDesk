@@ -1,28 +1,28 @@
-# Modèle d'intention · version 20261021-1129
+# Intent model · version 20261021-1129
 
-Données : 2642 phrases d'entraînement (gabarits + variantes d'orthographe), validation croisée 5 plis groupés par gabarit, **126 phrases de test écrites à la main**, jamais vues pendant l'entraînement ni utilisées pour régler quoi que ce soit.
+Data: 2642 training sentences (templates + spelling variants), 5-fold cross-validation grouped by template, **126 hand-written test sentences**, never seen during training nor used to tune anything.
 
-## Comparaison des représentations
+## Feature comparison
 
-| représentation | F1 macro validation croisée | F1 macro test |
+| features | macro F1 cross-validation | macro F1 test |
 |---|---|---|
-| mots (1-2) | 0.584 | 0.789 |
-| caractères (2-5) ✔ | 0.665 | 0.844 |
-| mots + caractères | 0.646 | 0.841 |
+| words (1-2) | 0.584 | 0.789 |
+| characters (2-5) ✔ | 0.665 | 0.844 |
+| words + characters | 0.646 | 0.841 |
 
-Retenu : **caractères (2-5)**, régression logistique (C=8, classes équilibrées).
+Kept: **characters (2-5)**, logistic regression (C=8, balanced classes).
 
-## Résultat sur le test écrit à la main
+## Result on the hand-written test set
 
-- Exactitude : **84.1%**  ·  F1 macro : **0.844**
+- Accuracy: **84.1%**  ·  macro F1: **0.844**
 
-Seuils choisis sur la validation croisée, puis appliqués au test :
+Thresholds chosen on cross-validation, then applied to the test set:
 
-| niveau | confiance | part du test | ce que fait l'assistant | justesse |
+| tier | confidence | share of test | what the assistant does | accuracy |
 |---|---|---|---|---|
-| agit seul | ≥ 0.76 | 52% | répond / réserve | intention juste 98% |
-| demande confirmation | 0.36 – 0.76 | 37% | propose 3 boutons | bonne réponse parmi les 3 : 96% |
-| passe la main | < 0.36 | 10% | crée une demande pour le cabinet | — |
+| acts alone | ≥ 0.76 | 52% | answers / books | correct intent 98% |
+| asks to confirm | 0.36 – 0.76 | 37% | offers 3 buttons | right answer among the 3: 96% |
+| hands over | < 0.36 | 10% | creates a request for the practice | — |
 
 ```
               precision    recall  f1-score   support
@@ -46,9 +46,9 @@ weighted avg       0.85      0.84      0.83       126
 
 ```
 
-## Matrice de confusion
+## Confusion matrix
 
-| vrai \ prédit | adress | affirm | annule | deplac | horair | hors_s | merci | nier | prendr | questi | saluta | urgenc |
+| true \ predicted | adress | affirm | annule | deplac | horair | hors_s | merci | nier | prendr | questi | saluta | urgenc |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | **adresse** | 9 | · | · | · | · | 1 | · | · | · | 2 | · | · |
 | **affirmer** | · | 7 | · | · | · | · | · | · | · | · | · | · |
@@ -63,9 +63,9 @@ weighted avg       0.85      0.84      0.83       126
 | **salutation** | · | · | · | · | · | · | · | · | · | · | 7 | · |
 | **urgence** | · | · | · | · | · | · | · | · | · | 1 | · | 14 |
 
-## Erreurs restantes
+## Remaining errors
 
-| message | attendu | prédit | confiance |
+| message | expected | predicted | confidence |
 |---|---|---|---|
 | momkin tchoufi liya chi w9t ghedda 9bel tnach | prendre_rdv | deplacer | 0.44 |
 | kanqelleb 3la rendez-vous l mmi | prendre_rdv | hors_sujet | 0.64 |
